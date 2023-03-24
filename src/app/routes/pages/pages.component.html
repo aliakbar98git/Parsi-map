@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="col-12">
+    <div class="box-white page-view">
+      <ng-container *ngIf="pageData !== undefined">
+        <h5 class="mt-3">
+          {{pageData.title}}
+        </h5>
+        <hr />
+        <div class="page-content" [innerHTML]="pageData.pageContent | safehtml"></div>
+      </ng-container>
+      <app-loading-inline [isLoading]="pageData === undefined"></app-loading-inline>
+    </div>
+  </div>
+</div>

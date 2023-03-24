@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col">
+    <app-breadcrumb [currentTitle]="['فروش‌های ویژه']"></app-breadcrumb>
+
+    <app-loading-inline [isLoading]="showLoading"></app-loading-inline>
+    <div>
+      <div class="alert alert-warning" role="alert" *ngIf="data == null || data?.marketingProductList.length == 0">
+        کالایی برای نمایش یافت نشد.
+      </div>
+      <div class="promoted-list clearfix" *ngIf="data?.marketingProductList.length > 0">
+        <app-product-item *ngFor="let productItem of data?.marketingProductList" [product]="productItem"
+          [extraClass]="'product-item-category-list'">
+        </app-product-item>
+      </div>
+
+      <ngb-pagination *ngIf="data?.marketingProductList.length != 0 && data?.total > 12"
+        class="d-flex justify-content-center" [collectionSize]="data?.total" [(page)]="params.PageNo"
+        [pageSize]="data?.pageSize" (pageChange)="onPageChange()">
+      </ngb-pagination>
+    </div>
+  </div>
+</div>

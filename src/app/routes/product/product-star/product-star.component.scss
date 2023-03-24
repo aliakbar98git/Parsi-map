@@ -1,0 +1,36 @@
+.product-rate {
+  .product-rate-inner {
+    position: relative;
+    height: 30px;
+    width: 70px;
+    margin: auto;
+    z-index: 0;
+
+    .product-rate-stars {
+      width: 70px;
+      height: 100%;
+      position: absolute;
+      left: 0px;
+    }
+
+    .product-rate-mask {
+      position: absolute;
+      z-index: 3;
+      height: 100%;
+      overflow: hidden;
+      left: 0px;
+      background: #fff;
+    }
+    .product-rate-icon {
+      color: #efefef;
+      font-size: 12px;
+      float: right;
+      width: 13px;
+      margin-left: 1px;
+
+      &.active {
+        color: #ff8d00;
+      }
+    }
+  }
+}

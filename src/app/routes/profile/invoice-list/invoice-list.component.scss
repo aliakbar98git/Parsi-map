@@ -1,0 +1,106 @@
+@import "../../../global/styles.scss";
+
+.invoice-status {
+  min-width: 140px;
+}
+
+.actions {
+  text-align: left;
+  min-width: 73px;
+  a {
+    margin-right: 0.5rem;
+    cursor: pointer;
+  }
+}
+
+#saleinvoice-filter {
+  border-bottom: 1px solid #d8172f;
+  margin-bottom: 20px;
+
+  .form-group {
+    &.hidden {
+      width: 0;
+      margin: 0;
+      border: none;
+      padding: 0;
+
+      label {
+        width: 0;
+        overflow: hidden;
+      }
+      .form-control {
+        border: none;
+        width: 0;
+      }
+    }
+    .input-group {
+      .btn {
+        margin-top: 0;
+        margin-right: 0;
+        height: 33px;
+        color: #999;
+      }
+    }
+
+    label {
+      font-size: 11px;
+      margin-bottom: 5px;
+    }
+
+    input,
+    select {
+      font-size: 13px !important;
+      height: 33px;
+    }
+  }
+
+  .btn {
+    margin-top: 28px;
+    margin-right: 4px;
+    display: inline-block;
+    height: 31px;
+    color: #fff;
+    padding: 5px 7px;
+    @media (max-width: $max-bp-small) {
+      margin-top: 0;
+    }
+
+    i {
+      color: #fff;
+    }
+  }
+
+  .form-errors {
+    font-size: 12px;
+  }
+}
+
+#saleinvoice-list-footer {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 20px;
+  .alert {
+    margin-bottom: 0px;
+  }
+
+  button.invoice-print {
+    margin-bottom: 1rem;
+  }
+
+  .totals {
+    line-height: 28px;
+    text-align: left;
+    @media (max-width: $max-bp-medium) {
+      text-align: right;
+    }
+    .value {
+      display: inline-block;
+      width: 140px;
+      text-align: right;
+      margin-right: 15px;
+      @media (max-width: $max-bp-medium) {
+        margin-right: 0;
+      }
+    }
+  }
+}

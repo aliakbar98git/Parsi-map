@@ -1,0 +1,64 @@
+@import "../../../global/styles.scss";
+@import "../../../helpers/mixins.scss";
+
+.profile {
+    .panel {
+        .user-info {
+            img {
+                display: block;
+                width: auto;
+                height: 90px;
+                padding: 5px;
+                background: #fbfbfb;
+                margin: auto;
+                position: relative;
+                z-index: 5;
+                @include box-shadow(0, 0, 8px, #cccccc);
+
+                @media (max-width: $max-bp-large) {
+                    height: 70px;
+                }
+            }
+
+            .description {
+                position: relative;
+                text-align: center;
+                font-size: 14px !important;
+                font-weight: bold !important;
+                color: #fff;
+                background: $primaryColor;
+                padding: 5px !important;
+                margin-top: -6px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                width: 100%;
+                border: 0;
+                border-radius: 0;
+                white-space: nowrap;
+                @include box-shadow(0, 0, 8px, #cccccc);
+
+                span {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    padding: 0 20px;
+                    width: 100%;
+                }
+
+                fa-icon{
+                    position: absolute;
+                    left: 0;
+                    padding: 0 8px;
+                    top: 0;
+                    background: $primaryColor;
+                    line-height: 28px;
+                }
+            }
+        }
+
+        nav {
+            a:last-child {
+                border-top: 1px solid #e9e9e9;
+            }
+        }
+    }
+}

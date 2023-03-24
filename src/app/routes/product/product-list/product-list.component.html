@@ -1,0 +1,135 @@
+<div class="row">
+  <div class="col-12 col-md-4 col-xl-3">
+    <div class="sidebar-inner sticky-top">
+      <div id="searchable-attributes">
+        <app-product-search-accordion [title]="'فیلتر های اعمال شده:'" [opened]="true"
+          *ngIf="showRemoveFilter && filterAttributes !== null">
+          <div id="applied-filters">
+            <span class="filter-item fa-num" *ngIf="filterParams.MinPrice && filterParams.MaxPrice"
+              (click)="removeFilterItem('price','',false)">
+              از {{filterParams.MinPrice|number}} تا {{filterParams.MaxPrice|number}} تومان
+              <fa-icon [icon]="faTimes"></fa-icon>
+            </span>
+            <span class="filter-item" *ngIf="filterParams.HasInventory"
+              (click)="removeFilterItem('HasInventory','',false)">
+              فقط کالاهای موجود
+              <fa-icon [icon]="faTimes"></fa-icon>
+            </span>
+            <span class="filter-item" *ngIf="filterParams.HasDifferentGrade"
+              (click)="removeFilterItem('HasDifferentGrade','',false)">
+              فقط کالاهای درجه
+              <fa-icon [icon]="faTimes"></fa-icon>
+            </span>
+            <span *ngFor="let filterItem of filterParams.ProductFilterAttributeDtoList">
+              <span class="filter-item fa-num" *ngIf="filterItem.Value != undefined"
+                (click)="removeFilterItem(filterItem.Name,filterItem.Value,false)">
+                {{getFilterText(filterItem)}}
+                <fa-icon [icon]="faTimes"></fa-icon>
+              </span>
+              <span *ngIf="filterItem.List != undefined">
+                <span class="filter-item fa-num" *ngFor="let filterList of filterItem.List"
+                  (click)="removeFilterItem(filterItem.Name,filterList,true)">
+                  {{getFilterListText(filterList,filterItem)}}
+                  <fa-icon [icon]="faTimes"></fa-icon>
+                </span>
+              </span>
+            </span>
+          </div>
+          <div class="text-left">
+            <button type="button" class="btn btn-primary" (click)="removeFilters()">حذف فیلتر</button>
+          </div>
+        </app-product-search-accordion>
+        <app-product-search-accordion [title]="'محدوده قیمت'" [opened]="true" *ngIf="!isSearch">
+          <div class="price-range-min fa-num" *ngIf="priceRange !== undefined">
+            از {{priceRange?.noUiSlider.get()[0] | number:'1.0-0'}} تومان
+          </div>
+          <div class="price-range-max fa-num" *ngIf="priceRange !== undefined">
+            تا {{priceRange?.noUiSlider.get()[1] | number:'1.0-0'}} تومان
+          </div>
+          <div id="price-range"></div>
+          <div class="text-center mt-4" *ngIf="priceRange !== undefined">
+            <button type="button" class="btn btn-primary" (click)="filterPriceRange()">اعمال محدوده قیمت</button>
+          </div>
+        </app-product-search-accordion>
+        <app-product-search-accordion [title]="'وضعیت موجودی'" [opened]="true">
+          <label class="checkbox-label">
+            <input type="checkbox" name="HasInventory" (change)="changeHasInventory($event)"
+              [checked]="filterParams.HasInventory" [checked]="urlParams?.HasInventory" />
+            <span class="check-mark"></span>
+            فقط کالاهای موجود
+          </label>
+        </app-product-search-accordion>
+        <app-product-search-accordion [title]="'کالای درجه'" [opened]="true"
+          *ngIf="userService.currentUser?.isRetailSeller">
+          <label class="checkbox-label">
+            <input type="checkbox" name="HasDifferentGrade" (change)="changeHasDifferentGrade($event)"
+              [checked]="filterParams.HasDifferentGrade" [checked]="urlParams?.HasDifferentGrade" />
+            <span class="check-mark"></span>
+            فقط کالاهای درجه
+          </label>
+        </app-product-search-accordion>
+        <app-loading-inline [isLoading]="filterAttributes === null && !isSearch"></app-loading-inline>
+        <app-product-search-accordion *ngFor="let filterAttribute of filterAttributes" [title]="filterAttribute.label">
+          <p class="no-attribute-item" *ngIf="filterAttribute.attributeItemDtoList == null">
+            متاسفانه آیتمی برای انتخاب یافت نشد
+          </p>
+          <div class="attribute-item-content" *ngFor="let item of filterAttribute.attributeItemDtoList">
+            <label class="checkbox-label" [ngClass]="{
+                'checkbox-label':filterAttribute.multiSelect,
+                'radio-button-label':!filterAttribute.multiSelect}">
+              {{item.title}}
+              <input type="checkbox" class="{{filterAttribute.name}}" id="{{filterAttribute.name + item.id}}"
+                (change)="changeSearchAttribute($event,filterAttribute.name,item.id.toString(),filterAttribute.multiSelect)"
+                [checked]="getIsChecked(filterAttribute.name,item.id.toString(),filterAttribute.multiSelect)" />
+              <span class="check-mark"></span>
+            </label>
+          </div>
+        </app-product-search-accordion>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-8 col-xl-9 products-list">
+    <div class="list-tools mb-3">
+      <button type="button" class="sort-btn" [ngClass]="{'active' : searchParam.SortType == sortType.CreatedOn}"
+        (click)="changeSort(sortType.CreatedOn)">جدیدترین</button>
+      <button type="button" class="sort-btn" [ngClass]="{'active' : searchParam.SortType == sortType.DescendingPrice}"
+        (click)="changeSort(sortType.DescendingPrice)">گران‌ترین</button>
+      <button type="button" class="sort-btn" [ngClass]="{'active' : searchParam.SortType == sortType.AscendingPrice}"
+        (click)="changeSort(sortType.AscendingPrice)">ارزان‌ترین</button>
+    </div>
+    <app-breadcrumb [breadcrumbs]="breadcrumbs" *ngIf="!isSearch"></app-breadcrumb>
+    <div>
+      <app-loading-inline [isLoading]="showLoading"></app-loading-inline>
+      <div class="alert alert-warning" role="alert" *ngIf="data?.marketingProductList.length == 0">
+        کالایی برای نمایش یافت نشد.
+      </div>
+      <div class="products-list clearfix" *ngIf="data?.marketingProductList.length > 0">
+        <app-product-item *ngFor="let productItem of data?.marketingProductList" [product]="productItem"
+          [comparable]="data?.comparable" [extraClass]="'product-item-category-list'"
+          [isCompareSelected]="isCompareSelected(productItem.marketingProductId)"
+          (toggleCompare)="toggleCompare($event, productItemComponent)" #productItemComponent class="text-center">
+        </app-product-item>
+      </div>
+
+      <ngb-pagination *ngIf="data?.total > data?.pageSize" class="d-flex justify-content-center"
+        [collectionSize]="data?.total" [pageSize]="data?.pageSize" [(page)]="page" [maxSize]="5" [rotate]="true"
+        (pageChange)="updatePageNumber($event)">
+      </ngb-pagination>
+    </div>
+  </div>
+</div>
+
+<div id="compare" *ngIf="compareList.length > 0"
+  [ngClass]="{'is-seller':userService.currentUser?.userType == userType.Seller || userService.currentUser?.userType == userType.StoreManager}">
+  <div class="products">
+    <div class="compare-item" *ngFor="let item of compareList; let i=index">
+      <fa-icon class="compare-remove" [icon]="faTimes" (click)="removeFromCompareList(i)"></fa-icon>
+      <app-image [size]="[240]" [cssClass]="'float-right'" [documentInfoId]="item.documentInfoId"
+        [imageType]="item.imageType"></app-image>
+      <h3>{{item.marketingProductName}}</h3>
+    </div>
+  </div>
+  <button type="button" class="btn btn-info" (click)="compareProducts()">
+    مقایسه <span class="badge badge-light"><span class="count fa-num">{{compareList.length}}</span> کالا</span>
+  </button>
+</div>

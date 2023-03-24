@@ -1,0 +1,219 @@
+<ng-container [formGroup]="legalUserForm">
+  <h4 class="form-section-header">اطلاعات عمومی</h4>
+  <div class="form-row">
+    <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(nationalId) }">
+      <em *ngIf="global.hasError(nationalId)">
+        <span *ngIf="nationalId.errors.required">
+          فیلد اجباری
+        </span>
+        <span *ngIf="nationalId.errors.minlength || nationalId.errors.maxlength">
+          طول رشته باید برابر با {{nationalId.errors.minlength.requiredLength}} رقم باشد.
+        </span>
+        <span *ngIf="nationalId.errors.nationalIdValid">
+          شناسه ملی معتبر نیست.
+        </span>
+      </em>
+      <label for="nationalId">شناسه ملی</label>
+      <input id="nationalId" type="text" formControlName="nationalId" class="form-control ltr" minlength="11"
+        maxlength="11" required appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="00000000000" />
+    </div>
+    <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(legalPersonTitle) }">
+      <em *ngIf="global.hasError(legalPersonTitle)">
+        <span *ngIf="legalPersonTitle.errors.required">
+          فیلد اجباری
+        </span>
+      </em>
+      <label for="title">نام</label>
+      <input id="title" type="text" formControlName="title" class="form-control" required />
+    </div>
+    <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(registrationCode) }">
+      <em *ngIf="global.hasError(registrationCode)">
+        <span *ngIf="registrationCode.errors.required">
+          فیلد اجباری
+        </span>
+      </em>
+      <label for="registrationCode">شماره ثبت</label>
+      <input id="registrationCode" type="text" formControlName="registrationCode" class="form-control ltr" required
+        appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0*" />
+    </div>
+    <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(economicCode) }">
+      <em *ngIf="global.hasError(economicCode)">
+        <span *ngIf="economicCode.errors?.economicCodeValid">
+          کد اقتصادی معتبر نیست.
+        </span>
+      </em>
+      <label for="economicCode">كد اقتصادی</label>
+      <input id="economicCode" type="text" formControlName="economicCode" class="form-control ltr"
+        appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="999999999999" [specialCharacters]="[]" />
+    </div>
+    <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(contactNumber) }">
+      <em *ngIf="global.hasError(contactNumber)">
+        <span *ngIf="contactNumber.errors.required">
+          فیلد اجباری
+        </span>
+      </em>
+      <label for="contactNumber">تلفن ثابت</label>
+      <input id="contactNumber" type="text" formControlName="contactNumber" class="form-control ltr" required
+        appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0*" />
+    </div>
+    <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(postalCode) }">
+      <em *ngIf="global.hasError(postalCode)">
+        <span *ngIf="postalCode.errors.required">
+          فیلد اجباری
+        </span>
+        <span *ngIf="postalCode.errors.minlength || postalCode.errors.maxlength">
+          طول رشته باید برابر با {{postalCode.errors.minlength.requiredLength}} رقم باشد.
+        </span>
+      </em>
+      <label for="postalCode">كد پستی</label>
+      <input id="postalCode" type="text" formControlName="postalCode" class="form-control ltr" minlength="10"
+        maxlength="10" required appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0000000000" />
+    </div>
+    <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(cityId) }">
+      <em *ngIf="global.hasError(cityId)">
+        <span *ngIf="cityId.errors.required">
+          فیلد اجباری
+        </span>
+      </em>
+      <label for="cityId">شهر</label>
+      <ng-select [appCitySelect]="parishSelect" [selectOnTab]="true" bindValue="cityOrParishId" bindLabel="cityOrParish"
+        labelForId="cityId" placeholder="انتخاب کنید." formControlName="cityId">
+      </ng-select>
+    </div>
+    <div class="form-group col-12 col-md-6">
+      <label for="parishId">محله</label>
+      <ng-select #parishSelect [selectOnTab]="true" bindValue="cityOrParishId" bindLabel="cityOrParish"
+        labelForId="parishId" placeholder="انتخاب کنید." formControlName="parishId">
+        <ng-template ng-loadingspinner-tmp>
+          <app-loading-inline type="inline"></app-loading-inline>
+        </ng-template>
+      </ng-select>
+    </div>
+    <div class="form-group col-12" [ngClass]="{ error: global.hasError(address) }">
+      <em *ngIf="global.hasError(address)">
+        <span *ngIf="address.errors.required">
+          فیلد اجباری
+        </span>
+      </em>
+      <label for="address">آدرس</label>
+      <textarea class="form-control" id="address" formControlName="address" rows="3" required appConvertNumbersToEnglish
+        [patterns]="global.customPatterns" mask="S*" [specialCharacters]="[]"></textarea>
+    </div>
+    <div class="form-group col-12" [ngClass]="{ error: global.hasError(email) }">
+      <em *ngIf="global.hasError(email)">
+        <span *ngIf="email.errors.email">
+          ایمیل معتبر وارد کنید.
+        </span>
+      </em>
+      <label for="email">ایمیل</label>
+      <input id="email" type="email" formControlName="email" class="form-control ltr" />
+    </div>
+  </div>
+  <h4 class="form-section-header">اطلاعات مامور خرید</h4>
+  <div class="form-row">
+    <div class="form-group custom-checkbox col-12 col-md-6">
+      <label class="checkbox-label" for="representativePersonIsForeign">
+        تبعه خارجی
+        <input id="representativePersonIsForeign" type="checkbox" formControlName="representativePersonIsForeign" />
+        <span class="check-mark"></span>
+      </label>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-12 col-md-6" *ngIf="!representativePersonIsForeign.value"
+      [ngClass]="{ error: global.hasError(representativePersonNationalCode) }">
+      <em *ngIf="global.hasError(representativePersonNationalCode)">
+        <span *ngIf="representativePersonNationalCode.errors.required">
+          فیلد اجباری
+        </span>
+        <span
+          *ngIf="representativePersonNationalCode.errors.minlength || representativePersonNationalCode.errors.maxlength">
+          طول رشته باید برابر با {{representativePersonNationalCode.errors.minlength.requiredLength}} رقم باشد.
+        </span>
+        <span *ngIf="representativePersonNationalCode.errors.nationalCode">
+          رشته نامعتبر
+        </span>
+      </em>
+      <label for="representativePersonNationalCode">کد ملی</label>
+      <input id="representativePersonNationalCode" type="text" formControlName="representativePersonNationalCode"
+        class="form-control ltr" appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0000000000"
+        [validation]="false" />
+    </div>
+    <div class="form-group col-12 col-md-6" *ngIf="representativePersonIsForeign.value"
+      [ngClass]="{ error: global.hasError(representativePersonForeignerIdentityCode) }">
+      <em *ngIf="global.hasError(representativePersonForeignerIdentityCode)">
+        <span *ngIf="representativePersonForeignerIdentityCode.errors.required">
+          فیلد اجباری
+        </span>
+        <span *ngIf="representativePersonForeignerIdentityCode.errors.maxlength">
+          طول رشته باید برابر با {{representativePersonForeignerIdentityCode.errors.maxlength.requiredLength}} رقم باشد.
+        </span>
+      </em>
+      <label for="representativePersonForeignerIdentityCode">کد‌شناسایی اتباع‌خارجی</label>
+      <input id="representativePersonForeignerIdentityCode" type="text"
+        formControlName="representativePersonForeignerIdentityCode" class="form-control ltr" appConvertNumbersToEnglish
+        [patterns]="global.customPatterns" mask="9999999999999" [validation]="false" [specialCharacters]="[]" />
+    </div>
+    <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(mobileNumber) }">
+      <em *ngIf="global.hasError(mobileNumber)">
+        <span *ngIf="mobileNumber.errors.required">
+          فیلد اجباری
+        </span>
+        <span *ngIf="mobileNumber.errors.minlength || mobileNumber.errors.maxlength">
+          طول رشته باید برابر با {{mobileNumber.errors.minlength.requiredLength}} رقم باشد.
+        </span>
+      </em>
+      <label for="mobileNumber">تلفن همراه</label>
+      <input id="mobileNumber" type="text" formControlName="mobileNumber" class="form-control ltr" minlength="11"
+        maxlength="11" required appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="00000000000" />
+    </div>
+    <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(representativePersonFirstName) }">
+      <em *ngIf="global.hasError(representativePersonFirstName)">
+        <span *ngIf="representativePersonFirstName.errors.required">
+          فیلد اجباری
+        </span>
+      </em>
+      <label for="representativePersonFirstName">نام مامور خريد</label>
+      <input id="representativePersonFirstName" type="text" formControlName="representativePersonFirstName"
+        appMaskError="لطفا زبان کیبورد خود را به پارسی تغییر دهید." class="form-control" required
+        [patterns]="global.customPatterns" mask="F*" [specialCharacters]="[]" />
+    </div>
+    <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(representativePersonLastName) }">
+      <em *ngIf="global.hasError(representativePersonLastName)">
+        <span *ngIf="representativePersonLastName.errors.required">
+          فیلد اجباری
+        </span>
+      </em>
+      <label for="representativePersonLastName">نام خانوادگی مامور خريد</label>
+      <input id="representativePersonLastName" type="text" formControlName="representativePersonLastName"
+        appMaskError="لطفا زبان کیبورد خود را به پارسی تغییر دهید." class="form-control" required
+        [patterns]="global.customPatterns" mask="F*" [specialCharacters]="[]" />
+    </div>
+  </div>
+  <h4 class="form-section-header">اطلاعات مدارک</h4>
+  <div class="form-row">
+    <div class="form-group col-12 col-md-6">
+      <app-upload-file [label]="['معرفی نامه مامور خريد']"
+        [description]="['آپلود تصوير معرفی نامه مامور خريد در سربرگ و با مهر شركت']"
+        [documentType]="getDocumentType.RepresentativePersonIntroduction"
+        [fieldName]="['representativePersonIntroductionDocumentInfoId']"
+        [fieldValue]="representativePersonIntroductionDocumentInfoId.value" [enableDownload]="true"
+        (onFileUpload)="representativePersonIntroductionDocumentInfoId.setValue($event)">
+      </app-upload-file>
+      <input type="hidden" formControlName="representativePersonIntroductionDocumentInfoId" />
+    </div>
+    <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(vatCertificateDocumentInfoId) }">
+      <em *ngIf="global.hasError(vatCertificateDocumentInfoId)">
+        <span *ngIf="vatCertificateDocumentInfoId.errors.required">
+          فیلد اجباری
+        </span>
+      </em>
+      <app-upload-file [label]="['گواهی ارزش افزوده معتبر']" [description]="['آپلود گواهی ارزش افزوده معتبر']"
+        [documentType]="getDocumentType.VatCertificate" [fieldName]="['vatCertificateDocumentInfoId']"
+        [fieldValue]="vatCertificateDocumentInfoId.value" [enableDownload]="true"
+        (onFileUpload)="vatCertificateDocumentInfoId.setValue($event)">
+      </app-upload-file>
+      <input type="hidden" formControlName="vatCertificateDocumentInfoId" required />
+    </div>
+  </div>
+</ng-container>

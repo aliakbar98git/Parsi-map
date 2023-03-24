@@ -1,0 +1,177 @@
+<div class="row invoice-list">
+  <div class="col-12">
+    <div class="box-white">
+      <div id="saleinvoice-filter"
+        *ngIf="userService.currentUser?.userType == userType.Seller || userService.currentUser?.userType == userType.StoreManager">
+        <form [formGroup]="filterForm" class="form-row" autocomplete="off">
+          <div class="form-group col-12 col-sm-6 col-lg">
+            <label for="invoice-number">شماره سفارش</label>
+            <input id="invoice-number" class="form-control form-control-sm fa-num" type="text"
+              formControlName="saleInvoiceNumber" appConvertNumbersToEnglish>
+          </div>
+          <div class="form-group col-12 col-sm-6 col-lg">
+            <label for="customer-name">خریدار</label>
+            <input id="customer-name" class="form-control form-control-sm" type="text"
+              formControlName="customerFullName">
+          </div>
+          <div class="form-group col-12 col-sm-6 col-lg">
+            <label for="invoice-date">تاریخ شروع</label>
+            <div class="input-group">
+              <input class="form-control ltr ngb-dp-input" formControlName="startDate" ngbDatepicker
+                #startDp="ngbDatepicker" [maxDate]="maxDate" [firstDayOfWeek]="6" (click)="startDp.toggle()" readonly>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="startDp.toggle()" type="button">
+                  <fa-icon [icon]="faCalendar"></fa-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-12 col-sm-6 col-lg">
+            <label for="invoice-date">تاریخ پایان</label>
+            <div class="input-group">
+              <input class="form-control ltr ngb-dp-input" formControlName="endDate" ngbDatepicker
+                #endDp="ngbDatepicker" [maxDate]="maxDate" [firstDayOfWeek]="6" (click)="endDp.toggle()" readonly>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="endDp.toggle()" type="button">
+                  <fa-icon [icon]="faCalendar"></fa-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-12 col-sm-6 col-lg">
+            <label for="order-status">وضعیت سفارش</label>
+            <select id="order-status" class="form-control form-control-sm" formControlName="status">
+              <option value="all">همه</option>
+              <option *ngFor="let item of statusList" value="{{item}}">
+                {{invoiceStatus[item] | translate}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-12 col-sm-6 col-lg" *ngIf="cooperators && cooperators.length > 1">
+            <label for="order-status">نوع همکاری</label>
+            <select id="order-status" class="form-control form-control-sm" formControlName="cooperatorId">
+              <option value="all">همه</option>
+              <option *ngFor="let item of cooperators" value="{{item.id}}">
+                {{item.title}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-12 col-sm-6 col-lg-auto">
+            <button id="saleinvoice-filter-submit" type="button" class="btn btn-success" (click)="filterInvoiceList()"
+              ngbTooltip="اعمال فیلتر">
+              <fa-icon [icon]="faSearch"></fa-icon>
+            </button>
+            <button class="btn btn-danger" ngbTooltip="حذف فیلتر ها" (click)="clearFilterInvoiceList()">
+              <fa-icon [icon]="faTimes"></fa-icon>
+            </button>
+          </div>
+        </form>
+        <div class="form-errors">
+          <div class="alert alert-danger" *ngIf="endDate.value != '' && startDate.value == ''">
+            فیلد تاریخ شروع اجباری است.
+          </div>
+          <div class="alert alert-danger" *ngIf="startDate.value != '' && endDate.value == '' ">
+            فیلد تاریخ پایان اجباری است.
+          </div>
+          <div class="alert alert-danger" *ngIf="filterForm.errors?.dates">
+            تاریخ شروع باید کوچکتر از تاریخ پایان باشد.
+          </div>
+        </div>
+      </div>
+      <div *ngIf="invoiceObject && invoiceObject.invoiceList?.length != 0" class="table-responsive">
+        <table class="table table-hover fa-num">
+          <thead>
+            <tr>
+              <th scope="col">شماره سفارش</th>
+              <th scope="col">تاریخ سفارش</th>
+              <th scope="col">مبلغ قابل پرداخت <small>(ریال)</small></th>
+              <th scope="col">مبلغ کل <small>(ریال)</small></th>
+              <th scope="col" *ngIf="userService.currentUser?.userType == userType.Consumer">کد رهگیری ارسال</th>
+              <th scope="col"
+                *ngIf="userService.currentUser?.userType == userType.Seller || userService.currentUser?.userType == userType.StoreManager">
+                خریدار</th>
+              <th scope="col">وضعیت</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of invoiceObject.invoiceList">
+              <td>{{item.invoiceNumber}}</td>
+              <td>{{ item.persianCreatedOn}}</td>
+              <td>{{ item.remain | number }}</td>
+              <td>{{ item.payValue | number }}</td>
+              <td *ngIf="userService.currentUser?.userType == userType.Consumer">{{ item.shippingTrackingNumber}}</td>
+              <td
+                *ngIf="userService.currentUser?.userType == userType.Seller || userService.currentUser?.userType == userType.StoreManager">
+                {{ item.customerFullName}}</td>
+              <td>
+                <div class="invoice-status"
+                  *ngIf="userService.currentUser?.userType != userType.StoreManager && item.payable; else textBlock">
+                  <a [routerLink]="['/cart/payment']" [queryParams]="{invoiceId: item.invoiceId}"
+                    class="btn btn-success btn-sm">
+                    <fa-icon [icon]="faCreditCard"></fa-icon><span class="mr-1">پرداخت</span>
+                  </a>
+                </div>
+                <ng-template #textBlock>
+                  <span class="invoice-status" [ngClass]="{ 'text-success': item.status === invoiceStatus.Paid }">
+                    {{invoiceStatus[item.status] | translate}}
+                  </span>
+                </ng-template>
+              </td>
+              <td class="actions">
+                <a *ngIf="item.status != invoiceStatus.PartialPayment && item.status != invoiceStatus.Pending && item.status != invoiceStatus.Unverified && item.status != invoiceStatus.AutomaticCanceled && item.status != invoiceStatus.Canceled"
+                  (click)="printInvoice(item)" ngbTooltip="پرینت صورت حساب سفارش" tooltipClass="info-tool-tip"
+                  class="text-info">
+                  <fa-icon [icon]="faPrint" size="lg"></fa-icon>
+                </a>
+                <a routerLink="/profile/invoice-detail/{{item.invoiceId}}" ngbTooltip="مشاهده جزئیات سفارش"
+                  tooltipClass="info-tool-tip" class="text-info">
+                  <fa-icon [icon]="faFileInvoice" size="lg"></fa-icon>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="saleinvoice-list-footer"
+        *ngIf="invoiceObject && invoiceObject.invoiceList?.length != 0 && ( userService.currentUser?.userType == userType.Seller || userService.currentUser?.userType == userType.StoreManager )">
+        <div class="row">
+          <div class="col-12 col-md-5 align-self-center">
+            <button class="btn btn-info invoice-print" (click)="exportToExcel()">
+              <fa-icon [icon]="faDownload" class="ml-2"></fa-icon>دریافت فایل Excel گزارش
+            </button>
+            <button class="btn btn-info invoice-print" (click)="exportToExcelFullData()">
+              <fa-icon [icon]="faDownload" class="ml-2"></fa-icon>دریافت فایل Excel گزارش کامل
+            </button>
+          </div>
+          <div class="col-12 col-md-7 totals fa-num">
+            <div class="text-success">
+              <span class="label">جمع پرداخت شده:</span>
+              <span class="value">{{invoiceObject.totalPaid|number}} ریال</span>
+            </div>
+            <div class="text-danger">
+              <span class="label">جمع باقی‌مانده:</span>
+              <span class="value">{{invoiceObject.totalRemain|number}} ریال</span>
+            </div>
+            <div class="text-info">
+              <span class="label">جمع کل:</span>
+              <span class="value">{{invoiceObject.totalPayValue|number}} ریال</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ngb-pagination
+        *ngIf="invoiceObject && invoiceObject.invoiceList?.length != 0 && invoiceObject.totalRows > pageSize"
+        class="d-flex justify-content-center" [collectionSize]="invoiceObject.totalRows" [(page)]="pageNo"
+        [pageSize]="pageSize" [maxSize]="7" (pageChange)="onPageChange()">
+      </ngb-pagination>
+
+      <ng-container *ngIf="invoiceObject && invoiceObject.invoiceList?.length == 0">
+        <span>موردی یافت نشد.</span>
+      </ng-container>
+      <app-loading-inline [isLoading]="showLoading"></app-loading-inline>
+    </div>
+  </div>
+</div>

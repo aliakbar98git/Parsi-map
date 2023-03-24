@@ -1,0 +1,59 @@
+<button type="button" class="btn btn-secondary openModal" (click)="openModal(content)">
+    <fa-icon [icon]="faBell"></fa-icon>
+    <span> موجود شد به من اطلاع بده</span>
+</button>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-basic-title">
+        <span class="grey">اطلاع به من در زمان</span>
+        موجود شدن
+      </h6>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <ng-container *ngIf="inventoryAnnouncementItems?.emailConfirmed || inventoryAnnouncementItems?.mobileNumberConfirmed; else noAnnouncementItems">
+            <p class="grey">از طریق:</p>
+            <form [ngClass]="{'lock': isSubmitted}" id="inventoryAnnouncementForm"  [formGroup]="inventoryAnnouncementForm" (ngSubmit)="onSubmit()">
+                <div class="form-group custom-checkbox" *ngIf="inventoryAnnouncementItems?.emailConfirmed">
+                    <label class="checkbox-label" for="announceByEmail">
+                        ایمیل به {{inventoryAnnouncementItems.email}}
+                        <input id="announceByEmail" type="checkbox" formControlName="announceByEmail" />
+                        <span class="check-mark"></span>
+                    </label>
+                </div>
+                <div class="form-group custom-checkbox" *ngIf="inventoryAnnouncementItems?.mobileNumberConfirmed">
+                    <label class="checkbox-label" for="announceBySms">
+                        پیامک به {{inventoryAnnouncementItems.mobileNumber}}
+                        <input id="announceBySms" type="checkbox" formControlName="announceBySms" />
+                        <span class="check-mark"></span>
+                    </label>
+                </div>
+            </form>
+            <p *ngIf="!inventoryAnnouncementItems.emailConfirmed" class="comment">
+                <fa-icon [icon]="faInfoCircle"></fa-icon>
+                جهت اطلاع رسانی از طریق ارسال Email ،خواهشمند است آدرس پست الکترونیکی خود رو را در قسمت ویرایش پروفایل ثبت و تایید فرمایید.
+            </p>
+            <p *ngIf="!inventoryAnnouncementItems.mobileNumberConfirmed" class="comment">
+                <fa-icon [icon]="faInfoCircle"></fa-icon>
+                جهت اطلاع رسانی از طریق ارسال ارسال پیامک، خواهشمند است نسبت به فعالسازی شماره موبایل خود اقدام فرمایید.
+            </p>
+        </ng-container>
+        <ng-template #noAnnouncementItems>
+            <p class="comment">
+                <fa-icon [icon]="faInfoCircle"></fa-icon>
+                جهت ثبت درخواست اطلاع رسانی موجودی کالا، خواهشمند است ابتدا شماره موبایل و یا آدرس پست الکترونیکی خود را تایید فرمایید.
+            </p>
+        </ng-template>
+    </div>
+    <div class="modal-footer" *ngIf="inventoryAnnouncementItems?.emailConfirmed || inventoryAnnouncementItems?.mobileNumberConfirmed">
+        <button type="submit" form="inventoryAnnouncementForm" class="btn btn-danger save"
+            [disabled]="inventoryAnnouncementForm.invalid || isSubmitted">
+            ثبت
+            <app-loading-inline type="inline" [isLoading]="isSubmitted"></app-loading-inline>
+        </button>
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.close('cancel click')">انصراف</button>
+    </div>
+</ng-template>

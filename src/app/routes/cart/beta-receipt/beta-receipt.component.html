@@ -1,0 +1,97 @@
+<div class="beta-receipt container-xxl d-flex flex-column justify-content-between">
+  <div class="bill-info d-flex flex-column">
+    <div class="bill-header d-flex justify-content-between align-items-center pt-2">
+      <h4>رسید پرداخت اعتباری بتا</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="pay-value pt-2">
+      <div>تعداد اقساط</div>
+      <div>
+        <span class="value">{{ data?.numberOfInstallment | number }}</span>
+      </div>
+    </div>
+
+    <div class="pay-value">
+      <div>نرخ کارمزد اقساط</div>
+      <div>
+        <span class="value">{{ data?.installmentWageRate | number }}%</span>
+      </div>
+    </div>
+
+    <div class="pay-value">
+      <div>اولین ماه بازپرداخت وام</div>
+      <div>
+        <span class="value">{{ data?.resultDate }}</span>
+      </div>
+    </div>
+
+    <div class="pay-value">
+      <div>تعداد ماه تنفس</div>
+      <div>
+        <span class="value">{{ data?.gracePeriodCount | number }}</span>
+      </div>
+    </div>
+
+    <div class="pay-value">
+      <div>درصد نرخ کارمزد تنفس</div>
+      <div>
+        <span class="value">{{ data?.gracePeriodWageRate | number }}%</span>
+      </div>
+    </div>
+
+    <div class="pay-value">
+      <div>مجموع نرخ کارمزد</div>
+      <div>
+        <span class="value">{{ data?.totalWageRate | number }}%</span>
+      </div>
+    </div>
+
+    <div class="pay-value">
+      <div>مبلغ کل کارمزد</div>
+      <div>
+        <span class="value">{{ data.totalWageAmount | number }}</span>
+        <span>ریال</span>
+      </div>
+    </div>
+
+    <div class="pay-value">
+      <div>مبلغ هر قسط</div>
+      <div>
+        <span class="value">{{data.installmentAmountPerMonth | number}}</span>
+        <span>ریال</span>
+      </div>
+    </div>
+
+    <div class="pay-value">
+      <div>حداکثر سقف وام مشتری</div>
+      <div>
+        <span class="value">{{ data.maximumLoanAmount | number }}</span>
+        <span>ریال</span>
+      </div>
+    </div>
+
+    <div class="pay-value">
+      <div>مبلغ قابل پرداخت برای بتا (با احتساب کارمزد)</div>
+      <div>
+        <span class="value">{{ data.betaCreditPaymentAmount | number }}</span>
+        <span>ریال</span>
+      </div>
+    </div>
+
+    <div class="pay-value">
+      <div>مبلغ کل فاکتور</div>
+      <div>
+        <span class="value">{{ data.totalPaymentAmount | number }}</span>
+        <span>ریال</span>
+      </div>
+    </div>
+  </div>
+  <div class="text-center">
+    <button class="btn btn-info" (click)="acceptReceipt()">
+      تایید و پرداخت
+    </button>
+  </div>
+</div>

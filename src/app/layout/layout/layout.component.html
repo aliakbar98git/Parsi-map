@@ -1,0 +1,6 @@
+<app-header *ngIf="currentUrl !== 'worldcup'"></app-header>
+<section [id]="currentUrl !== 'worldcup' ? 'content-container' : ''"
+  [ngClass]="currentUrl !== 'worldcup' ? 'container' : ''">
+  <router-outlet></router-outlet>
+</section>
+<app-footer *ngIf="currentUrl !== 'worldcup'"></app-footer>

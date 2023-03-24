@@ -1,0 +1,34 @@
+<form [ngClass]="{'lock': isSubmitted}" [formGroup]="forgetUsernameByCodeForm" (ngSubmit)="onSubmit()"
+  autocomplete="off">
+  <div class="form-row">
+    <div class="form-group col-12" [ngClass]="{ error: global.hasError(nationalCode) }">
+      <em *ngIf="global.hasError(nationalCode)">
+        <span *ngIf="nationalCode.errors.required">
+          فیلد اجباری
+        </span>
+        <span *ngIf="nationalCode.errors.minlength">
+          حداقل طول رشته باید برابر با {{nationalCode.errors.minlength.requiredLength}} رقم باشد.
+        </span>
+      </em>
+      <label for="nationalCode">کد/ شناسه ملی</label>
+      <input id="nationalCode" type="Text" formControlName="nationalCode" class="form-control ltr"
+        appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="00*" required />
+    </div>
+    <div class="form-group col-12" [ngClass]="{ error: global.hasError(DNTCaptchaInputText) }">
+      <em *ngIf="global.hasError(DNTCaptchaInputText)">
+        <span *ngIf="DNTCaptchaInputText.errors.required">
+          فیلد اجباری
+        </span>
+      </em>
+      <input type="hidden" id="DNTCaptchaInputText" formControlName="DNTCaptchaInputText" required />
+      <app-captcha creatorPath="User/GetCaptchaConfiguration" (captchaSetValue)="captchaSetValue($event)"
+        (captchaChangeValidators)="captchaChangeValidators($event)"></app-captcha>
+    </div>
+  </div>
+  <div class="text-center">
+    <button type="submit" [disabled]="forgetUsernameByCodeForm.invalid || isSubmitted" class="btn btn-primary btn-lg">
+      ثبت
+      <app-loading-inline type="inline" [isLoading]="isSubmitted"></app-loading-inline>
+    </button>
+  </div>
+</form>

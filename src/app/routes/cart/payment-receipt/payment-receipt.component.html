@@ -1,0 +1,62 @@
+<app-checkout-step [CheckoutStep]="checkoutSteps.PaymentResult"></app-checkout-step>
+
+<app-loading-inline [isLoading]="paymentResult === undefined"></app-loading-inline>
+
+<div id="pos-receipt" class="bg-white" *ngIf="paymentResult !== undefined">
+  <div class="row">
+    <div class="col">
+      <div class="response-message fa-num">
+        سفارش شما با شماره <strong>{{paymentResult.invoiceNumber}}</strong> ثبت شد.
+      </div>
+      <div id="inquiry" class="text-center mt-5 mb-5" *ngIf="!timeOuted && !statusUpdated">
+        <div>
+          <app-loading-inline [isLoading]="true"></app-loading-inline>
+        </div>
+        <div>
+          در حال استعلام تراکنش(ها)
+        </div>
+        <div>
+          لطفا شکیبا باشید ...
+        </div>
+        <div class="timer fa-num">{{timerText}}</div>
+      </div>
+      <div id="inquiry" class="text-center mt-5 mb-5" *ngIf="statusUpdated">
+        <p class="text-success">پرداخت‌های شما توسط بانک تایید شد.</p>
+        <p class="text-info">به منظور دریافت رسید سفارش روی دکمه زیر کلیک نمایید.</p>
+      </div>
+      <div id="inquiry" class="text-center mt-5 mb-5" *ngIf="timeOuted">
+        <p class="text-danger" *ngIf="!paymentResult.hasCreditPayments">متاسفانه پاسخ قطعی از بانک مبنی بر تایید پرداخت
+          شما دریافت نشد.</p>
+        <p class="text-info">وضعیت کلی پرداخت شما در انتظار تایید می‌باشد.</p>
+        <p class="text-info">به منظور دریافت رسید موقت سفارش روی دکمه زیر کلیک نمایید.</p>
+      </div>
+
+
+      <div class="text-center mt-5">
+        <button id="receipt-print" class="btn btn-info" (click)="print()" [disabled]="!timeOuted && !statusUpdated">
+          <fa-icon [icon]="faPrint"></fa-icon> چاپ صورت‌حساب سفارش
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-6">
+      <div class="text-right">
+        <a [routerLink]="['/profile/invoice-list']" class="btn btn-default btn-sm">
+          لیست سفارش‌های من
+        </a>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="text-left">
+        <a *ngIf="paymentResult.hasOrder" [routerLink]="['/cart/shipping']" [queryParams]="{invoiceKey: invoiceKey}"
+          class="btn btn-default btn-sm">
+          بازگشت به آدرس و زمان ارسال
+        </a>
+        <a *ngIf="!paymentResult.hasOrder" [routerLink]="['/']" class="btn btn-default btn-sm">
+          بازگشت به صفحه اصلی
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

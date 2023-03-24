@@ -1,0 +1,56 @@
+
+@import "/src/app/global/styles.scss";
+
+.checkbox-label {
+    display: inline-block;
+}
+
+.gi-box {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+h5 {
+    text-align: center;
+}
+
+:not(.register-section)  {
+    > section h5 {
+        color: $primaryColor;
+    }
+    
+    button {
+        min-width: 120px;
+    }
+}
+
+.register-section {
+    background-color: #ff8c8c;
+    color: white;
+
+    a.btn {
+        color: $primaryColor;
+        background-color: white;
+        @media (max-width: $max-bp-large) and (min-width: $min-bp-medium) {
+            margin: .5rem 0 0 0 !important;
+        }
+    }
+
+    p {
+        padding-right: 3rem;
+        padding-left: 3rem;
+        @media (max-width: $max-bp-x-large) {
+            padding-right: 1rem;
+            padding-left: 1rem;
+        }
+        @media (max-width: $max-bp-large) {
+            padding-right: 0;
+            padding-left: 0;
+        }
+    }
+}
+
+section {
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+}

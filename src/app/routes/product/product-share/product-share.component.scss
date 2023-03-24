@@ -1,0 +1,51 @@
+.share-social .social-icon {
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 3px 0;
+    border-radius: 3px;
+    margin-left: 5px;
+
+    &.icon-linkedin {
+        background: #0077b5;
+    }
+
+    &.icon-google {
+        background: #eb4d4d;
+    }
+
+    &.icon-facebook {
+        background: #4d8deb;
+    }
+
+    &.icon-twitter {
+        background: #4dcceb;
+    }
+
+    &.icon-telegram {
+        background: #0088cc;
+    }
+
+    &.icon-whatsapp {
+        background: #00E676;
+    }
+}
+
+.share-link {
+    input {
+        border: none;
+        background: transparent;
+        width: 100%;
+        font-size: 14px !important;
+        color: #6c757d;
+        text-align: left;
+        pointer-events: none !important;
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+    }
+}

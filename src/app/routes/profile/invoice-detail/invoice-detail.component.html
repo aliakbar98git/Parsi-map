@@ -1,0 +1,157 @@
+<div class="row">
+  <div class="col-12">
+    <div class="box-white">
+      <div *ngIf="invoiceDetail" class="fa-num">
+        <div class="row total-info">
+          <div class="col-12 col-md-6">
+            <span class="label">شماره فاکتور : </span>
+            <span class="value">{{invoiceDetail.invoiceNumber}}</span>
+          </div>
+          <div class="col-12 col-md-6">
+            <span class="label">تاریخ فاکتور : </span>
+            <span class="value">{{invoiceDetail.createdOn | jalali}}</span>
+          </div>
+          <div class="col-12 col-md-6">
+            <span class="label">تحویل گیرنده : </span>
+            <span class="value">{{invoiceDetail.transferee}}</span>
+          </div>
+          <div class="col-12 col-md-6">
+            <span class="label">شماره تلفن : </span>
+            <span class="value">{{invoiceDetail.contactNumber}}</span>
+          </div>
+          <div class="col-12 col-md-6">
+            <span class="label">تاریخ نصب و تحویل : </span>
+            <span class="value">{{invoiceDetail.deliveryDate | jalali}}</span>
+          </div>
+          <div class="col-12 col-md-6">
+            <span class="label">شیفت ارسال : </span>
+            <span class="value">
+              {{shippingPeriod[invoiceDetail.shippingPeriod] | translate}}
+            </span>
+          </div>
+          <div class="col-12 col-md-6">
+            <span class="label">روش ارسال : </span>
+            <span *ngIf="invoiceDetail.exclusiveShipment; else antherShippingMetod" class="value">دربستی</span>
+            <ng-template #antherShippingMetod>
+              <span class="value">
+                {{invoiceDetail.shippingMethodTitle}}
+              </span>
+            </ng-template>
+          </div>
+          <div class="col-12 col-md-6">
+            <span class="label">شهر : </span>
+            <span class="value">{{invoiceDetail.cityTitle}}</span>
+          </div>
+          <div class="col-12">
+            <span class="label">آدرس : </span>
+            <span class="value">{{invoiceDetail.address}}</span>
+          </div>
+          <div class="col-12">
+            <span class="label">توضیحات : </span>
+            <span class="value">{{invoiceDetail.description}}</span>
+          </div>
+          <ng-container *ngIf="userType === 2 || userType === 3">
+            <div class="col-12 col-md-6">
+              <span class="label">فروشنده : </span>
+              <span class="value">{{invoiceDetail.sellerFullName}}</span>
+            </div>
+            <div class="col-12 col-md-6">
+              <span class="label">خریدار : </span>
+              <span class="value">{{invoiceDetail.customerFullName}}</span>
+            </div>
+          </ng-container>
+        </div>
+        <hr />
+        <div class="text-center actions">
+          <a *ngIf="userService.currentUser?.userType != userTypes.StoreManager && (invoiceDetail.status === invoiceStatus.PartialPayment || invoiceDetail.status === invoiceStatus.Pending || invoiceDetail.status === invoiceStatus.Unverified)"
+            [routerLink]="['/cart/payment']" [queryParams]="{invoiceId: invoiceDetail.invoiceId}"
+            class="btn btn-success">
+            <fa-icon [icon]="faCreditCard"></fa-icon> تکمیل پرداخت صورتحساب
+          </a>
+          <button type="button" (click)="printInvoice()" class="btn btn-info"
+            *ngIf="invoiceDetail.status != invoiceStatus.PartialPayment && invoiceDetail.status != invoiceStatus.Pending && invoiceDetail.status != invoiceStatus.Unverified && invoiceDetail.status != invoiceStatus.AutomaticCanceled && invoiceDetail.status != invoiceStatus.Canceled">
+            <fa-icon [icon]="faPrint"></fa-icon> چاپ صورتحساب سفارش
+          </button>
+        </div>
+        <hr />
+        <ng-container
+          *ngIf="invoiceDetail.invoiceFlowMapper && invoiceDetail.invoiceFlowMapper.finalInvoiceFlowStatus !== invoiceFlowStatus.Unspecified">
+          <div class="invoice-flow">
+            <ngx-slick-carousel [config]="invoiceFlowSliderConfig">
+              <div class="invoice-flow-item" ngxSlickItem
+                *ngFor="let status of invoiceDetail.invoiceFlowMapper.invoiceFlowStatusList"
+                class="state-{{invoiceFlowStatus[status]}}" [ngClass]="{
+                 passed: status<invoiceDetail.invoiceFlowMapper.finalInvoiceFlowStatus,
+                 active: status===invoiceDetail.invoiceFlowMapper.finalInvoiceFlowStatus,
+                 deactive: status>invoiceDetail.invoiceFlowMapper.finalInvoiceFlowStatus}">
+                <div class="icon">
+                  <img src="assets/images/invoice-statuses/order-status-{{invoiceFlowStatus[status]}}.png" />
+                </div>
+                <h5>
+                  {{invoiceFlowStatus[status] | translate}}
+                </h5>
+              </div>
+            </ngx-slick-carousel>
+          </div>
+          <hr />
+        </ng-container>
+        <div class="table-responsive">
+          <table class="table table-sm fa-num mb-0">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">نام محصول</th>
+                <th scope="col">قیمت</th>
+                <th scope="col">تعداد</th>
+                <th scope="col">مالیات و عوارض</th>
+                <th scope="col">مجموع <small>(ریال)</small></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of invoiceDetail.invoiceItemList">
+                <td>
+                  <a class="d-inline-flex align-items-center"
+                    [routerLink]="['/product', item.marketingProductModel, item.marketingProductName | concatProductName]">
+                    <app-image [size]="[90]" [cssClass]="'img-fluid'" [documentInfoId]="item.documentInfoId"
+                      [imageType]="item.imageType">
+                    </app-image>
+                    <div class="mr-2 product-name">{{ item.marketingProductName }}</div>
+                  </a>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">{{ item.price | number }}</div>
+                </td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.vatAmount + item.chargeAmount | number }}</td>
+                <td>{{ item.totalPrice | number }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <hr />
+        <div>
+          <h6>سوابق پرداخت</h6>
+          <app-payment-history *ngFor="let payment of invoiceDetail.paidList" [paymentInfo]="payment"
+            [invoiceStatus]="invoiceDetail.status" (removePaymentItem)="removePaymentItem($event)">
+          </app-payment-history>
+        </div>
+        <hr />
+        <div class="row fa-num prices">
+          <div class="col-12 col-md-9 label">مبلغ کل محصولات <small>(ریال)</small> :</div>
+          <div class="col-12 col-md-3">{{invoiceDetail.totalValue | number}}</div>
+          <div class="col-12 col-md-9 label">مالیات بر ارزش‌افزوده <small>(ریال)</small> :</div>
+          <div class="col-12 col-md-3">{{invoiceDetail.taxValue | number}}</div>
+          <div class="col-12 col-md-9 label">هزینه ارسال <small>(ریال)</small> :</div>
+          <div class="col-12 col-md-3">{{invoiceDetail.shippingValue | number}}</div>
+          <div class="col-12 col-md-9 label">مبلغ پرداخت شده <small>(ریال)</small> :</div>
+          <div class="col-12 col-md-3 text-success">{{invoiceDetail.payValue - invoiceDetail.remainPayment | number }}
+          </div>
+          <ng-container *ngIf="invoiceDetail.remainPayment > 0">
+            <div class="col-12 col-md-9 label">مانده قابل پرداخت <small>(ریال)</small> :</div>
+            <div class="col-12 col-md-3 text-danger">{{invoiceDetail.remainPayment | number}}</div>
+          </ng-container>
+        </div>
+      </div>
+      <app-loading-inline [isLoading]="showLoading"></app-loading-inline>
+    </div>
+  </div>
+</div>

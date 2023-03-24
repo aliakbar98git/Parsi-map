@@ -1,0 +1,1296 @@
+<app-checkout-step [CheckoutStep]="checkoutSteps.Payment" [invoiceKey]="payInfo.InvoiceTempKey"></app-checkout-step>
+
+<div class="alert alert-danger mt-5" *ngIf="invalidInput">
+  {{ message }}
+</div>
+<app-loading-inline [isLoading]="paymentInfo === undefined && invalidInput == false"></app-loading-inline>
+<div id="payment" class="" *ngIf="paymentInfo !== undefined && invalidInput == false">
+  <div class="row">
+    <div class="col-12 col-lg-8">
+      <div class="bg-white mb-4">
+        <h4>اطلاعات صورتحساب</h4>
+        <div id="customer-info">
+          <div class="row fa-num">
+            <div class="col-12 col-md-6">
+              <span class="label">خریدار:</span>
+              <span class="value">{{ paymentInfo.invoiceDataDto.customerFirstName }}
+                {{ paymentInfo.invoiceDataDto.customerLastName }}</span>
+            </div>
+            <div class="col-12 col-md-6">
+              <span class="label">کد ملی:</span>
+              <span class="value">{{
+                paymentInfo.invoiceDataDto.customerNationalCode
+                }}</span>
+            </div>
+            <div class="col-12 col-md-6">
+              <span class="label">شماره تماس:</span>
+              <span class="value">{{
+                paymentInfo.invoiceDataDto.customerMobileNumber
+                }}</span>
+            </div>
+            <div class="col-12 col-md-6">
+              <span class="label">تحویل گیرنده:</span>
+              <span class="value">{{
+                paymentInfo.invoiceDataDto.transferee
+                }}</span>
+            </div>
+            <div class="col-12 col-md-6">
+              <span class="label">هزینه ارسال:</span>
+              <span class="value">{{ paymentInfo.invoiceDataDto.shippingCost | number }}
+                <small>ریال</small></span>
+            </div>
+            <div class="col-12 col-xl-6">
+              <span class="label">نحوه ارسال:</span>
+              <span class="value">
+                <ng-container *ngIf="
+                    !paymentInfo.invoiceDataDto.exclusiveShipment;
+                    else exclusiveShipment
+                  ">
+                  <ng-container *ngIf="
+                      !paymentInfo.invoiceDataDto.timeSpan &&
+                      paymentInfo.invoiceDataDto.shippingPeriod !==
+                        shippingPeriod.Daily
+                    ">
+                    {{
+                    paymentInfo.invoiceDataDto.shippingMethodTitle +
+                    " در " +
+                    (shippingPeriod[
+                    paymentInfo.invoiceDataDto.shippingPeriod
+                    ] | translate) +
+                    " " +
+                    (paymentInfo.invoiceDataDto.deliveryDate
+                    | jalali : "dddd") +
+                    " " +
+                    (paymentInfo.invoiceDataDto.deliveryDate
+                    | jalali : "jD jMMMM jYYYY")
+                    }}
+                  </ng-container>
+                  <ng-container *ngIf="
+                      !paymentInfo.invoiceDataDto.timeSpan &&
+                      paymentInfo.invoiceDataDto.shippingPeriod ===
+                        shippingPeriod.Daily
+                    ">
+                    {{
+                    paymentInfo.invoiceDataDto.shippingMethodTitle +
+                    " " +
+                    (paymentInfo.invoiceDataDto.deliveryDate
+                    | jalali : "dddd") +
+                    " " +
+                    (paymentInfo.invoiceDataDto.deliveryDate
+                    | jalali : "jD jMMMM jYYYY")
+                    }}
+                  </ng-container>
+                  <ng-container *ngIf="paymentInfo.invoiceDataDto.timeSpan">
+                    {{
+                    paymentInfo.invoiceDataDto.shippingMethodTitle +
+                    " " +
+                    (paymentInfo.invoiceDataDto.deliveryDate
+                    | jalali : "dddd") +
+                    " " +
+                    (paymentInfo.invoiceDataDto.deliveryDate
+                    | jalali : "jD jMMMM") +
+                    " لغایت " +
+                    (paymentInfo.invoiceDataDto.deadlineDeliveryDate
+                    | jalali : "dddd") +
+                    " " +
+                    (paymentInfo.invoiceDataDto.deadlineDeliveryDate
+                    | jalali : "jD jMMMM jYYYY")
+                    }}
+                  </ng-container>
+                </ng-container>
+                <ng-template #exclusiveShipment>دربستی در تاریخ
+                  {{
+                  (paymentInfo.invoiceDataDto.deliveryDate
+                  | jalali : "dddd") +
+                  " " +
+                  (paymentInfo.invoiceDataDto.deliveryDate
+                  | jalali : "jD jMMMM jYYYY")
+                  }}</ng-template>
+              </span>
+            </div>
+          </div>
+          <div class="row fa-num">
+            <div class="col-12">
+              <span class="label">آدرس:</span>
+              <span class="value">{{
+                paymentInfo.invoiceDataDto.address
+                }}</span>
+            </div>
+          </div>
+          <div class="row fa-num" *ngIf="
+              paymentInfo.invoiceDataDto.description != null &&
+              paymentInfo.invoiceDataDto.description != ''
+            ">
+            <div class="col-12">
+              <span class="label">توضیحات:</span>
+              <span class="value">{{
+                paymentInfo.invoiceDataDto.description
+                }}</span>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <h4>آیتم‌های سفارش</h4>
+        <div id="product-info">
+          <div class="item" *ngFor="let product of paymentInfo.invoiceDataDto.orderItems">
+            <a [routerLink]="[
+                '/product',
+                product.marketingProductModel,
+                product.marketingProductName | concatProductName
+              ]" target="_blank">
+              <div class="item-image">
+                <app-image [size]="[90]" [documentInfoId]="product.productDocumentInfoId"
+                  [imageType]="product.imageType">
+                </app-image>
+              </div>
+              <div class="item-name">{{ product.marketingProductName }}</div>
+              <div class="item-qty fa-num" placement="top" ngbTooltip="تعداد">
+                {{ product.quantity }}
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div id="legal-person-letter" class="bg-white mb-4" *ngIf="paymentInfo.checkLegalPersonFileValidation">
+        <div class="form-row">
+          <div class="form-group col-md-12 pl-4">
+            <app-upload-file [label]="['معرفی نامه مامور خرید']" [documentType]="documentType.LegalPersonFile"
+              [disabled]="paymentInfo.disableLegalPersonFileUploader" [fieldName]="['LegalPersonLetterDocumentInfoId']"
+              (onFileUpload)="payInfo.LegalPersonLetterDocumentInfoId = $event" [fieldValue]="
+                payInfo.LegalPersonLetterDocumentInfoId ||
+                paymentInfo.legalPersonIntroductionDocumentId
+              ">
+            </app-upload-file>
+            <input type="hidden" />
+          </div>
+        </div>
+      </div>
+      <div id="payment-discount" class="bg-white mb-4" [ngClass]="{ active: collapseDiscountPanel }">
+        <h4 class="fa-num d-flex justify-content-between" (click)="collapseDiscountPanel = !collapseDiscountPanel">
+          <div class="title">کد تخفیف</div>
+          <div class="icon">
+            <fa-icon [icon]="faAngleDown" *ngIf="collapseDiscountPanel"></fa-icon>
+            <fa-icon [icon]="faAngleLeft" *ngIf="!collapseDiscountPanel"></fa-icon>
+          </div>
+          <input type="hidden" id="discount-code-verification" />
+        </h4>
+        <div class="discount-body" *ngIf="collapseDiscountPanel">
+          <div class="discount-content" *ngIf="!isSeller">
+            <div class="alert alert-warning" *ngIf="payInfo.InvoiceId !== undefined">
+              امکان ثبت کد تخفیف در حالتی که فاکتور ثبت شده است وجود ندارد.
+            </div>
+            <div class="form-row" *ngIf="payInfo.InvoiceId === undefined">
+              <div class="form-group col-md">
+                <label for="discount-code">کد تخفیف</label>
+                <input id="discount-code" type="text" class="form-control ltr" autocomplete="off" #discountCode
+                  (input)="updateDiscountCode(discountCode.value)" [disabled]="payInfo.InvoiceId != undefined" />
+              </div>
+              <div class="form-group col-md">
+                <label for="confirmation-code">کد تاییدیه</label>
+                <input id="confirmation-code" type="text" class="form-control ltr" autocomplete="off" [disabled]="
+                    discountResult === undefined ||
+                    (!discountResult?.needDiscountCodeConfirmation &&
+                      confirmationCode.value == '')
+                  " #confirmationCode (keyup)="
+                    updateDiscountConfirmationCode(confirmationCode.value)
+                  " />
+              </div>
+              <div class="form-group col-md-auto d-flex">
+                <button class="discount-add btn btn-secondary mt-auto ml-2" (click)="checkDiscountCode()" [disabled]="
+                    discountCode.value === '' || payInfo.InvoiceId != undefined
+                  ">
+                  ثبت کد
+                </button>
+                <button class="discount-remove btn mt-auto" (click)="removeDiscountCode()" [disabled]="
+                    discountResult === undefined ||
+                    payInfo.InvoiceId != undefined
+                  ">
+                  <fa-icon [icon]="faTrashAlt" size="2x"></fa-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="discount-content seller-discount" *ngIf="isSeller">
+            <div class="alert alert-warning" *ngIf="payInfo.InvoiceId !== undefined">
+              امکان ثبت کد تخفیف در حالتی که فاکتور ثبت شده است وجود ندارد.
+            </div>
+            <form [formGroup]="discountForm" class="discount-by-code" *ngIf="payInfo.InvoiceId === undefined">
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label for="discount-code">کد تخفیف</label>
+                  <input type="text" class="form-control fa-num ltr" autocomplete="off"
+                    formControlName="discountCode" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-md-12 d-flex">
+                  <button class="discount-add btn btn-secondary mt-auto" (click)="submitSellerDiscount()" [disabled]="
+                      discountForm.invalid || payInfo.InvoiceId != undefined
+                    ">
+                    ثبت
+                  </button>
+                  <button class="discount-remove btn mt-auto ml-auto" (click)="removeSellerDiscount()" [disabled]="
+                      sellerDiscountResult === undefined ||
+                      payInfo.InvoiceId != undefined
+                    ">
+                    <fa-icon [icon]="faTrashAlt" size="2x"></fa-icon>
+                  </button>
+                </div>
+              </div>
+            </form>
+            <form [formGroup]="specialDiscountForm" class="special-discount"
+              [ngClass]="{ disabled: specialDiscountForm.disabled }" *ngIf="payInfo.InvoiceId === undefined">
+              <div class="form-row">
+                <div class="form-group col-md-12" [ngClass]="{
+                    error: global.hasError(
+                      specialDiscountControls('specialDiscountPercent')
+                    )
+                  }">
+                  <em *ngIf="
+                      global.hasError(
+                        specialDiscountControls('specialDiscountPercent')
+                      )
+                    ">
+                    <span *ngIf="
+                        specialDiscountControls('specialDiscountPercent').errors
+                          .min ||
+                        specialDiscountControls('specialDiscountPercent').errors
+                          .max
+                      ">
+                      درصد تخفیف باید بین ۰ تا ۱۰۰ باشد.
+                    </span>
+                  </em>
+                  <label for="discount-percent">درصد تخفیف ویژه</label>
+                  <input id="discount-percent" type="text" class="form-control fa-num ltr" autocomplete="off"
+                    formControlName="specialDiscountPercent" appConvertNumbersToEnglish mask="separator.2"
+                    thousandSeparator="" />
+                </div>
+              </div>
+              <ng-container formArrayName="specialDiscountDetails">
+                <div class="form-row specialDiscountDetail" *ngFor="
+                    let specialDiscountDetail of specialDiscountDetails()
+                      .controls;
+                    let i = index
+                  " [formGroupName]="i">
+                  <div class="form-group col-md-4" [ngClass]="{
+                      error: global.hasError(
+                        specialDiscountDetail.get('managementDiscountTypeId')
+                      )
+                    }">
+                    <ng-select [items]="paymentInfo.managementDiscountTypes" [selectOnTab]="true" bindValue="id"
+                      bindLabel="title" placeholder="نوع تخفیف" formControlName="managementDiscountTypeId"></ng-select>
+                  </div>
+                  <div class="form-group col-md-4" [ngClass]="{
+                      error: global.hasError(
+                        specialDiscountDetail.get(
+                          'managementDiscountCommandIssuerId'
+                        )
+                      )
+                    }">
+                    <ng-select [items]="paymentInfo.managementDiscountCommandIssuers" [selectOnTab]="true"
+                      bindValue="id" bindLabel="title" placeholder="دستوردهنده"
+                      formControlName="managementDiscountCommandIssuerId"></ng-select>
+                  </div>
+                  <div class="form-group col-md-3" [ngClass]="{
+                      error: global.hasError(
+                        specialDiscountDetail.get('discountPercent')
+                      )
+                    }">
+                    <input type="text" class="form-control discountPercent fa-num ltr" autocomplete="off"
+                      formControlName="discountPercent" appConvertNumbersToEnglish mask="separator.2"
+                      placeholder="درصد تخفیف" thousandSeparator="" />
+                    <em *ngIf="
+                        global.hasError(
+                          specialDiscountDetail.get('discountPercent')
+                        )
+                      ">
+                      <span *ngIf="
+                          specialDiscountDetail.get('discountPercent').errors
+                            .min ||
+                          specialDiscountDetail.get('discountPercent').errors
+                            .max
+                        ">
+                        درصد تخفیف باید بین ۰ تا ۱۰۰ باشد.
+                      </span>
+                    </em>
+                  </div>
+                  <div class="form-group col-md-1 d-flex">
+                    <button class="discount-remove btn mx-md-auto align-self-start"
+                      (click)="removeSpecialDiscountDetails(i)" [disabled]="
+                        specialDiscountForm.disabled ||
+                        specialDiscountDetails().controls.length == 1
+                      ">
+                      <fa-icon [icon]="faTrashAlt" size="lg"></fa-icon>
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
+              <div class="form-row">
+                <div class="form-group col-md-12 d-flex align-items-center">
+                  <button class="btn btn-secondary" (click)="addSpecialDiscountDetails()"
+                    [disabled]="specialDiscountForm.disabled">
+                    <fa-icon [icon]="faPlus"></fa-icon> افزودن
+                  </button>
+                  <div class="error" *ngIf="specialDiscountForm.errors?.identityMatchingPrecent">
+                    <em>
+                      مجموع ریز درصدهای تخفیف وارد شده با درصد سرجمع وارد شده
+                      یکی نیست.
+                    </em>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12" [ngClass]="{
+                    error: global.hasError(
+                      specialDiscountControls('specialDiscountDescription')
+                    )
+                  }">
+                  <label for="discount-description">توضیحات</label>
+                  <textarea id="discount-description" rows="2" class="form-control fa-num rtl"
+                    formControlName="specialDiscountDescription"></textarea>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-md-12 d-flex">
+                  <button class="discount-add btn btn-secondary mt-auto" (click)="submitSellerSpecialDiscount()"
+                    [disabled]="
+                      specialDiscountForm.invalid ||
+                      specialDiscountForm.disabled ||
+                      payInfo.InvoiceId != undefined
+                    ">
+                    ثبت
+                  </button>
+                  <button class="discount-remove btn mt-auto ml-auto" (click)="removeSellerDiscount()" [disabled]="
+                      sellerSpecialDiscountResult === undefined ||
+                      payInfo.InvoiceId != undefined
+                    ">
+                    <fa-icon [icon]="faTrashAlt" size="2x"></fa-icon>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div id="payment-history" class="bg-white mb-4" *ngIf="
+          paymentInfo.invoicePayments != null &&
+          paymentInfo.invoicePayments.length > 0
+        ">
+        <h4>سوابق پرداخت</h4>
+        <div class="payment-history-lists">
+          <app-payment-history *ngFor="let item of paymentInfo.invoicePayments" [paymentInfo]="item"
+            [invoiceStatus]="paymentInfo.invoiceDataDto.invoiceStatus" (removePaymentItem)="removePaymentItem($event)">
+          </app-payment-history>
+        </div>
+        <div class="text-left" *ngIf="paymentStatusTimer == 0 && updatePaymentHistoryBtn">
+          <button class="btn btn-info" (click)="getPaymentsStatus(true)" [disabled]="paymentStatusLoading">
+            <span *ngIf="paymentStatusLoading">
+              <fa-icon [icon]="faSpinner" [spin]="true" class="align-self-center"></fa-icon>
+            </span>
+            استعلام تراکنش ها
+          </button>
+        </div>
+      </div>
+      <div id="payment-methods" class="pay-types bg-white mb-4" *ngIf="getPaymentMethodsLength().length > 0">
+        <h4>انتخاب نحوه پرداخت</h4>
+        <div *ngFor="let method of getPaymentMethodsLength()">
+          <div class="method-item pay-type" [ngClass]="{
+              disabled:
+                enableSubmitPayment ||
+                (creditPaymentForm.disabled &&
+                  method === paymentMethod.CreditPayment)
+            }">
+            <div class="header" [ngSwitch]="method">
+              <div class="inner-header" (click)="payInfo.PaymentMethod = method">
+                <label class="radio-button-label" *ngSwitchCase="paymentMethod.OnlinePos">
+                  <fa-icon [icon]="faCreditCard"></fa-icon>
+                  <span class="title">پرداخت از طریق دستگاه کارتخوان</span>
+                  <span class="description">در این حالت مبلغ به صورت خودکار به دستگاه کارتخوان ارسال
+                    خواهد شد.</span>
+                  <input type="radio" name="payment-method" value="{{ method }}" />
+                  <span class="check-mark"></span>
+                </label>
+                <label class="radio-button-label" *ngSwitchCase="paymentMethod.ManualPos">
+                  <fa-icon [icon]="faReceipt"></fa-icon>
+                  <span class="title">ثبت دستی مشخصات رسید دستگاه کارتخوان</span>
+                  <span class="description">در این حالت باید اطلاعات کامل رسید پرداخت کارتخوان را به
+                    صورت دستی وارد نمایید.</span>
+                  <input type="radio" name="payment-method" value="{{ method }}" />
+                  <span class="check-mark"></span>
+                </label>
+                <label class="radio-button-label" *ngSwitchCase="paymentMethod.DepositSlip">
+                  <fa-icon [icon]="faFileInvoice"></fa-icon>
+                  <span class="title">ثبت مشخصات فیش بانکی</span>
+                  <span class="description">در این حالت باید اطلاعات فیش بانکی ثبت گردد.</span>
+                  <input type="radio" name="payment-method" value="{{ method }}" />
+                  <span class="check-mark"></span>
+                </label>
+                <label class="radio-button-label" *ngSwitchCase="paymentMethod.Cheque">
+                  <fa-icon [icon]="faMoneyCheck"></fa-icon>
+                  <span class="title">ثبت مشخصات چک پرداختی</span>
+                  <span class="description">در این حالت باید اطلاعات چک ثبت گردد.</span>
+                  <input type="radio" name="payment-method" value="{{ method }}" />
+                  <span class="check-mark"></span>
+                </label>
+                <label class="radio-button-label" *ngSwitchCase="paymentMethod.SettlementCommand">
+                  <fa-icon [icon]="faHandPaper"></fa-icon>
+                  <span class="title">ثبت مشخصات دستور تسویه</span>
+                  <span class="description">در این حالت باید اطلاعات مربوط به دستور تسویه تکمیل
+                    گردد.</span>
+                  <input type="radio" name="payment-method" value="{{ method }}" />
+                  <span class="check-mark"></span>
+                </label>
+                <label class="radio-button-label" *ngSwitchCase="paymentMethod.NeshanPardakht">
+                  <fa-icon [icon]="faQrcode"></fa-icon>
+                  <span class="title">ثبت مشخصات نشان پرداخت</span>
+                  <span class="description">در این حالت باید اطلاعات مربوط به نشان پرداخت تکمیل
+                    گردد.</span>
+                  <input type="radio" name="payment-method" value="{{ method }}" />
+                  <span class="check-mark"></span>
+                </label>
+                <label class="radio-button-label" *ngSwitchCase="paymentMethod.CredentialPayment">
+                  <fa-icon [icon]="faDatabase"></fa-icon>
+                  <span class="title fa-num">استفاده از بستانکاری</span>
+                  <span class="description">درصورتیکه تمایل دارید از محل بستانکاری خود، این سفارش را
+                    پرداخت نمایید، این روش پرداخت را انتخاب فرمایید.</span>
+                  <input type="radio" name="payment-method" value="{{ method }}" />
+                  <span class="check-mark"></span>
+                </label>
+                <label class="radio-button-label" *ngSwitchCase="paymentMethod.Pano">
+                  <fa-icon [icon]="faPaypal"></fa-icon>
+                  <span class="title fa-num">پانو</span>
+                  <span class="description">پرداخت مبلغ توسط روش پرداخت پانو</span>
+                  <input type="radio" name="payment-method" value="{{ method }}" />
+                  <span class="check-mark"></span>
+                </label>
+                <label class="radio-button-label" *ngSwitchCase="paymentMethod.CreditPayment">
+                  <fa-icon [icon]="faMoneyBillWaveAlt"></fa-icon>
+                  <span class="title fa-num">پرداخت اقساطِی</span>
+                  <span class="description">ارسال سفارش شما ممکن است با تاخیر همراه باشد و تاریخ ارسال
+                    پس از نهایی شدن تراکنش بانکی مشخص می گردد.</span>
+                  <input type="radio" name="payment-method" value="{{ method }}" />
+                  <span class="check-mark"></span>
+                </label>
+              </div>
+
+              <button *ngIf="
+                  continuePaymentBtn && method === paymentMethod.CreditPayment
+                " #continueBtn (click)="onContinuePayment(continueBtn)" class="btn btn-info btn-sm mehr-payment-btn">
+                <span
+                  *ngIf="continuePaymentBtn.creditPaymentMethod === creditPaymentMethod.MehrBankCreditPaymentWithoutCard ">تکمیل
+                  سفارش - کالا کارت</span>
+                <span *ngIf="
+                    continuePaymentBtn.creditPaymentMethod ===
+                    creditPaymentMethod.PostBankCreditPaymentWithoutCredit
+                  ">تکمیل سفارش - پست بانک</span>
+              </button>
+
+              <div class="content" *ngIf="payInfo.PaymentMethod == method">
+                <div class="content-inner" [ngSwitch]="method">
+                  <div class="form-container" *ngSwitchCase="paymentMethod.OnlinePos">
+                    <form [formGroup]="onlinePosForm" class="pos-content" autocomplete="off">
+                      <h4>انتخاب دستگاه کارتخوان</h4>
+                      <div class="pos-list">
+                        <div class="pos-item">
+                          <label class="radio-button-label fa-num" *ngFor="let pos of getOnlinePoses()">
+                            {{ pos.title }}
+                            <input type="radio" formControlName="posIpAddressId" value="{{ pos.id }}" />
+                            <span class="check-mark"></span>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="online-lists" [ngClass]="{
+                          active: onlineControls('posIpAddressId').valid
+                        }">
+                        <hr />
+                        <div class="online-items">
+                          <div class="online-item">
+                            <div class="form-row">
+                              <div class="form-group form-inline col-lg-7 col-xl-8">
+                                <label><span>مبلغ پرداختی</span><small class="mr-1">(ریال)</small></label>
+                                <input type="text" class="form-control fa-num ltr" formControlName="paymentAmount"
+                                  appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="separator.0"
+                                  thousandSeparator="," />
+                              </div>
+                              <div class="form-group form-inline col-lg-5 col-xl-4 justify-content-end">
+                                <button class="btn btn-info ml-2" (click)="payInvoice()" [disabled]="
+                                    onlinePosForm.invalid || isSubmitting
+                                  ">
+                                  ارسال به کارتخوان و پرداخت
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="form-container" *ngSwitchCase="paymentMethod.ManualPos">
+                    <form [formGroup]="manualPosForm" class="form-content" autocomplete="off">
+                      <h4>انتخاب دستگاه کارتخوان</h4>
+                      <div class="pos-list">
+                        <div class="pos-item">
+                          <label class="radio-button-label fa-num" *ngFor="let pos of paymentInfo.posIpAddresses">
+                            {{ pos.title }}
+                            <input type="radio" formControlName="posIpAddressId" value="{{ pos.id }}" />
+                            <span class="check-mark"></span>
+                          </label>
+                        </div>
+                      </div>
+                      <div [ngStyle]="{
+                          display: manualControls('posIpAddressId').valid
+                            ? 'block'
+                            : 'none'
+                        }">
+                        <div class="form-row">
+                          <div class="form-group form-inline col-md-6" [ngClass]="{
+                              error: global.hasError(
+                                manualControls('referenceNumber')
+                              )
+                            }">
+                            <label>شماره ارجاع</label>
+                            <input type="text" class="form-control fa-num ltr" formControlName="referenceNumber"
+                              appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0*" />
+                          </div>
+                          <div class="form-group form-inline col-md-6" [ngClass]="{
+                              error: global.hasError(
+                                manualControls('trackingNumber')
+                              )
+                            }">
+                            <label>کد پیگیری</label>
+                            <input type="text" class="form-control fa-num ltr" formControlName="trackingNumber"
+                              appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0*" />
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group form-inline col-md-6" [ngClass]="{
+                              error: global.hasError(
+                                manualControls('paymentDate')
+                              )
+                            }">
+                            <label>تاریخ تراکنش</label>
+                            <div class="input-group">
+                              <input class="form-control ltr ngb-dp-input" formControlName="paymentDate" ngbDatepicker
+                                #manualDp="ngbDatepicker" [firstDayOfWeek]="6" [maxDate]="maxDate"
+                                (click)="manualDp.toggle()" readonly />
+                              <div class="input-group-append">
+                                <button class="btn btn-outline-secondary calendar" (click)="manualDp.toggle()"
+                                  type="button">
+                                  <fa-icon [icon]="faCalendar"></fa-icon>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group form-inline col-md-6" [ngClass]="{
+                              error: global.hasError(
+                                manualControls('paymentAmount')
+                              )
+                            }">
+                            <label>مبلغ <small>(ریال)</small></label>
+                            <input type="text" class="form-control fa-num ltr" formControlName="paymentAmount"
+                              appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="separator.0"
+                              thousandSeparator="," />
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-12 pl-4">
+                            <app-upload-file [label]="['تصویر رسید']" [documentType]="documentType.PaymentDocument"
+                              [fieldName]="['documentInfoId']" (onFileUpload)="
+                                manualControls('documentInfoId').setValue(
+                                  $event
+                                )
+                              " [fieldValue]="
+                                manualControls('documentInfoId').value
+                              ">
+                            </app-upload-file>
+                            <input type="hidden" formControlName="documentInfoId" />
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <div class="form-footer">
+                      <button class="btn btn-success float-left" (click)="payInvoice()"
+                        [disabled]="manualPosForm.invalid || isSubmitting">
+                        ثبت تراکنش
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-container" *ngSwitchCase="paymentMethod.DepositSlip">
+                    <form [formGroup]="depositSlipForm" class="form-content form-depositslip" autocomplete="off">
+                      <div class="form-row">
+                        <div class="form-group form-inline col-md-6 fa-num" [ngClass]="{
+                            error: global.hasError(
+                              depositControls('bankAccountsId')
+                            )
+                          }">
+                          <label for="bankAccountsId">بانک</label>
+                          <ng-select [items]="bankAccountsItems" [selectOnTab]="true" bindValue="bankAccountsId"
+                            bindLabel="bankAccountsTitle" labelForId="bankAccountsId" formControlName="bankAccountsId"
+                            [loading]="bankAccountItemsLoading">
+                            <ng-template ng-loadingspinner-tmp>
+                              <app-loading-inline type="inline"></app-loading-inline>
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(
+                              depositControls('paymentAmount')
+                            )
+                          }">
+                          <label>مبلغ <small>(ریال)</small></label>
+                          <input type="text" class="form-control fa-num ltr" formControlName="paymentAmount"
+                            appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="separator.0"
+                            thousandSeparator="," />
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(
+                              depositControls('trackingNumber')
+                            )
+                          }">
+                          <label>شماره پیگیری رسید</label>
+                          <input type="text" class="form-control fa-num ltr" formControlName="trackingNumber"
+                            appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0*" />
+                        </div>
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(
+                              depositControls('transactionDate')
+                            )
+                          }">
+                          <label>تاریخ تراکنش</label>
+                          <div class="input-group">
+                            <input class="form-control ltr ngb-dp-input" formControlName="transactionDate" ngbDatepicker
+                              #depositDp="ngbDatepicker" [firstDayOfWeek]="6" [maxDate]="maxDate"
+                              (click)="depositDp.toggle()" readonly />
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary calendar" (click)="depositDp.toggle()"
+                                type="button">
+                                <fa-icon [icon]="faCalendar"></fa-icon>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-row" [ngClass]="{
+                          error: global.hasError(
+                            depositControls('documentInfoId')
+                          )
+                        }">
+                        <div class="form-group col-md-12 pl-4">
+                          <app-upload-file [label]="['تصویر فیش واریز']" [documentType]="documentType.PaymentDocument"
+                            [fieldName]="['documentInfoId']" (onFileUpload)="
+                              depositControls('documentInfoId').setValue($event)
+                            " [fieldValue]="
+                              depositControls('documentInfoId').value
+                            ">
+                          </app-upload-file>
+                          <input type="hidden" formControlName="documentInfoId" required />
+                        </div>
+                      </div>
+                    </form>
+                    <div class="form-footer">
+                      <button class="btn btn-success float-left" (click)="payInvoice()"
+                        [disabled]="depositSlipForm.invalid || isSubmitting">
+                        ثبت تراکنش
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-container" *ngSwitchCase="paymentMethod.Cheque">
+                    <form [formGroup]="chequeForm" class="form-content" autocomplete="off">
+                      <div class="form-row">
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(chequeControls('bankId'))
+                          }">
+                          <label for="bankId">بانک</label>
+                          <ng-select [items]="bankItems" [selectOnTab]="true" bindValue="id" bindLabel="name"
+                            labelForId="bankId" formControlName="bankId" [loading]="bankItemsLoading">
+                            <ng-template ng-loadingspinner-tmp>
+                              <app-loading-inline type="inline"></app-loading-inline>
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(
+                              chequeControls('accountNumber')
+                            )
+                          }">
+                          <label>شماره حساب بانکی</label>
+                          <input type="text" class="form-control fa-num ltr" formControlName="accountNumber"
+                            appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0*" />
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(
+                              chequeControls('chequeNumber')
+                            )
+                          }">
+                          <label>شماره چک</label>
+                          <input type="text" class="form-control fa-num ltr" formControlName="chequeNumber"
+                            appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0*" />
+                        </div>
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(chequeControls('chequeDate'))
+                          }">
+                          <label>تاریخ چک</label>
+                          <div class="input-group">
+                            <input class="form-control ltr ngb-dp-input" formControlName="chequeDate" ngbDatepicker
+                              #chequeDp="ngbDatepicker" [firstDayOfWeek]="6" (click)="chequeDp.toggle()" readonly />
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary calendar" (click)="chequeDp.toggle()"
+                                type="button">
+                                <fa-icon [icon]="faCalendar"></fa-icon>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(
+                              chequeControls('paymentAmount')
+                            )
+                          }">
+                          <label>مبلغ <small>(ریال)</small></label>
+                          <input type="text" class="form-control fa-num ltr" formControlName="paymentAmount"
+                            appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="separator.0"
+                            thousandSeparator="," />
+                        </div>
+                      </div>
+                      <div class="form-row" [ngClass]="{
+                          error: global.hasError(
+                            chequeControls('documentInfoId')
+                          )
+                        }">
+                        <div class="form-group col-md-12 pl-4">
+                          <app-upload-file [label]="['تصویر چک']" [documentType]="documentType.PaymentDocument"
+                            [fieldName]="['documentInfoId']" (onFileUpload)="
+                              chequeControls('documentInfoId').setValue($event)
+                            " [fieldValue]="
+                              chequeControls('documentInfoId').value
+                            ">
+                          </app-upload-file>
+                          <input type="hidden" formControlName="documentInfoId" required />
+                        </div>
+                      </div>
+                    </form>
+                    <div class="form-footer">
+                      <button class="btn btn-success float-left" (click)="payInvoice()"
+                        [disabled]="chequeForm.invalid || isSubmitting">
+                        ثبت تراکنش
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-container" *ngSwitchCase="paymentMethod.SettlementCommand">
+                    <form [formGroup]="settlementForm" class="form-content" autocomplete="off">
+                      <div class="form-row">
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(
+                              settlementControls('orderBy')
+                            )
+                          }">
+                          <label>نام دستوردهنده</label>
+                          <input type="text" class="form-control fa-num rtl" formControlName="orderBy" />
+                        </div>
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(
+                              settlementControls('paymentAmount')
+                            )
+                          }">
+                          <label>مبلغ <small>(ریال)</small></label>
+                          <input type="text" class="form-control fa-num ltr" formControlName="paymentAmount"
+                            appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="separator.0"
+                            thousandSeparator="," />
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(
+                              settlementControls('invoiceNumber')
+                            )
+                          }">
+                          <label>شماره فاکتور</label>
+                          <input type="text" class="form-control fa-num ltr" formControlName="invoiceNumber"
+                            appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0*" />
+                        </div>
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(
+                              settlementControls('referenceNumber')
+                            )
+                          }">
+                          <label>شماره ارجاع</label>
+                          <input type="text" class="form-control fa-num ltr" formControlName="referenceNumber"
+                            appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0*" />
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-12 pl-4 mb-3" [ngClass]="{
+                            error: global.hasError(
+                              settlementControls('description')
+                            )
+                          }">
+                          <label>شرح</label>
+                          <textarea class="form-control fa-num rtl" rows="3" formControlName="description"></textarea>
+                        </div>
+                      </div>
+                      <div class="form-row" [ngClass]="{
+                          error: global.hasError(
+                            settlementControls('documentInfoId')
+                          )
+                        }">
+                        <div class="form-group col-md-12 pl-4">
+                          <app-upload-file [label]="['پیوست مدارک']" [documentType]="documentType.PaymentDocument"
+                            [fieldName]="['documentInfoId']" (onFileUpload)="
+                              settlementControls('documentInfoId').setValue(
+                                $event
+                              )
+                            " [fieldValue]="
+                              settlementControls('documentInfoId').value
+                            ">
+                          </app-upload-file>
+                          <input type="hidden" formControlName="documentInfoId" required />
+                        </div>
+                      </div>
+                    </form>
+                    <div class="form-footer">
+                      <p *ngIf="settlementForm.errors?.invoiceOrReference" class="text-danger float-right text-small">
+                        فیلد شماره فاکتور و شماره ارجاع هر دوباید تکمیل شوند.
+                      </p>
+                      <button class="btn btn-success float-left" (click)="payInvoice()"
+                        [disabled]="settlementForm.invalid || isSubmitting">
+                        ثبت تراکنش
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-container" *ngSwitchCase="paymentMethod.NeshanPardakht">
+                    <form [formGroup]="neshanPardakhtForm" class="form-content" autocomplete="off">
+                      <div class="form-row">
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(
+                              neshanControls('paymentDate')
+                            )
+                          }">
+                          <label>تاریخ تراکنش</label>
+                          <div class="input-group">
+                            <input class="form-control ltr ngb-dp-input" formControlName="paymentDate" ngbDatepicker
+                              #neshanDp="ngbDatepicker" [firstDayOfWeek]="6" [maxDate]="maxDate"
+                              (click)="neshanDp.toggle()" readonly />
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary calendar" (click)="neshanDp.toggle()"
+                                type="button">
+                                <fa-icon [icon]="faCalendar"></fa-icon>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(
+                              neshanControls('referenceNumber')
+                            )
+                          }">
+                          <label>شماره ارجاع</label>
+                          <input type="text" class="form-control fa-num ltr" formControlName="referenceNumber"
+                            appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0*" />
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(
+                              neshanControls('paymentAmount')
+                            )
+                          }">
+                          <label>مبلغ <small>(ریال)</small></label>
+                          <input type="text" class="form-control fa-num ltr" formControlName="paymentAmount"
+                            appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="separator.0"
+                            thousandSeparator="," />
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-12 pl-4">
+                          <app-upload-file [label]="['تصویر رسید']" [documentType]="documentType.PaymentDocument"
+                            [fieldName]="['documentInfoId']" (onFileUpload)="
+                              neshanControls('documentInfoId').setValue($event)
+                            " [fieldValue]="
+                              neshanControls('documentInfoId').value
+                            ">
+                          </app-upload-file>
+                          <input type="hidden" formControlName="documentInfoId" />
+                        </div>
+                      </div>
+                    </form>
+                    <div class="form-footer">
+                      <button class="btn btn-success float-left" (click)="payInvoice()"
+                        [disabled]="neshanPardakhtForm.invalid || isSubmitting">
+                        ثبت تراکنش
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-container fa-num" *ngSwitchCase="paymentMethod.CredentialPayment">
+                    <div *ngIf="paymentInfo.billSummary.creditValue == 0">
+                      <p>
+                        بستانکاری شما صفر می باشد و امکان پرداخت از این طریق
+                        مقدور نیست
+                      </p>
+                    </div>
+                    <div *ngIf="paymentInfo.billSummary.creditValue != 0">
+                      <div *ngIf="
+                          paymentInfo.billSummary.remainValue <=
+                          paymentInfo.billSummary.creditValue
+                        ">
+                        کل مبلغ سفارش که معادل
+                        {{ paymentInfo.billSummary.remainValue | number }} ریال
+                        است از طریق بستانکاری پرداخت خواهد شد.
+                      </div>
+                      <div *ngIf="
+                          paymentInfo.billSummary.remainValue >
+                          paymentInfo.billSummary.creditValue
+                        ">
+                        <p>
+                          بستانکاری شما:
+                          {{
+                          paymentInfo.billSummary.creditValue | number
+                          }}
+                          ریال
+                        </p>
+                        <p>
+                          ابتدا پرداخت توسط بستانکاری را انجام دهید سپس باقی
+                          مانده مبلغ را از طریق روش های دیگر پرداخت نمایید.
+                        </p>
+                      </div>
+                      <div class="form-footer">
+                        <button class="btn btn-success float-left" (click)="payInvoice()" [disabled]="isSubmitting">
+                          پرداخت از طریق بستانکاری
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-container" *ngSwitchCase="paymentMethod.Pano">
+                    <form [formGroup]="panoForm" class="form-content" autocomplete="off">
+                      <div class="form-row">
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(
+                              panoControls('paymentAmount')
+                            )
+                          }">
+                          <label>مبلغ <small>(ریال)</small></label>
+                          <input type="text" class="form-control fa-num ltr" formControlName="paymentAmount"
+                            appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="separator.0"
+                            thousandSeparator="," />
+                        </div>
+                        <div class="form-group form-inline col-md-6" [ngClass]="{
+                            error: global.hasError(
+                              panoControls('panoContactNumber')
+                            )
+                          }">
+                          <label>شماره تماس</label>
+                          <input type="text" class="form-control fa-num ltr" formControlName="panoContactNumber" />
+                        </div>
+                      </div>
+                    </form>
+                    <div class="form-footer">
+                      <button class="btn btn-success float-left" (click)="payInvoice()"
+                        [disabled]="panoForm.invalid || isSubmitting">
+                        ثبت تراکنش
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-container" *ngSwitchCase="paymentMethod.CreditPayment">
+                    <form [formGroup]="creditPaymentForm" class="form-content creditPayment" autocomplete="off">
+                      <div class="form-row fa-num">
+                        <div class="form-group form-inline col-md-9 fa-num" [ngClass]="{
+                            error: global.hasError(
+                              creditPaymentControls('creditSalesContractId')
+                            )
+                          }">
+                          <label for="creditSalesContractId">قرارداد</label>
+                          <ng-select [items]="paymentInfo.creditSalesContracts" [selectOnTab]="true" bindValue="id"
+                            (change)="setCreditPaymentMethod($event)" bindLabel="contractTitle"
+                            labelForId="creditSalesContractId" formControlName="creditSalesContractId"
+                            #creditSalesContract>
+                          </ng-select>
+                        </div>
+                        <ng-container *ngIf="
+                            creditPaymentControls('creditSalesContractId')
+                              .value && creditSalesContracLink
+                          ">
+                          <div class="form-group form-inline col-md-3 text-decoration-underline">
+                            <a class="btn btn-link" rel="noopener" href="/page/{{ creditSalesContracLink }}"
+                              target="_blank">شرایط دریافت تسهیلات</a>
+                          </div>
+                        </ng-container>
+                        <div class="form-group form-inline col-md-9 fa-num" [ngClass]="{
+                            error: global.hasError(
+                              creditPaymentControls('creditPaymentMethod')
+                            )
+                          }">
+                          <label for="creditPaymentMethod">روش پرداخت</label>
+                          <ng-select [items]="creditPaymentMethodItems" [selectOnTab]="true" bindValue="value"
+                            bindLabel="label" labelForId="creditPaymentMethod" formControlName="creditPaymentMethod">
+                          </ng-select>
+                        </div>
+                        <ng-container *ngIf="
+                            creditPaymentControls('creditPaymentMethod')
+                              .value === creditPaymentMethod.Vamine
+                          ">
+                          <div class="form-group form-inline col-md-9" [ngClass]="{
+                              error: global.hasError(
+                                creditPaymentControls('topContractCodeInput')
+                              )
+                            }">
+                            <label>کد خرید وام</label>
+                            <input type="text" class="form-control fa-num ltr" formControlName="topContractCodeInput" />
+                          </div>
+                          <div class="form-group form-inline col-md-3">
+                            <button class="btn btn-info" (click)="
+                                validateTopContractCode(creditSalesContract)
+                              " id="top-contract-code-button" [disabled]="
+                                !creditPaymentControls('topContractCodeInput')
+                                  .value ||
+                                isSubmitting ||
+                                creditPaymentForm.disabled
+                              ">
+                              اعتبارسنجی کد وام
+                            </button>
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="
+                            creditPaymentControls('creditPaymentMethod')
+                              .value === creditPaymentMethod.BetaCreditPayment
+                          ">
+                          <div class="form-group form-inline col-md-9">
+                            <form [formGroup]="betaPaymentForm" autocomplete="off">
+                              <div class="form-row">
+                                <div class="form-group form-inline col-md-12" [ngClass]="{
+                                    error: global.hasError(
+                                      betaPaymentControls('MaximumLoanAmount')
+                                    )
+                                  }">
+                                  <label>سقف وام مشتری </label>
+                                  <input type="number" class="form-control fa-num ltr"
+                                    formControlName="MaximumLoanAmount" />
+                                </div>
+                                <div class="form-group form-inline col-md-12" [ngClass]="{
+                                    error: global.hasError(
+                                      betaPaymentControls('paymentDate')
+                                    )
+                                  }">
+                                  <label for="paymentDate">اولین ماه بازپرداخت وام
+                                  </label>
+                                  <ng-select [items]="betaPaymentDate" [selectOnTab]="true" bindValue="refundDate"
+                                    bindLabel="refundPersianDate" labelForId="paymentDate"
+                                    formControlName="paymentDate">
+                                  </ng-select>
+                                </div>
+                                <div class="form-group form-inline col-md-12" [ngClass]="{
+                                    error: global.hasError(
+                                      betaPaymentControls(
+                                        'NumberOfInstallments'
+                                      )
+                                    )
+                                  }">
+                                  <label for="betaInstallments">
+                                    تعداد اقساط</label>
+                                  <ng-select [items]="betaInstallments" [selectOnTab]="true" bindValue="label"
+                                    bindLabel="label" labelForId="betaInstallments"
+                                    formControlName="NumberOfInstallments">
+                                  </ng-select>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </ng-container>
+
+                        <div class="form-group form-inline col-md-9" [ngClass]="{
+                            error: global.hasError(
+                              creditPaymentControls('paymentAmount')
+                            )
+                          }">
+                          <label>مبلغ <small>(ریال)</small></label>
+                          <input type="text" class="form-control fa-num ltr" formControlName="paymentAmount"
+                            appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="separator.0"
+                            thousandSeparator="," />
+                        </div>
+
+                      </div>
+                      <div class="form-row" *ngIf="isSeller">
+                        <div class="form-group col-md-12 pl-4">
+                          <app-upload-file [label]="['پیوست مدارک']" [documentType]="documentType.PaymentDocument"
+                            [fieldName]="['documentInfoId']" (onFileUpload)="
+                              creditPaymentControls('documentInfoId').setValue(
+                                $event
+                              )
+                            " [fieldValue]="
+                              creditPaymentControls('documentInfoId').value
+                            ">
+                          </app-upload-file>
+                          <input type="hidden" formControlName="documentInfoId" />
+                        </div>
+                      </div>
+                    </form>
+                    <div class="form-footer">
+                      <button class="btn btn-info float-left" (click)="checkBetaInvoice()" *ngIf="
+                          creditPaymentControls('creditPaymentMethod').value ===
+                          creditPaymentMethod.BetaCreditPayment
+                        " [disabled]="
+                          betaPaymentForm.invalid ||
+                          isSubmitting ||
+                          creditPaymentForm.disabled
+                          ||
+                          successPayment
+                        ">
+                        محاسبه
+                      </button>
+                      <button class="btn btn-success float-left" (click)="payInvoice()" *ngIf="
+                          creditPaymentControls('creditPaymentMethod').value !==
+                          creditPaymentMethod.BetaCreditPayment
+                        " [disabled]="
+                          creditPaymentForm.invalid ||
+                          isSubmitting ||
+                          creditPaymentForm.disabled
+                        ">
+                        ثبت تراکنش
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="payment-gateways" class="pay-types bg-white" *ngIf="
+          paymentInfo.paymentGateways != null &&
+          paymentInfo.paymentGateways.length > 0
+        ">
+        <h4>انتخاب درگاه پرداخت</h4>
+        <div class="gateway-item pay-type" *ngFor="let gateway of paymentInfo.paymentGateways"
+          [ngClass]="{ disabled: enableSubmitPayment }">
+          <div class="header" [ngSwitch]="gateway" (click)="updateIpgPaymentInfo(gateway)">
+            <label class="radio-button-label" *ngSwitchCase="paymentGateway.AsanPardakht">
+              <img src="../../../../assets/images/asan-pardakht.png" alt="" />
+              <span class="title">پرداخت آنلاین از درگاه آسان‌پرداخت (آپ)</span>
+              <input type="radio" name="payment-method" value="{{ gateway }}" />
+              <span class="check-mark"></span>
+            </label>
+            <label class="radio-button-label" *ngSwitchCase="paymentGateway.BehPardakht">
+              <img src="../../../../assets/images/beh-pardakht.png" alt="" />
+              <span class="title">پرداخت آنلاین از درگاه به‌پرداخت ملت</span>
+              <input type="radio" name="payment-method" value="{{ gateway }}" />
+              <span class="check-mark"></span>
+            </label>
+            <label class="radio-button-label" *ngSwitchCase="paymentGateway.Refah">
+              <img src="../../../../assets/images/logo-refah-farsi1.png" alt="" />
+              <span class="title">پرداخت آنلاین از درگاه بانک رفاه</span>
+              <input type="radio" name="payment-method" value="{{ gateway }}" />
+              <span class="check-mark"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-4">
+      <div class="pay-info bg-white sticky-top">
+        <h4 class="pay-info-header"><span>صورتحساب</span></h4>
+        <div class="pay-info-body">
+          <div class="item fa-num" [ngClass]="{ active: !collapsePayInfo }"
+            (click)="collapsePayInfo = !collapsePayInfo">
+            <div class="item-header d-flex justify-content-between">
+              <div>
+                <fa-icon [icon]="faAngleLeft" class="float-right ml-2" *ngIf="collapsePayInfo">
+                </fa-icon>
+                <fa-icon [icon]="faAngleDown" class="float-right ml-2" *ngIf="!collapsePayInfo">
+                </fa-icon>
+                <span>مبلغ کل</span>
+              </div>
+              <div class="pay-value total-amount">
+                <span class="value ml-1 detail-item-value">{{
+                  paymentInfo.billSummary.payValue | number
+                  }}</span>
+                <span>ریال</span>
+              </div>
+            </div>
+            <div class="item-collapse" *ngIf="!collapsePayInfo">
+              <div>
+                <div class="pay-value total-payed">
+                  <div class="label">مبلغ پرداخت ‌شده</div>
+                  <div class="content">
+                    <span class="value detail-item-value">{{
+                      paymentInfo.billSummary.paidValue | number
+                      }}</span>
+                    <span class="sign">ریال</span>
+                  </div>
+                </div>
+                <div class="pay-value total-remained">
+                  <div class="label">مبلغ باقی‌مانده</div>
+                  <div class="content">
+                    <span class="value detail-item-value">{{
+                      paymentInfo.billSummary.remainValue | number
+                      }}</span>
+                    <span class="sign">ریال</span>
+                  </div>
+                </div>
+                <div class="pay-value total-amount">
+                  <div class="label">مبلغ قابل پرداخت</div>
+                  <div class="content">
+                    <span class="value detail-item-value" *ngIf="prepayment">{{
+                      prepaymentPrice(paymentInfo.billSummary.payValue) | number
+                      }}</span>
+                    <span class="value detail-item-value" *ngIf="!prepayment">{{
+                      paymentInfo.billSummary.payValue | number
+                      }}</span>
+                    <span class="sign">ریال</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pay-info-footer text-center">
+          <button class="btn btn-info pay-info-action" *ngIf="
+              !enableSubmitPayment &&
+              paymentInfo.hasPrintQuotation &&
+              !paymentInfo.invoiceDataDto.invoiceId
+            " (click)="printPreInvoice()">
+            <fa-icon [icon]="faDownload" class="ml-2"></fa-icon>
+            دریافت پیش فاکتور
+          </button>
+          <button class="btn btn-info pay-info-action" *ngIf="
+              !enableSubmitPayment &&
+              paymentInfo.hasPrintQuotation &&
+              !paymentInfo.invoiceDataDto.invoiceId
+            " (click)="printPreInvoice(true)">
+            <fa-icon [icon]="faFileInvoice" class="ml-2"></fa-icon>
+            مشاهده جزییات سفارش
+          </button>
+          <button class="btn btn-info pay-info-action" [disabled]="
+              !enableSubmitPayment && payInfo.PaymentMethod != paymentMethod.Ipg
+            " (click)="payInvoice()">
+            <fa-icon [icon]="faArrowLeft" class="ml-2"></fa-icon>
+            تایید پرداخت و اتمام سفارش
+          </button>
+          <button class="btn btn-info" type="button" *ngIf="findQrStatus()" (click)="openQrModal()">
+            پرداخت QR مشاهده
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-8">
+      <div class="row no-gutters shipping-nav">
+        <div class="col">
+          <button class="btn btn-link back-btn" [disabled]="enableSubmitPayment" (click)="backToShipping()">
+            <fa-icon [icon]="faLongArrowAltRight"></fa-icon>
+            بازگشت به آدرس و زمان ارسال
+          </button>
+        </div>
+        <div class="col text-left">
+          <button class="btn btn-link next-btn" type="button" [disabled]="!enableSubmitPayment" (click)="payInvoice()">
+            تایید پرداخت و اتمام سفارش
+            <fa-icon [icon]="faLongArrowAltLeft"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

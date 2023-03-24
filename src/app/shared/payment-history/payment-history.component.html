@@ -1,0 +1,8 @@
+<div class="d-flex alert {{itemClass}}" role="alert">
+  <fa-icon [icon]="itemIcon" class="method-icon"></fa-icon>
+  <span class="fa-num ml-auto">{{itemMessage}}</span>
+  <fa-icon *ngIf="paymentInfo.status == paymentStatus.PendingVerification||paymentInfo.status == paymentStatus.Pending" [icon]="faSpinner" [spin]="true"
+    class="align-self-center"></fa-icon>
+  <fa-icon *ngIf="isRemovable" [icon]="faTimes" class="align-self-center remove-payment" (click)="removePayment()">
+  </fa-icon>
+</div>

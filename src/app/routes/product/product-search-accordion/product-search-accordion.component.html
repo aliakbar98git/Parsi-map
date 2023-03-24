@@ -1,0 +1,8 @@
+<div class="accordion-title" (click)="toggleOpen()">
+  {{title}}
+  <fa-icon [icon]="faAngleUp" class="float-left" *ngIf="opened==true"></fa-icon>
+  <fa-icon [icon]="faAngleDown" class="float-left" *ngIf="opened==false"></fa-icon>
+</div>
+<div class="accordion-content" [ngStyle]="{display: opened? 'block' : 'none'}">
+  <ng-content></ng-content>
+</div>

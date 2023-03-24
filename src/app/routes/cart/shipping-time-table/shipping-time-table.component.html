@@ -1,0 +1,29 @@
+<ul ngbNav #nav="ngbNav" class="nav nav-tabs dates nav-justified" [ngClass]="{custom: type == 'date'}">
+  <li *ngFor="let plan of shiftTypePlaning;index as i" [ngbNavItem]="i" class="nav-item">
+    <a ngbNavLink class="nav-link" (click)="selectDate(plan.deliveryDate, shippingPeriod.Daily)" *ngIf="type == 'date'"
+      [ngClass]="{selected: prefix + '-' + plan.deliveryDate === selectedItem.shippingMethodId + '-' + selectedItem.deliveryDate}">
+      <div class="date-name">{{plan.deliveryDate|jalali:'dddd'}}</div>
+      <div class="date-date">{{plan.deliveryDate|jalali:'jD jMMMM'}}</div>
+    </a>
+    <a ngbNavLink class="nav-link" *ngIf="type == 'dateTime'"
+      [ngClass]="{selected: prefix + '-' + plan.deliveryDate === selectedItem.shippingMethodId + '-' + selectedItem.deliveryDate}">
+      <div class="date-name">{{plan.deliveryDate|jalali:'dddd'}}</div>
+      <div class="date-date">{{plan.deliveryDate|jalali:'jD jMMMM'}}</div>
+    </a>
+    <ng-template ngbNavContent *ngIf="type == 'dateTime'">
+      <div class="times">
+        <div class="shipping-radio" *ngFor="let shippingPeriodItem of plan.shippingPeriodIds">
+          <label class="radio-button-label" (click)="selectDate(plan.deliveryDate, shippingPeriodItem)">
+            <span *ngIf="shippingPeriodItem == 1">صبح</span>
+            <span *ngIf="shippingPeriodItem == 2">عصر</span>
+            <input type="radio" name="shipping-time" value="{{prefix + '-' + plan.deliveryDate + '-' + shippingPeriodItem}}"
+              [checked]="prefix + '-' + plan.deliveryDate + '-' + shippingPeriodItem === selectedItem.shippingMethodId + '-' + selectedItem.deliveryDate + '-' + selectedItem.shippingPeriod"/>
+            <span class="check-mark"></span>
+          </label>
+        </div>
+      </div>
+    </ng-template>
+  </li>
+</ul>
+
+<div [ngbNavOutlet]="nav" *ngIf="type == 'dateTime'"></div>

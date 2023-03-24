@@ -1,0 +1,73 @@
+<header *ngIf="!isCheckout">
+  <section id="header-top">
+    <div class="container">
+      <div class="row">
+        <div class="col-4 col-sm-5">
+          <a [routerLink]="['/']" class="logo">
+            <img alt="گلدیران‌پلاس" src="assets/images/gplus_logo_final.svg" width="190" height="64">
+          </a>
+        </div>
+        <div class="col-8 col-sm-7 align-self-center" id="header-actions">
+          <a routerLink="/cart" class="cart-link special-hover dark center">
+            <svg width="24" height="24" viewBox="0 0 24 24">
+              <path
+                d="M2005.629-1923.993h-12.16a2.113,2.113,0,0,1-1.956-1.7l-1.488-8.066h-.483a1.541,1.541,0,0,1-1.542-1.542v-1.71a1.541,1.541,0,0,1,1.542-1.542h20.911a1.548,1.548,0,0,1,1.547,1.537v1.71a1.541,1.541,0,0,1-1.542,1.542h-.783l-1.5,8.071a2.113,2.113,0,0,1-1.956,1.7Zm-2.449-7.9v4.878a.87.87,0,0,0,.872.872.871.871,0,0,0,.872-.872v-4.878a.871.871,0,0,0-.872-.872A.871.871,0,0,0,2003.181-1931.9Zm-2.8,0v4.878a.87.87,0,0,0,.872.872.871.871,0,0,0,.872-.872v-4.878a.871.871,0,0,0-.872-.872A.89.89,0,0,0,2000.382-1931.9Zm-2.813,0v4.878a.871.871,0,0,0,.872.872.87.87,0,0,0,.872-.872v-4.878a.89.89,0,0,0-.872-.872A.871.871,0,0,0,1997.569-1931.9Zm-2.8,0v4.878a.871.871,0,0,0,.872.872.87.87,0,0,0,.872-.872v-4.878a.87.87,0,0,0-.872-.872A.871.871,0,0,0,1994.77-1931.9Zm-1.729-8.3,3.119-5.356a.908.908,0,0,1,1.242-.325.908.908,0,0,1,.325,1.242l-2.582,4.439Zm11.825,0-2.582-4.434a.9.9,0,0,1,.325-1.242.9.9,0,0,1,1.242.325l3.119,5.351Z"
+                transform="translate(-1988 1947)" fill="#52646F"></path>
+            </svg>
+            <span class="cart-quantity"
+              *ngIf="orderService.getCartQuantity() > 0">{{orderService.getCartQuantity()}}</span>
+          </a>
+          <a class="user-login-btn special-hover dark center" routerLink="/user/login" routerLinkActive="active"
+            *ngIf="!userService.isAuthenticated">
+            ورود | ثبت نام
+          </a>
+          <div id="user-menu" ngbDropdown display="dynamic" *ngIf="userService.isAuthenticated"
+            (openChange)="onDropDownChange($event)">
+            <a tabindex="0" ngbDropdownToggle id="userDropdownMenuButton" role="button">
+              <img class="rounded-circle" src="assets/images/gplus_web_ico_user_02.svg" />
+              <span class="user-name">
+                {{userService.currentUser?.fullName}}
+                <span class="user-type" *ngIf="userService.currentUser?.userType == userType.Seller">(فروشنده)</span>
+                <span class="user-type" *ngIf="userService.currentUser?.userType == userType.StoreManager">(مدیر
+                  فروشگاه)</span>
+                <span class="user-type" *ngIf="userService.currentUser?.userType == userType.Dealer">(نمایندگی)</span>
+              </span>
+              <fa-icon [icon]="faCaret"></fa-icon>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="userDropdownMenuButton"
+              [@slideUpDown]="slideState">
+              <div>
+                <a ngbDropdownItem routerLink="/profile" class="special-hover dark right">
+                  <fa-icon [icon]="faUserCircle"></fa-icon>
+                  <span> پروفایل</span>
+                </a>
+                <a ngbDropdownItem (click)="changeRole()" class="special-hover dark right"
+                  *ngIf="userService.currentUser?.userType != userType.Consumer && userService.currentUser?.userType != userType.Dealer">
+                  <fa-icon [icon]="faUserCircle"></fa-icon>
+                  <span> تغییر نقش</span>
+                </a>
+                <a ngbDropdownItem (click)="$event.preventDefault();logOut()" class="special-hover dark right">
+                  <fa-icon [icon]="faSignOutAlt"></fa-icon>
+                  <span> خروج</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <app-nav></app-nav>
+</header>
+
+<header id="header-checkout" *ngIf="isCheckout">
+  <section class="container">
+    <div class="row">
+      <div class="col text-center">
+        <a id="logo" class="m-3 d-block" [routerLink]="['/']">
+          <img id="logo-img" src="../../assets/images/logo.png" />
+        </a>
+      </div>
+    </div>
+  </section>
+</header>

@@ -1,0 +1,58 @@
+@import "src/app/global/styles.scss";
+header {
+    border-bottom: 1px solid #d9e4ea;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+    img {
+      height: 50px;
+    }
+}
+main {
+    .row {
+        align-items: center;
+        .col-lg-4 {
+            text-align: center;
+        }
+    }
+    p:first-child {
+        font-size: 40px;
+        font-weight: bold;
+        line-height: 2;
+    }
+    p:nth-child(2) {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+    padding-top: 100px;
+    min-height: calc(100vh - 135px);
+    @media (max-width: $max-bp-x-large) {
+        .col-12 {
+            text-align: center;
+        }
+        p:first-child {
+            font-size: 30px;
+        }
+        img {
+            width: 500px;
+            height: auto;
+        }
+    }
+    @media (max-width: $max-bp-small) {
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+}
+footer {
+    text-align: center;
+    .copyrights {
+        font-size: 12px;
+        text-align: center;
+        border-top: 1px solid #707070;
+    
+        p {
+          margin: 0.8rem 0;
+        }
+      }
+}

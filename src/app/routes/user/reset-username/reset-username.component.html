@@ -1,0 +1,24 @@
+<form [ngClass]="{'lock': isSubmitted}" [formGroup]="resetUsernameForm" (ngSubmit)="onSubmit()" autocomplete="off">
+    <div class="form-row justify-content-center">
+        <app-username [formGroup]="resetUsernameForm" class="col-12"></app-username>
+    </div>
+    <div class="form-row justify-content-center">
+        <div class="form-group col-12" [ngClass]="{ error: global.hasError(code) }">
+            <em *ngIf="global.hasError(code)">
+                <span *ngIf="code.errors.required">
+                    فیلد اجباری
+                </span>
+            </em>
+            <label for="code">کد تایید</label>
+            <input id="code" type="Text" formControlName="code" class="form-control ltr" 
+            appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0*" required />
+        </div>
+    </div>
+    <app-resend-sms-security-code [userId]="userId"></app-resend-sms-security-code>
+    <div class="text-center">
+        <button type="submit" [disabled]="resetUsernameForm.invalid || isSubmitted" class="btn btn-primary btn-lg">
+            ثبت
+            <app-loading-inline type="inline" [isLoading]="isSubmitted"></app-loading-inline>
+        </button>
+    </div>
+</form>

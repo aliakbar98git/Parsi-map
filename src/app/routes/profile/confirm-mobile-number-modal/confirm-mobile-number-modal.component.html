@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <h5 class="modal-title">تاییدیه شماره موبایل</h5>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row justify-content-center">
+        <div class="col-5">
+            <form id="confirmMobileNumberForm" [ngClass]="{'lock': isSubmitted}" [formGroup]="confirmMobileNumberForm" (ngSubmit)="onSubmit()" autocomplete="off">
+                <div class="form-row">
+                    <div class="form-group col-12" [ngClass]="{ error: global.hasError(code) }">
+                        <em *ngIf="global.hasError(code)">
+                            <span *ngIf="code.errors.required">
+                                فیلد اجباری
+                            </span>
+                        </em>
+                        <label for="code">کد فعالسازی</label>
+                        <input id="code" type="Text" formControlName="code" class="form-control ltr" required
+                            appConvertNumbersToEnglish [patterns]="global.customPatterns"mask="0*" />
+                    </div>
+                </div>
+                <app-resend-sms-security-code></app-resend-sms-security-code>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button form="confirmMobileNumberForm" type="submit" [disabled]="confirmMobileNumberForm.invalid || isSubmitted" class="btn btn-primary btn-lg">
+        ثبت
+        <app-loading-inline type="inline" [isLoading]="isSubmitted"></app-loading-inline>
+    </button>
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('cancel click')">انصراف</button>
+</div>

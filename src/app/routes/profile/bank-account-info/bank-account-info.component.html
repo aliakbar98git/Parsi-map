@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-12">
+    <div class="box-white">
+      <form [ngClass]="{'lock': isSubmitted}" *ngIf="bankAccountInfo !== undefined" [formGroup]="bankAccountInfoUpdateForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(accountNumber) }">
+            <em *ngIf="global.hasError(accountNumber)">
+              <span *ngIf="accountNumber.errors.required">
+                فیلد اجباری
+              </span>
+            </em>
+            <label for="accountNumber">شماره حساب</label>
+            <input id="accountNumber" type="text" formControlName="accountNumber" class="form-control ltr" required
+              appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0*" />
+          </div>
+          <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(shebaNumber) }">
+            <em *ngIf="global.hasError(shebaNumber)">
+              <span *ngIf="shebaNumber.errors.required">
+                فیلد اجباری
+              </span>
+              <span *ngIf="shebaNumber.errors.minlength">
+                طول رشته باید برابر با {{shebaNumber.errors.minlength.requiredLength}} عدد باشد.
+              </span>
+              <span *ngIf="shebaNumber.errors.isbn">
+                رشته نامعتبر
+              </span>
+            </em>
+            <label for="shebaNumber">شماره شبا</label>
+            <input id="shebaNumber" type="text" formControlName="shebaNumber" class="form-control ltr" required
+              appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="000000000000000000000000" prefix="IR" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-12 col-md-6">
+            <label for="bankId">بانک</label>
+            <ng-select [items]="bankItems" [selectOnTab]="true" bindValue="id" bindLabel="name" labelForId="bankId"
+              placeholder="انتخاب کنید." formControlName="bankId" [loading]="bankItemsLoading">
+              <ng-template ng-loadingspinner-tmp>
+                <app-loading-inline type="inline"></app-loading-inline>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div class="text-center">
+          <button type="submit" [disabled]="bankAccountInfoUpdateForm.invalid || isSubmitted"
+            class="btn btn-primary btn-lg">
+            ویرایش
+            <app-loading-inline type="inline" [isLoading]="isSubmitted"></app-loading-inline>
+          </button>
+        </div>
+      </form>
+      <app-loading-inline [isLoading]="showLoading"></app-loading-inline>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,136 @@
+@import "../../../global/styles.scss";
+
+.ribbons {
+  div:not(.text):not(:first-child) {
+    margin-left: 12px;
+  }
+
+  height: 32px;
+  display: flex;
+  flex-direction: row-reverse;
+
+  .no-inventory {
+    &.text {
+      position: absolute;
+      right: 17.25px;
+      top: 12px;
+      background: #fff;
+      color: #728d9d;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 6px 12px;
+      z-index: 5;
+      height: 31px;
+      border-radius: 31px;
+      border: 1px solid #d9e4ea;
+    }
+
+    &:not(.text) {
+      position: relative;
+      float: left;
+      width: 32px;
+      height: 26px;
+      background-image: url(/assets/images/ribbons/gplus_web_ico_none_01.svg);
+    }
+  }
+
+  .new.text {
+    position: absolute;
+    right: 17.25px;
+    top: 12px;
+    background: #fff;
+    color: $primaryColor;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 6px 12px;
+    z-index: 5;
+    height: 31px;
+    border-radius: 31px;
+    border: 1px solid #d9e4ea;
+  }
+
+  .bundle {
+    position: relative;
+    float: left;
+    width: 24px;
+    height: 24px;
+    background-image: url(/assets/images/ribbons/gplus_web_ico_bundle_01.svg);
+  }
+
+  .free-delivery {
+    position: relative;
+    float: left;
+    width: 32px;
+    height: 32px;
+    background-image: url(/assets/images/ribbons/gplus_web_ico_freedelivery_01.svg);
+  }
+
+  .fast-delivery {
+    position: relative;
+    float: left;
+    width: 32px;
+    height: 19px;
+    background-image: url(/assets/images/ribbons/gplus_web_ico_fastdelivery_01.svg);
+  }
+
+  .gift {
+    position: relative;
+    float: left;
+    width: 24px;
+    height: 24px;
+    background-image: url(/assets/images/ribbons/gplus_web_ico_gift_01.svg);
+  }
+
+  .free-delivery {
+    position: relative;
+    float: left;
+    width: 32px;
+    height: 32px;
+    background-image: url(/assets/images/ribbons/gplus_web_ico_freedelivery_01.svg);
+  }
+
+  .reserved-1 {
+    position: relative;
+    float: left;
+    width: 32px;
+    height: 32px;
+    background-image: url(/assets/images/ribbons/reserved-1.svg);
+    background-repeat: no-repeat;
+  }
+
+  .reserved-2 {
+    position: relative;
+    float: left;
+    width: 32px;
+    height: 32px;
+    background-image: url(/assets/images/ribbons/reserved-2.svg);
+    background-repeat: no-repeat;
+  }
+
+  .reserved-3 {
+    position: relative;
+    float: left;
+    width: 32px;
+    height: 32px;
+    background-image: url(/assets/images/ribbons/reserved-3.svg);
+    background-repeat: no-repeat;
+  }
+
+  .reserved-4 {
+    position: relative;
+    float: left;
+    width: 32px;
+    height: 32px;
+    background-image: url(/assets/images/ribbons/reserved-4.svg);
+    background-repeat: no-repeat;
+  }
+
+  .reserved-5 {
+    position: relative;
+    float: left;
+    width: 32px;
+    height: 32px;
+    background-image: url(/assets/images/ribbons/reserved-5.svg);
+    background-repeat: no-repeat;
+  }
+}

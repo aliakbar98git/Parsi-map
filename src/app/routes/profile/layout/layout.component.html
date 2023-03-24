@@ -1,0 +1,53 @@
+<div class="row profile">
+  <div class="col-12 col-lg-3">
+    <div class="panel box-white">
+      <div class="user-info">
+        <img class="rounded-circle" src="../../../../assets/images/user-avator.png" />
+        <div class="description d-none d-lg-block">{{userService.currentUser.fullName}}</div>
+        <button type="button" class="btn description d-flex d-lg-none" (click)="collapse.toggle();" [attr.aria-expanded]="!profilePanelIsCollapsed"
+         aria-controls="profilePanelCollapse">
+          <span>{{userService.currentUser.fullName}}</span>
+          <fa-icon [icon]="profilePanelIsCollapsed? faCaretDown: faCaretUp"></fa-icon>
+        </button>
+      </div>
+      <nav class="nav flex-column" #collapse="ngbCollapse" [(ngbCollapse)]="profilePanelIsCollapsed" id="profilePanelCollapse">
+        <a class="nav-link" routerLink="/profile" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <fa-icon [icon]="faTachometerAlt"></fa-icon><span> پیشخوان</span>
+        </a>
+        <a class="nav-link" *ngIf="isConsumer" routerLink="/profile/update-username" routerLinkActive="active">
+          <fa-icon [icon]="faUserCircle"></fa-icon><span> نام کاربری</span>
+        </a>
+        <a class="nav-link" routerLink="/profile/update-password" routerLinkActive="active">
+          <fa-icon [icon]="faKey"></fa-icon><span> رمز عبور</span>
+        </a>
+        <a class="nav-link" routerLink="/profile/personal-info" routerLinkActive="active">
+          <fa-icon [icon]="faUser"></fa-icon><span> اطلاعات شخصی</span>
+        </a>
+        <a class="nav-link" *ngIf="isConsumer" routerLink="/profile/bank-account-info" routerLinkActive="active">
+          <fa-icon [icon]="faUniversity"></fa-icon><span> حساب بانکی</span>
+        </a>
+        <a class="nav-link" routerLink="/profile/invoice-list" routerLinkActive="active">
+          <fa-icon [icon]="faListAlt"></fa-icon><span> سفارش‌های من</span>
+        </a>
+        <a class="nav-link" *ngIf="isManager" routerLink="/profile/sales-commission-computing-result" routerLinkActive="active">
+          <fa-icon [icon]="faListAlt"></fa-icon><span> کارمزد فروش حق العمل کاری</span>
+        </a>
+        <a class="nav-link" *ngIf="isConsumer" routerLink="/profile/address-list" routerLinkActive="active">
+          <fa-icon [icon]="faAddressBook"></fa-icon><span> آدرس‌ها</span>
+        </a>
+        <a class="nav-link" routerLink="/profile/favorite-products-list" routerLinkActive="active">
+          <fa-icon [icon]="faHeart"></fa-icon><span> لیست علاقه‌مندی</span>
+        </a>
+        <a class="nav-link" *ngIf="isConsumer" routerLink="/profile/comment-list" routerLinkActive="active">
+          <fa-icon [icon]="faComment"></fa-icon><span> لیست نظرات</span>
+        </a>
+        <a class="nav-link" (click)="logOut()">
+          <fa-icon [icon]="faSignOutAlt"></fa-icon><span> خروج</span>
+        </a>
+      </nav>
+    </div>
+  </div>
+  <div class="col-12 col-lg-9">
+    <router-outlet></router-outlet>
+  </div>
+</div>

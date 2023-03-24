@@ -1,0 +1,8 @@
+<div class="user-roles">
+  <h4>انتخاب نقش</h4>
+  <div class="role-list">
+    <div class="role-item" *ngFor="let item of users" (click)="selectRole(item)">
+      {{item.roleTitle}}
+    </div>
+  </div>
+</div>

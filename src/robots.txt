@@ -1,0 +1,6 @@
+user-agent: *
+disallow: /search*
+disallow: /user*
+disallow: /profile*
+disallow: /cart*
+Sitemap: https://www.goldiranplus.ir/sitemap.xml

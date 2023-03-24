@@ -1,0 +1,17 @@
+<div [formGroup]="controlContainer.control" class="form-group" [ngClass]="{ error: global.hasError(username) }">
+  <em *ngIf="global.hasError(username)">
+    <span *ngIf="username.errors.required">
+      فیلد اجباری
+    </span>
+    <span *ngIf="username.errors.minlength">
+      طول رشته باید حداقل {{username.errors.minlength.requiredLength}} کاراکتر باشد.
+    </span>
+    <span *ngIf="username.errors.username">
+      رشته نامعتبر
+    </span>
+  </em>
+  <label for="username">نام کاربری</label>
+  <input id="username" type="Text" formControlName="username" class="form-control ltr"
+    appMaskError="لطفا در ابتدا از حروف انگلیسی استفاده کرده و در ادامه ترکیبی از حروف انگلیسی، اعداد و کاراکترهای (. - _) را قرار دهید."
+    [patterns]="global.customPatterns" mask="LC*" [specialCharacters]="[]" required />
+</div>

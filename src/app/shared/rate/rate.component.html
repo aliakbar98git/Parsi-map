@@ -1,0 +1,22 @@
+<div class="rate d-flex" [attr.data-rate]="score">
+    <div class="rate-inner" [ngClass]="{'m-auto': options.textAlign === 'center', 'margin-left-auto': options.textAlign === 'right', 'margin-right-auto': options.textAlign === 'left'}" >
+      <div class="rate-mask" [style.width.%]="100-score*20">
+        <div class="rate-stars">
+          <fa-icon class="rate-icon" [icon]="faStar"></fa-icon>
+          <fa-icon class="rate-icon" [icon]="faStar"></fa-icon>
+          <fa-icon class="rate-icon" [icon]="faStar"></fa-icon>
+          <fa-icon class="rate-icon" [icon]="faStar"></fa-icon>
+          <fa-icon class="rate-icon" [icon]="faStar"></fa-icon>
+        </div>
+      </div>
+      <div class="rate-icons" *ngIf="score!=0">
+        <div class="rate-stars">
+          <fa-icon class="rate-icon active" [icon]="faStar"></fa-icon>
+          <fa-icon class="rate-icon active" [icon]="faStar"></fa-icon>
+          <fa-icon class="rate-icon active" [icon]="faStar"></fa-icon>
+          <fa-icon class="rate-icon active" [icon]="faStar"></fa-icon>
+          <fa-icon class="rate-icon active" [icon]="faStar"></fa-icon>
+        </div>
+      </div>
+    </div>
+</div>

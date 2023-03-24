@@ -1,0 +1,225 @@
+@import "../../../global/styles.scss";
+
+.products-list {
+  app-product-item {
+    width: 32%;
+    float: right;
+    @media (max-width: $max-bp-x-large) {
+      width: 48.5%;
+    }
+    @media (min-width: $min-bp-medium) and (max-width: $max-bp-large) {
+      width: 48.7%;
+    }
+    @media (max-width: $max-bp-medium) {
+      width: 48%;
+    }
+    @media (max-width: $max-bp-small) {
+      width: 100%;
+    }
+
+    &:nth-child(3n + 2) {
+      margin: 0 16px;
+    }
+    &:nth-child(odd) {
+      @media (max-width: $max-bp-x-large) {
+        margin-left: 8px;
+        margin-right: 0;
+      }
+      @media (min-width: $min-bp-medium) and (max-width: $max-bp-large) {
+        margin-left: 5px;
+        margin-right: 0;
+      }
+      @media (max-width: $max-bp-small) {
+        margin-right: 0;
+        margin-left: 0;
+      }
+    }
+    &:nth-child(even) {
+      @media (max-width: $max-bp-x-large) {
+        margin-right: 8px;
+        margin-left: 0;
+      }
+      @media (min-width: $min-bp-medium) and (max-width: $max-bp-large) {
+        margin-right: 5px;
+        margin-left: 0;
+      }
+      @media (max-width: $max-bp-small) {
+        margin-right: 0;
+        margin-left: 0;
+      }
+    }
+
+    ::ng-deep {
+      .product-image {
+        @media (min-width: $min-bp-xx-large) {
+          min-height: 255px !important;
+        }
+        @media (max-width: $max-bp-xx-large) {
+          min-height: 231px !important;
+        }
+        @media (max-width: $max-bp-x-large) {
+          min-height: 262.83px !important;
+        }
+        @media (max-width: $max-bp-large) {
+          min-height: 186.14px !important;
+        }
+        @media (max-width: $max-bp-medium) {
+          min-height: 211.8px !important;
+        }
+        @media (max-width: $max-bp-small) {
+          min-height: 183px !important;
+        }
+      }
+
+      .product-promotion-text {
+        font-size: 10px !important;
+      }
+    }
+  }
+
+  .list-tools {
+    @media (max-width: $max-bp-medium) {
+      margin-top: 1rem;
+    }
+
+    .sort-btn {
+      border: 1px solid #ccc;
+      margin-left: 10px;
+      border-radius: 10px;
+      font-size: 11px !important;
+      padding: 0px 10px;
+      background: #fff;
+
+      &.active {
+        background-color: $primaryColor;
+        color: #fff;
+        border: 1px solid $primaryColor;
+      }
+    }
+  }
+}
+
+.sidebar-inner {
+  border: 1px solid #e9e9e9;
+  background-color: #fff;
+  // top: 140px;
+  z-index: 8;
+
+  #searchable-attributes {
+    #applied-filters {
+      .filter-item {
+        border-radius: 20px;
+        border: 1px solid #ccc;
+        font-size: 11px;
+        padding: 4px 8px;
+        display: inline-block;
+        margin-bottom: 8px;
+        margin-left: 5px;
+        cursor: pointer;
+
+        .ng-fa-icon {
+          color: #b5b5b5;
+          margin-right: 2px;
+        }
+      }
+    }
+    .no-attribute-item {
+      font-size: 12px;
+      margin-bottom: 0px;
+      text-align: center;
+    }
+
+    .color {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 0 4px #b5b5b5;
+      margin-left: 10px;
+      float: left;
+    }
+  }
+}
+
+#compare {
+  position: fixed;
+  left: 20px;
+  bottom: 0px;
+  background: #fff;
+  box-shadow: 0 0 5px #ccc;
+  border-radius: 4px 4px 0 0;
+  padding: 15px;
+  width: 250px;
+  text-align: center;
+  z-index: 99;
+
+  &.is-seller {
+    bottom: 53px;
+    @media (max-width: $max-bp-x-large) {
+      bottom: 87px;
+    }
+    @media (max-width: $max-bp-medium) {
+      bottom: 46px;
+    }
+  }
+
+  &:hover .products {
+    display: block;
+  }
+
+  .btn-info {
+    border-radius: 5px;
+    width: 130px;
+
+    .badge {
+      float: left;
+      background: rgba(255, 255, 255, 0.5);
+      color: #0e6e7d;
+      font-size: 10px;
+      padding: 7px 5px 4px 5px;
+    }
+  }
+
+  .products {
+    display: none;
+
+    .compare-item {
+      border-bottom: 1px solid #f3f3f3;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      clear: both;
+      min-height: 70px;
+
+      .compare-remove {
+        opacity: 0.4;
+        cursor: pointer;
+        float: left;
+        margin-right: 10px;
+        color: $primaryColor;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+
+      ::ng-deep img {
+        display: block;
+        width: 60px;
+        height: auto;
+        margin-left: 10px;
+      }
+
+      h3 {
+        font-size: 11px;
+        line-height: 20px;
+        color: #999;
+        padding-top: 10px;
+        text-align: right;
+        height: 50px;
+        overflow: hidden;
+        line-height: 13px;
+      }
+    }
+  }
+}

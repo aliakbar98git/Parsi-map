@@ -1,0 +1,23 @@
+<div class="qrcode" *ngIf="qrValue && InvoiceId">
+    <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+
+
+    <div class="text-center">
+        <qr-code [value]="qrValue" size="200" errorCorrectionLevel="M"></qr-code>
+    </div>
+    <p *ngIf="report">توضیحات: {{report?.messageResult}}</p>
+    <p *ngIf="report && status === 0">شماره مرجع: {{report?.referenceNumber}}</p>
+    <div class="text-center inquiry">
+        <button class="btn btn-info" *ngIf="status === -1 || status === 0 " [disabled]="status === 0"
+            (click)="inquiry()">
+            استعلام وضعیت
+        </button>
+        <button class="btn btn-warning" *ngIf="status !== -1 && status !== 0" (click)="payInvoice()">
+            دریافت مجدد QRپرداخت
+        </button>
+    </div>
+
+
+</div>

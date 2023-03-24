@@ -1,0 +1,309 @@
+@import "../../../global/styles.scss";
+:not(.is_seller) .most-box {
+  ::ng-deep .slick-track {
+    height: 435.16px;
+    @media (max-width: $max-bp-xx-large) {
+      height: 426.8px;
+    }
+    @media (max-width: $max-bp-x-large) {
+      height: 460.8px;
+    }
+    @media (max-width: $max-bp-large) {
+      height: 497.8px;
+    }
+    @media (max-width: $max-bp-medium) {
+      height: 407.8px;
+    }
+    @media (max-width: $max-bp-small) {
+      height: auto;
+    }
+  }
+}
+.is_seller {
+
+  app-product-item {
+    ::ng-deep {
+      .product-add-button {
+        display: none;
+      }
+    }
+  }
+
+}
+.most-box {
+  margin-top: 60px;
+  margin-bottom: 13px;
+
+  .header {
+    margin-top: 25px;
+    margin-bottom: 38px;
+    border-bottom: 2px solid #809eb0;
+    position: relative;
+
+    .header-border {
+      border: 2px solid $primaryColor;
+      background: $primaryColor;
+      height: 28.91px;
+      border-radius: 24%;
+      position: absolute;
+      top: -15px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 500;
+      color: #42728f;
+      margin: 0px;
+      padding: 5px 15px;
+      position: absolute;
+      top: -15px;
+      background-color: #f6f6f6;
+      right: 4px;
+
+      a {
+        font-size: 13px;
+        margin-right: 10px;
+        color: $primaryColor;
+        cursor: pointer;
+        display: inline-block;
+        text-decoration: none;
+      }
+    }
+  }
+
+  ngx-slick-carousel {
+    margin: 0 -8px;
+
+    ::ng-deep .slick-arrow {
+      left: 7px;
+
+      @media (max-width: $max-bp-large) {
+        left: 9px;
+      }
+
+      &.slick-prev {
+        right: 10px;
+      }
+    }
+  }
+
+  app-product-item {
+    margin: 0 8px;
+
+    ::ng-deep .product-item-home {
+      margin: 0;
+    }
+  }
+
+  &.with-ann {
+    margin-top: 35px;
+    .newest-box {
+      width: 904px !important;
+      display: inline-block;
+      vertical-align: bottom;
+      @media (max-width: $max-bp-xx-large) {
+        width: 830px !important;
+      }
+      @media (max-width: $max-bp-x-large) {
+        width: 616px !important;
+      }
+      @media (max-width: $max-bp-large) {
+        width: 337px !important;
+      }
+      @media (max-width: $max-bp-medium) {
+        width: 247px !important;
+      }
+      @media (max-width: $max-bp-small) {
+        width: auto !important;
+        display: block;
+        margin-top: 60px;
+      }
+
+      ngx-slick-carousel {
+        ::ng-deep .slick-arrow {
+          left: 9px;
+
+          &.slick-prev {
+            right: 9px;
+          }
+        }
+      }
+    }
+  }
+
+  .newest-box {
+    width: 100% !important;
+    display: block;
+  }
+
+  .ann-narrow {
+    background-color: #ffffff;
+    margin-right: 16px;
+    overflow: hidden;
+    width: 289.03px;
+    height: 473.16px;
+    display: inline-block;
+    vertical-align: bottom;
+
+    &.is_seller {
+      height: 524.16px;
+    }
+    @media (max-width: $max-bp-xx-large) {
+      width: 260px;
+      height: 464px;
+      &.is_seller {
+        height: 515px;
+      }
+    }
+    @media (max-width: $max-bp-x-large) {
+      width: 298px;
+      height: 498px;
+      &.is_seller {
+        height: 549px;
+      }
+    }
+    @media (max-width: $max-bp-large) {
+      width: 337px;
+      height: 534px;
+      &.is_seller {
+        height: 585px;
+      }
+    }
+    @media (max-width: $max-bp-medium) {
+      width: 247px;
+      height: 445px;
+      &.is_seller {
+        height: 496px;
+      }
+    }
+    @media (max-width: $max-bp-small) {
+      width: 100% !important;
+      height: auto !important;
+      display: block;
+      margin-right: 0;
+      margin-top: 60px;
+    }
+
+    a {
+      display: flex !important;
+      justify-content: center !important;
+      height: 100%;
+
+      app-image {
+        height: 100%;
+        ::ng-deep img {
+          height: 100%;
+          width: auto;
+          @media (max-width: $max-bp-small) {
+            width: 100%;
+            height: auto;
+          }
+        }
+      }
+    }
+  }
+}
+
+ngx-slick-carousel {
+  ::ng-deep .slick-arrow {
+    height: 60px;
+    width: 35px;
+    opacity: 1;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.7);
+    top: calc(50% - 30px);
+    -webkit-transition: all 0.25s ease;
+    -moz-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+    position: absolute;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    color: #809eb0;
+    text-align: center;
+    z-index: 9;
+    vertical-align: middle;
+    font-size: 28px;
+    left: 0;
+
+    &.slick-prev {
+      right: 0;
+      padding-left: 8px;
+      border-radius: 60px 0 0 60px;
+    }
+
+    &.slick-next {
+      padding-right: 8px;
+      border-radius: 0 60px 60px 0;
+    }
+  }
+
+  &.top-slider {
+    ::ng-deep .slick-arrow {
+      background-color: #52646f4a;
+      color: white;
+      width: 30px;
+
+      &:hover {
+        background-color: #ffffff;
+        color: #52646f;
+      }
+    }
+
+    div.slick-slide {
+      height: 400px;
+      position: relative;
+
+      @media (max-width: $max-bp-xx-large) {
+        height: 367px;
+      }
+      @media (max-width: $max-bp-x-large) {
+        height: 308px;
+      }
+      @media (max-width: $max-bp-large) {
+        height: 228px;
+      }
+      @media (max-width: $max-bp-medium) {
+        height: 169px;
+      }
+      @media (max-width: $max-bp-small) {
+        height: calc(100vw / 3.3);
+      }
+
+      a {
+        display: block;
+        height: 100%;
+      }
+
+      app-image {
+        ::ng-deep img {
+          max-width: 100%;
+          margin: auto;
+          display: block;
+          max-height: 100%;
+          transform: translateX(-50%) translateY(-50%);
+          position: absolute;
+          top: 50%;
+          left: 50%;
+        }
+      }
+    }
+  }
+}
+
+.ann-wide {
+  margin-top: 60px;
+  a {
+    display: block;
+    app-image {
+      ::ng-deep img {
+        height: auto;
+        width: 100%;
+      }
+    }
+  }
+}

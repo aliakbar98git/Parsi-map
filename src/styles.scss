@@ -1,0 +1,728 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./app/global/styles.scss";
+@import "./app/helpers/mixins.scss";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "../node_modules/nouislider/distribute/nouislider.min.css";
+
+@import url(./assets/iranyekan/css/fontiran.css);
+
+body {
+  font-family: iranyekan !important;
+  background: #f6f6f6;
+  font-size: 14px !important;
+  color: #333;
+  line-height: 21px;
+  overflow: inherit !important;
+
+  @media (max-width: $max-bp-large) {
+    font-size: 13px !important;
+    line-height: 20px !important;
+  }
+
+  @media (max-width: $max-bp-small) {
+    font-size: 12px !important;
+    line-height: 18px !important;
+  }
+}
+/* Font Configuration */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+textarea,
+.tooltip-class {
+  font-family: iranyekan !important;
+}
+
+h5 {
+  @media (max-width: $max-bp-large) {
+    font-size: 18px;
+  }
+  @media (max-width: $max-bp-small) {
+    font-size: 16px;
+  }
+}
+
+.tooltip-class {
+  font-size: 12px;
+}
+
+button,
+a.btn,
+input,
+select,
+textarea {
+  @media (min-width: $min-bp-small) {
+    font-size: 13px !important;
+    line-height: 20px !important;
+  }
+
+  @media (max-width: $max-bp-small) {
+    font-size: 12px !important;
+    line-height: 18px !important;
+  }
+}
+
+h1 {
+  font-weight: bold;
+}
+
+.text-small {
+  font-size: 0.8em;
+}
+
+.text-xsmall {
+  font-size: 0.6em;
+}
+
+.text-large {
+  font-size: 1.2em;
+}
+
+.text-xlarge {
+  font-size: 1.4em;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.text-thin {
+  font-weight: 100;
+}
+
+.text-light {
+  font-weight: 300;
+}
+
+.text-regular {
+  font-weight: normal;
+}
+
+.text-medium {
+  font-weight: 500;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.text-extrabold {
+  font-weight: 800;
+}
+
+.text-black {
+  font-weight: 900;
+}
+
+.text-extrablack {
+  font-weight: 950;
+}
+
+.fa-num {
+  font-family: iranyekanFanum !important;
+}
+/* End Font Configuration */
+* {
+  outline: none !important;
+}
+
+a {
+  color: #666;
+  text-decoration: none;
+
+  &:hover {
+    color: $primaryColor;
+  }
+
+  &.active {
+    color: $primaryColor;
+  }
+}
+
+.bg-white {
+  border: 1px solid #e9e9e9;
+  background-color: #fff;
+  padding: 20px;
+  min-height: 300px;
+}
+
+.btn {
+  &.btn-link {
+    color: #666;
+
+    &:hover {
+      color: $primaryColor;
+    }
+  }
+}
+
+.ltr {
+  text-align: left !important;
+  direction: ltr !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.btn:focus {
+  box-shadow: none !important;
+}
+
+.gi-box {
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  margin: 30px 0;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  min-height: 350px;
+  @include box-shadow(0, 0, 5px, #e0e0e0);
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited {
+  background-color: $primaryColor !important;
+  border-radius: 3px !important;
+  border: none !important;
+}
+
+/* Customize checkbox style */
+.checkbox-label {
+  display: block;
+  position: relative;
+  padding-right: 25px;
+  margin-bottom: 3px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  input:checked ~ .check-mark:after {
+    display: block;
+  }
+
+  input[disabled] ~ .check-mark {
+    background-color: #e9ecef;
+    border: 1px solid #ccc;
+  }
+
+  .check-mark:after {
+    left: 5px;
+    top: 0px;
+    width: 6px;
+    height: 12px;
+    border: solid $primaryColor;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+  .check-mark {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 17px;
+    width: 17px;
+    margin-top: 2px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+  }
+
+  &:hover .check-mark {
+    border-color: #666;
+  }
+
+  &.disabled {
+    cursor: default;
+
+    .check-mark {
+      border: 1px solid #ced4da;
+      background-color: #e9ecef;
+    }
+
+    input[disabled] {
+      border-color: #ced4da;
+      background-color: #e9ecef;
+      cursor: default;
+    }
+  }
+}
+
+/* Customize radio button style */
+.radio-button-label {
+  display: block;
+  position: relative;
+  padding-right: 25px;
+  margin-bottom: 3px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  input:checked ~ .check-mark:after {
+    display: block;
+  }
+
+  .check-mark:after {
+    top: 2px;
+    left: 2px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: $primaryColor;
+  }
+
+  .check-mark {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 17px;
+    width: 17px;
+    background-color: #fff;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    margin-top: 2px;
+  }
+
+  &:hover .check-mark {
+    border-color: #666;
+  }
+
+  .check-mark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+}
+
+#content-container {
+  min-height: 400px;
+  padding-top: 13px;
+  padding-bottom: 40px;
+}
+
+.error {
+  em {
+    color: #fb0000;
+    font-style: normal;
+    padding-right: 5px;
+    float: left;
+    font-size: 11px;
+  }
+
+  .check-mark {
+    border-color: #ff8c8c;
+  }
+
+  input,
+  textarea,
+  .ng-select .ng-select-container {
+    background-color: #fff9f9;
+    border-color: #ff8c8c;
+  }
+
+  ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: red;
+    opacity: 1; /* Firefox */
+  }
+
+  :-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: red;
+  }
+
+  ::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: red;
+  }
+}
+
+form {
+  .form-errors {
+    margin-top: 15px;
+  }
+
+  &.lock {
+    input,
+    select,
+    textarea {
+      pointer-events: none;
+    }
+  }
+
+  .form-section-header {
+    border-right: 3px solid $primaryColor;
+    padding: 3px 10px;
+    font-size: 16px;
+    margin-bottom: 12px;
+
+    &:not(:first-child) {
+      margin-top: 20px;
+    }
+  }
+}
+
+ul.pagination {
+  li {
+    a {
+      cursor: pointer;
+      color: $primaryColor !important;
+      font-family: iranyekanFanum !important;
+
+      span {
+        font-family: tahoma;
+        line-height: 10px;
+      }
+    }
+
+    &.active a {
+      background-color: $primaryColor !important;
+      border-color: $primaryColor !important;
+      color: #fff !important;
+    }
+  }
+}
+
+fa-icon {
+  svg {
+    vertical-align: middle !important;
+  }
+}
+
+.box-white {
+  border: 1px solid #ededed;
+  background-color: #fff;
+  padding: 1rem;
+}
+
+/*ng-select styles*/
+.ng-select {
+  .ng-clear-wrapper .ng-clear {
+    vertical-align: middle;
+  }
+
+  .ng-arrow-wrapper {
+    padding-right: 0;
+    padding-left: 5px;
+
+    &:hover .ng-arrow,
+    .ng-arrow {
+      vertical-align: middle;
+    }
+  }
+
+  .ng-select-container {
+    border-color: #ced4da;
+
+    .ng-value-container {
+      padding-right: 10px;
+    }
+
+    &:hover {
+      box-shadow: none;
+    }
+  }
+
+  &.ng-select-disabled > .ng-select-container {
+    background-color: #e9ecef;
+  }
+
+  &.ng-select-single .ng-select-container {
+    height: 33.65px;
+
+    .ng-value-container .ng-input {
+      top: unset;
+      right: 0;
+      padding-left: 50px;
+      padding-right: 10px;
+      right: 0;
+    }
+  }
+
+  &.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+
+  &.ng-select-opened > .ng-select-container {
+    border-color: #ced4da;
+  }
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items {
+  .ng-option.ng-option-marked {
+    background-color: #f8f9fa;
+  }
+
+  .ng-option.ng-option-selected,
+  .ng-option.ng-option-selected.ng-option-marked {
+    background-color: #eceef0;
+  }
+}
+
+.rtl .list-group,
+[dir="rtl"] .list-group {
+  padding-left: 0;
+  .list-group-item-action:active,
+  .list-group-item-action:hover,
+  .list-group-item-action:focus {
+    color: #333;
+    background-color: #f8f9fa;
+  }
+}
+
+.noUi-target {
+  background: #dedede !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  height: 4px;
+  margin: 15px 0;
+
+  .noUi-connect {
+    background: $primaryColor !important;
+  }
+
+  .noUi-origin {
+    .noUi-handle {
+      width: 8px !important;
+      height: 15px !important;
+      border-radius: 2px !important;
+      border: 0px !important;
+      background: $primaryColor !important;
+      box-shadow: none !important;
+      left: -4px !important;
+
+      &:before,
+      &:after {
+        display: none !important;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 1300px) {
+  .container {
+    max-width: 1240px;
+  }
+}
+
+.primary-tool-tip {
+  .tooltip-inner {
+    background-color: #ff8c8c;
+  }
+
+  .arrow::before {
+    border-top-color: #ff8c8c;
+  }
+}
+
+.info-tool-tip {
+  .tooltip-inner {
+    background-color: #17a2b8;
+  }
+
+  .arrow::before {
+    border-top-color: #17a2b8;
+  }
+}
+
+.special-hover {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  overflow: auto;
+}
+
+.special-hover::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 3px;
+  z-index: -1;
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+}
+
+.special-hover:hover::after {
+  transform: scaleX(1) !important;
+  -webkit-transition: transform 0.25s ease;
+  -moz-transition: transform 0.25s ease;
+  -o-transition: transform 0.25s ease;
+  transition: transform 0.25s ease;
+}
+
+.special-hover.light::after {
+  background-color: #60636d;
+}
+
+.special-hover.light:disabled {
+  color: #64666e;
+}
+
+.special-hover.dark {
+  border: 1px solid #ffffff;
+}
+
+.special-hover.dark::after {
+  background-color: #eff4f8;
+}
+
+.special-hover.dark:active {
+  background-color: #c2d1db;
+}
+
+.special-hover.dark:focus {
+  background-color: #eff4f8;
+  border: 1px solid #e4ebf0;
+  color: #728d9d;
+}
+
+.special-hover.dark:disabled {
+  opacity: 0.5;
+}
+
+.special-hover.dark:hover {
+  border: 1px solid #c2d1db;
+}
+
+.special-hover.center::after {
+  -webkit-transform-origin: 50%;
+  transform-origin: 50%;
+}
+
+.special-hover.right {
+  padding: 6px 0 6px 10px;
+  -webkit-transition: padding 0.25s ease;
+  -moz-transition: padding 0.25s ease;
+  -o-transition: padding 0.25s ease;
+  transition: padding 0.25s ease;
+}
+
+.special-hover.right:hover {
+  padding-right: 10px;
+}
+
+.special-hover.right::after {
+  -webkit-transform-origin: 100%;
+  transform-origin: 100%;
+}
+
+ngb-carousel {
+  z-index: 0;
+}
+
+button.btn.calendar {
+  border-color: #ccc;
+  height: 33px;
+}
+
+.ngb-dp-input {
+  background-color: #fff !important;
+
+  &.ng-invalid.ng-touched {
+    background-color: #fff9f9 !important;
+  }
+}
+
+ngb-datepicker {
+  font-family: iranyekanFanum !important;
+  .ngb-dp-header {
+    .custom-select {
+      margin: 0 2px;
+    }
+    .ngb-dp-navigation-chevron {
+      transform: rotate(45deg);
+    }
+    .right {
+      .ngb-dp-navigation-chevron {
+        transform: rotate(-135deg);
+      }
+    }
+  }
+  .ngb-dp-content {
+    .ngb-dp-month-name {
+      font-size: 15px;
+      height: 20px !important;
+      line-height: 27px !important;
+    }
+    .ngb-dp-weekday {
+      font-style: normal !important;
+      font-size: 13px !important;
+    }
+    .ngb-dp-day {
+      font-size: 13px !important;
+    }
+    .custom-day {
+      text-align: center;
+      padding: 0.185rem 0.25rem;
+      display: inline-block;
+      height: 2rem;
+      width: 2rem;
+      line-height: 28px;
+
+      &.range,
+      &:hover {
+        background-color: rgb(2, 117, 216);
+        color: white;
+      }
+      &.faded {
+        background-color: rgba(2, 117, 216, 0.5);
+      }
+    }
+  }
+}
+.text-decoration-underline {
+  text-decoration: underline;
+}
+
+.modal-backdrop {
+  z-index: 1040 !important;
+}
+
+.visually-hidden {
+  display: none;
+}

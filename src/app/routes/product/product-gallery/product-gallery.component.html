@@ -1,0 +1,30 @@
+<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+  <span aria-hidden="true">&times;</span>
+</button>
+<div class="modal-body row no-gutters">
+  <div class="gallery-thumb col-12 col-lg-2">
+    <div class="gallery-thumb-content" [ngStyle]="thumbnailPosition">
+      <ng-container *ngTemplateOutlet="galleryThumbContent"></ng-container>
+    </div>
+  </div>
+  <div class="gallery-large col-12 col-lg-10">
+    <div class="gallery-large-item" *ngFor="let image of images;index as i" [ngClass]="{active:activeImageIndex == i}"
+      (swipe)="onSwipe($event)">
+      <app-image *ngIf="!image.isVideo" class="img-container d-flex align-items-center" [size]="['original']"
+        [documentInfoId]="image.documentInfoId" [imageType]="image.imageType">
+      </app-image>
+      <div id="product-video" *ngIf="image.isVideo"></div>
+    </div>
+  </div>
+</div>
+
+<ng-template #galleryThumbContent>
+  <div class="gallery-thumb-item" #galleryThumbItem *ngFor="let image of images;index as i"
+    [ngClass]="{active:activeImageIndex == i}" (click)="changeImage(i)" (swipe)="onSwipe($event)">
+    <app-image class="img-container d-flex align-items-center" [size]="[90]" [documentInfoId]="image.documentInfoId"
+      [imageType]="image.imageType"></app-image>
+    <span *ngIf="image.isVideo" class="more play">
+      <fa-icon [icon]="faPlay"></fa-icon>
+    </span>
+  </div>
+</ng-template>

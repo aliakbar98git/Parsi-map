@@ -1,0 +1,57 @@
+@import "../../../global/styles.scss";
+
+.promoted-list {
+  app-product-item {
+    width: 24%;
+    float: right;
+    margin-right: 0;
+    margin-left: 16px;
+    @media (max-width: $max-bp-xx-large) {
+      width: 23.9%;
+    }
+    @media (max-width: $max-bp-x-large) {
+      width: 32.1%;
+      margin-left: 0;
+    }
+    @media (max-width: $max-bp-large) {
+      width: 48.7%;
+    }
+    @media (max-width: $max-bp-medium) {
+      width: 48%;
+    }
+    @media (max-width: $max-bp-small) {
+      width: 100%;
+    }
+
+    &:nth-child(4n) {
+      margin-left: 0;
+    }
+
+    &:nth-child(3n + 2) {
+      @media (max-width: $max-bp-x-large) {
+        margin: 0 16px;
+      }
+    }
+
+    &:nth-child(odd) {
+      @media (max-width: $max-bp-large) {
+        margin-left: 8px;
+        margin-right: 0;
+      }
+      @media (max-width: $max-bp-small) {
+        margin-right: 0;
+        margin-left: 0;
+      }
+    }
+    &:nth-child(even) {
+      @media (max-width: $max-bp-large) {
+        margin-right: 8px;
+        margin-left: 0;
+      }
+      @media (max-width: $max-bp-small) {
+        margin-right: 0;
+        margin-left: 0;
+      }
+    }
+  }
+}

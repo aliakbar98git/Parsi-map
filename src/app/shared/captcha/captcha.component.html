@@ -1,0 +1,13 @@
+<label for="captcha-input"
+  *ngIf="captchaService.captchaParams !== undefined && captchaService.captchaParams.showCaptcha">کد امنیتی</label>
+<div class="captcha-container">
+  <app-loading-inline [isLoading]="captchaService.captchaParams === undefined"></app-loading-inline>
+  <div class="captcha d-flex"
+    *ngIf="captchaService.captchaParams !== undefined && captchaService.captchaParams.showCaptcha">
+    <fa-icon [icon]="faRedo" (click)="createCaptcha()" class="captcha-reload"></fa-icon>
+    <img src={{captchaService.captchaParams.captcha.dntCaptchaImgUrl}} alt="تصویر امنیتی" class="captcha-img" />
+    <input id="captcha-input" type="text" class="captcha-input" placeholder="کد امنیتی"
+      [patterns]="global.customPatterns" mask="E*" #captcha (keyup)="setCaptchaValue(captcha.value)"
+      (blur)="setCaptchaValue(captcha.value)" />
+  </div>
+</div>

@@ -1,0 +1,177 @@
+<footer id="footer">
+  <div class="footer-links">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <a class="logo" routerLink="/"><img src="/assets/images/logo-white.svg" alt="logo" /></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-lg-8">
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-4">
+              <h4>درباره ما</h4>
+              <ul class="nav flex-column">
+                <li><a class="special-hover light right" rel="noopener" href="https://goldiran.ir" target="_blank">شرکت
+                    گلدیران</a></li>
+                <li><a class="special-hover light right" routerLink="/page/stores">فروشگاه&zwnj;های
+                    گلدیران&zwnj;پلاس</a></li>
+                <li><a class="special-hover light right" rel="noopener" href="https://cs.goldiran.ir/shop"
+                    target="_blank">لوازم جانبی محصولات گلدیران</a></li>
+                <li><a class="special-hover light right" routerLink="/page/dropshipstores">نمایندگان فروش</a></li>
+                <li><a class="special-hover light right" routerLink="/page/about">درباره ما</a></li>
+                <li><a class="special-hover light right" routerLink="/page/contact-us">تماس با ما</a></li>
+              </ul>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+              <h4>راهنمای خرید از سایت</h4>
+              <ul class="nav flex-column">
+                <li><a class="special-hover light right" routerLink="/page/return"> شرایط برگشت</a></li>
+                <li><a class="special-hover light right" routerLink="/page/delivery"> شرایط تحویل</a></li>
+                <li><a class="special-hover light right" routerLink="/page/usage"> شرایط استفاده</a></li>
+                <li><a class="special-hover light right" routerLink="/page/credit"> شرایط فروش اعتباری</a></li>
+                <li><a class="special-hover light right" routerLink="/page/dropship"> فروش حق العمل کاری</a></li>
+                <li><a class="special-hover light right" routerLink="/page/b2b">فروش سازمانی</a></li>
+                <!-- /page/organizational-sale -->
+
+
+                <li><a class="special-hover light right" rel="noopener" href="https://cs.goldiran.ir/"
+                    target="_blank">خدمات پس از
+                    فروش</a></li>
+                <li><a class="special-hover light right" routerLink="/page/faq"> سوالات متداول</a></li>
+              </ul>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+              <h4>حساب کاربری</h4>
+              <ul class="nav flex-column">
+                <ng-container *ngIf="this.userService.currentUser; else elseBlock">
+                  <li><a class="special-hover light right" routerLink="/profile/invoice-list">سفارش‌های من</a></li>
+                  <li><a class="special-hover light right"
+                      routerLink="/profile/favorite-products-list">علاقه‌مندی‌ها</a></li>
+                </ng-container>
+                <ng-template #elseBlock>
+                  <li><a class="special-hover light right" routerLink="/user/login">ورود به سایت</a></li>
+                  <li><a class="special-hover light right" routerLink="/user/register">ثبت نام در سایت</a></li>
+                </ng-template>
+                <li><a class="special-hover light right" routerLink="/cart">سبد خرید</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4 fa-num">
+          <div class="d-flex flex-column flex-sm-row align-items-sm-center pr-xl-3">
+            <div class="d-flex flex-column pl-2">
+              <p>
+                پشتیبانی مشتریان: تقاطع بزرگراه همت و باکری - خیابان رضوان - پلاک 1
+              </p>
+              <p class="mt-auto mb-2"><a href="mailto:support@goldiranplus.ir">support@goldiranplus.ir</a></p>
+              <p class="m-0"><span>مشاوره فروش و پشتیبانی</span> 84738 (021)</p>
+            </div>
+            <div class="enamad">
+              <a referrerpolicy="origin" target="_blank" rel="noopener"
+                href="https://trustseal.enamad.ir/?id=195939&amp;Code=Jdb6ChLCWB1UHV5Ndd9G"><img referrerpolicy="origin"
+                  src="https://Trustseal.eNamad.ir/logo.aspx?id=195939&amp;Code=Jdb6ChLCWB1UHV5Ndd9G" alt=""
+                  style="cursor:pointer" id="Jdb6ChLCWB1UHV5Ndd9G"></a>
+            </div>
+          </div>
+          <div class="d-flex mt-4 flex-wrap justify-content-lg-between socials pr-xl-3">
+            <a rel="noopener" href="https://www.aparat.com/goldiran" target="_blank">
+              <img src="/assets/images/gplus_web_signe_apparat_01.svg" alt="aparat" width="40" height="40">
+            </a>
+            <a rel="noopener" href="https://t.me/goldirangroup" target="_blank">
+              <img src="/assets/images/gplus_web_signe_telegram_01.svg" alt="telegram" width="40" height="40">
+            </a>
+            <a rel="noopener" href="https://twitter.com/goldiran_group" target="_blank">
+              <img src="/assets/images/gplus_web_signe_twitter_01.svg" alt="twitter" width="40" height="40">
+            </a>
+            <a rel="noopener" href="http://www.linkedin.com/company/goldiran" target="_blank">
+              <img src="/assets/images/gplus_web_signe_linkdin_01.svg" alt="linkedin" width="40" height="40">
+            </a>
+            <a rel="noopener" href="https://instagram.com/goldirangroup" target="_blank">
+              <img src="/assets/images/gplus_web_signe_insta_01.svg" alt="instagram" width="40" height="40">
+            </a>
+            <a rel="noopener" href="/assets/goldiran.apk" download="" class="d-flex android align-items-center">
+              <div>
+                <span>دریافت اپلیکیشن</span>
+              </div>
+              <div>
+                <img src="/assets/images/gplus_web_signe_android_01.svg" alt="android" width="20" height="20">
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="copyrights">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <p>
+            کلیه حقوق این وب سایت متعلق به صنایع گلدیران است
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button (click)="scrollTop()" id="go-top" title="Go to top"
+  [ngClass]="{'is-seller':userService.currentUser?.userType == userType.Seller || this.userService.currentUser?.userType == userType.StoreManager}">
+  <fa-icon [icon]="faCaretUp" size="2x"></fa-icon>
+</button>
+
+<div id="topbar-admin-menu"
+  *ngIf="userService.currentUser?.userType == userType.Seller || this.userService.currentUser?.userType == userType.StoreManager">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" (click)="adminNavCollapse.toggle()"
+      [attr.aria-expanded]="!admibNavIsCollapsed" aria-controls="admin-navbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="d-md-none title">دسترسی سریع به سفارش‌ها</div>
+    <div class="collapse navbar-collapse flex-column flex-xl-row" id="admin-navbar" #adminNavCollapse="ngbCollapse"
+      [(ngbCollapse)]="admibNavIsCollapsed">
+      <ul class="navbar-nav ml-xl-auto">
+        <li class="nav-item">
+          <span class="nav-link">دسترسی سریع به سفارش‌های :</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/profile/invoice-list']"
+            [queryParams]="{orderStatus: invoiceStatus.Pending}">در
+            انتظار</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/profile/invoice-list']"
+            [queryParams]="{orderStatus: invoiceStatus.PartialPayment}">پرداخت‌های ناقص</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/profile/invoice-list']"
+            [queryParams]="{orderStatus: invoiceStatus.Unverified}">پرداخت تایید نشده</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/profile/invoice-list']" [queryParams]="{date: 'today'}">امروز</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/profile/invoice-list']" [queryParams]="{date: 'week'}">هفته
+            جاری</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/profile/invoice-list']" [queryParams]="{date: 'month'}">ماه جاری</a>
+        </li>
+      </ul>
+      <div class="form-inline justify-content-center">
+        <input class="form-control ml-sm-2 fa-num invoice-number" type="text" [formControl]="saleInvoiceNumber"
+          placeholder="شماره سفارش" appConvertNumbersToEnglish>
+        <input class="form-control ml-sm-2 fa-num customer-name" type="text" [formControl]="customerFullName"
+          placeholder="خریدار" appConvertNumbersToEnglish>
+        <button class="btn btn-info my-2 my-sm-0" type="button" (click)="searchConsumer()">
+          <fa-icon [icon]="faSearch" size="lg"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<app-toasts *ngIf="isBrowser" aria-live="polite" aria-atomic="true"></app-toasts>
+<app-loading></app-loading>

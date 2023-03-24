@@ -1,0 +1,21 @@
+<div class="modal-header">
+    <h5 class="modal-title">تکمیل سفارش پست بانک</h5>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <p>
+        در صورت دارا بودن اعتبار پست بانک ، گزینه " اعتبار دریافت کرده ام" را انتخاب فرمایید. در غیر
+        اینصورت گزینه " هنوز اعتبار دریافت نکرده ام " را انتخاب نموده و با انتخاب گزینه "تایید پرداخت و
+        اتمام سفارش" رسید سفارش خود را دریافت فرمایید
+        .</p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('cancel click')">
+        هنوز اعتبار دریافت نکرده ام
+    </button>
+    <button type="button" ngbAutofocus class="btn btn-danger" (click)="onConfirmation()" [disabled]="isConfirmed">
+        اعتبار دریافت کرده ام
+    </button>
+</div>

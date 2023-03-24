@@ -1,0 +1,72 @@
+.dates {
+  padding: 0;
+  li {
+    a {
+      cursor: pointer;
+      border-radius: 0;
+      border-top-width: 1px;
+      font-size: 14px;
+      line-height: 25px;
+
+      &:not(.active) {
+        background: #f3f3f3;
+      }
+
+      &:hover:not(.active) {
+        background: #efefef;
+      }
+      &.active {
+        background-color: #f9f9f9;
+        border-bottom: 2px transparent solid;
+      }
+      &.selected {
+        border-top-width: 1px;
+        border-color: #dee2e6 !important;
+        border-bottom: 2px #d8172f solid !important;
+        background-color: #f9f9f9 !important;
+      }
+      .date-name {
+        color: #333;
+        line-height: 1.5;
+      }
+      .date-date {
+        font-size: 12px;
+        color: #999;
+        line-height: 1.5;
+      }
+    }
+  }
+  &.custom {
+    border: 0;
+    li {
+      a.active {
+        background: #f3f3f3;
+        border-top-color: transparent;
+        border-right-color: transparent;
+      }
+      a:hover:not(.selected) {
+        background: #efefef;
+      }
+      &:not(:last-child) {
+        a {
+          border-left-color: #dee2e6;
+        }
+      }
+    }
+  }
+}
+.times {
+  border-left: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  padding: 10px 15px;
+
+  .shipping-radio {
+    margin: 15px 0;
+
+    &:not(:last-child) .radio-button-label {
+      border-bottom: 1px solid #dee2e6;
+      padding-bottom: 15px;
+    }
+  }
+}

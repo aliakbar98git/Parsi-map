@@ -1,0 +1,89 @@
+<div class="row gi-box">
+  <div class="col-12 col-md-8">
+    <section>
+      <h5>خوش آمدید. لطفا وارد سایت شوید!</h5>
+      <hr />
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+          <form [ngClass]="{'lock': isSubmitted}" [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
+            <div class="form-row">
+              <div class="form-group col-12" [ngClass]="{ error: global.hasError(username) }">
+                <em *ngIf="global.hasError(username)">
+                  <span *ngIf="username.errors.required">
+                    فیلد اجباری
+                  </span>
+                  <span *ngIf="username.errors.minlength">
+                    طول رشته باید حداقل {{username.errors.minlength.requiredLength}} کاراکتر باشد.
+                  </span>
+                </em>
+                <label for="username">نام کاربری</label>
+                <input id="username" formControlName="username" type="text" class="form-control ltr" required />
+              </div>
+              <div class="form-group col-12" [ngClass]="{ error: global.hasError(password) }">
+                <em *ngIf="global.hasError(password)">
+                  <span *ngIf="password.errors.required">
+                    فیلد اجباری
+                  </span>
+                  <span *ngIf="password.errors.minlength">
+                    طول رشته باید حداقل {{password.errors.minlength.requiredLength}} کاراکتر باشد.
+                  </span>
+                </em>
+                <label for="password">کلمه عبور</label>
+                <input id="password" formControlName="password" type="password" class="form-control ltr" required />
+              </div>
+              <div class="form-group col-12" [ngClass]="{ error: global.hasError(DNTCaptchaInputText)}">
+                <em *ngIf="global.hasError(DNTCaptchaInputText)">
+                  <span *ngIf="DNTCaptchaInputText.errors.required">
+                    فیلد اجباری
+                  </span>
+                </em>
+                <input type="hidden" id="DNTCaptchaInputText" formControlName="DNTCaptchaInputText" required />
+                <app-captcha creatorPath="User/GetCaptchaConfiguration" (captchaSetValue)="captchaSetValue($event)"
+                  (captchaChangeValidators)="captchaChangeValidators($event)"></app-captcha>
+              </div>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary btn-lg">
+                ورود
+                <app-loading-inline type="inline" [isLoading]="isSubmitted"></app-loading-inline>
+              </button>
+            </div>
+          </form>
+          <div class="d-flex justify-content-between my-3">
+            <a [routerLink]="['/user/forget-password']">فراموشی رمز عبور</a>
+            <a [routerLink]="['/user/forget-username']">فراموشی نام کاربری</a>
+          </div>
+          <div>
+            <a [routerLink]="['/user/mehr']"> دریافت کنندگان پیامک فروش سازمانی بانک مهر</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="col-12 col-md-4 register-section">
+    <section *ngIf="!isGiSeller">
+      <h5>حساب کاربری ندارید؟</h5>
+      <hr />
+      <p>
+        در صورت ثبت‌نام، علاوه بر امکان خرید، شما می‌توانید وضعیت سفارش خود را
+        مشاهده و رهگیری نمایید.
+      </p>
+      <div class="text-center mt-5">
+        <a class="btn ml-3" routerLink="/user/register/real" routerLinkActive="active">ثبت نام
+          حقیقی</a>
+        <a class="btn mr-3" routerLink="/user/register/legal" routerLinkActive="active">ثبت نام
+          حقوقی</a>
+      </div>
+    </section>
+    <section *ngIf="isGiSeller">
+      <h5>پنل فروشندگان</h5>
+      <hr />
+      <p class="pt-5">
+        فروشندگان فروشگاه های گلدیران به منظور ثبت سفارش می توانند از این پنل استفاده نمایند.
+      </p>
+      <p>
+        به منظور ثبت نام لطفا با واحد پشتیبانی تماس حاصل نمایید.
+      </p>
+    </section>
+  </div>
+</div>

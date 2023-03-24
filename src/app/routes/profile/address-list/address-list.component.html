@@ -1,0 +1,29 @@
+<div class="box-white address-info">
+    <div class="row">
+        <div class="col-12">
+            <div *ngIf="addressList?.length != 0" class="list-group list-group-flush">
+                <div *ngFor="let item of addressList" class="list-group-item list-group-item-action d-flex">
+                    <div class="flex-fill d-flex flex-column">
+                        <p class="">{{item.address}}</p>
+                        <p *ngIf="item.isDefault" class="mb-2"><fa-icon [icon]="faCheckSquare"></fa-icon><span> پیش‌فرض</span></p>
+                        <p class="mb-2"><fa-icon [icon]="faMapSigns"></fa-icon><span> {{item.provinceTitle + '، ' + item.cityTitle}}</span></p>
+                        <p><fa-icon [icon]="faObjectUngroup"></fa-icon><span>{{item.typeTitle | translate}}</span></p>
+                        <div><button type="button" class="btn btn-link edit-address" (click)="openAddressDetailModal(item)">ویرایش آدرس</button></div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button type="button" class="btn btn-link" (click)="openRemoveAddressModal(item)"><fa-icon [icon]="faTimes"></fa-icon></button>
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngIf="addressList?.length == 0">
+                <p>موردی یافت نشد.</p>
+            </ng-container>
+            <app-loading-inline [isLoading]="showLoading"></app-loading-inline>
+        </div>
+        <div class="col-12">
+            <div class="action">
+                <button type="button" class="btn btn-link" (click)="openAddressDetailModal()"><fa-icon [icon]="faPlus"></fa-icon><span> افزودن آدرس جدید</span></button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+#pos-receipt {
+  .response-message {
+    text-align: center;
+    font-size: 17px;
+    color: #4caf50;
+    line-height: 60px;
+  }
+  .response-message-fail {
+    text-align: center;
+    font-size: 17px;
+    color: #dc3545;
+    line-height: 60px;
+  }
+  #inquiry {
+    line-height: 30px;
+  }
+
+  .timer {
+    direction: ltr;
+  }
+}

@@ -1,0 +1,21 @@
+<div type="button" class="close" aria-label="Close" *ngIf="editBySeller" (click)="activeModal.dismiss()">
+  <span aria-hidden="true">&times;</span>
+</div>
+<div [ngClass]="{'modal-body': editBySeller,'row': !editBySeller}">
+  <div [ngClass]="{'col-12': !editBySeller}">
+    <div [ngClass]="{'box-white': !editBySeller}">
+      <form [ngClass]="{'lock': isSubmitted}" *ngIf="personalInfo" [formGroup]="legalPersonalInfoUpdateForm"
+        (ngSubmit)="onSubmit()">
+        <app-legal-user formControlName="legalUserFields" [editable]="editBySeller"></app-legal-user>
+        <div class="text-center">
+          <button type="submit" [disabled]="legalPersonalInfoUpdateForm.invalid || isSubmitted"
+            class="btn btn-primary btn-lg">
+            ویرایش
+            <app-loading-inline type="inline" [isLoading]="isSubmitted"></app-loading-inline>
+          </button>
+        </div>
+      </form>
+      <app-loading-inline [isLoading]="showLoading"></app-loading-inline>
+    </div>
+  </div>
+</div>

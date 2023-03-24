@@ -1,0 +1,83 @@
+<div class="nav-bar">
+  <div class="container">
+    <div class="row no-gutters">
+      <div class="col-md-3">
+        <button type="button" (click)="toggleMegaMenu()" class="btn special-hover dark center mega-menu-toggle">
+          <fa-icon [icon]="faBars" size="lg"></fa-icon>
+          <span>لیست محصولات</span>
+        </button>
+        <div class="mega-menu" [ngClass]="megaMenuState">
+          <span class="indicator" [ngStyle]="{'top.px': indicatorTop}"></span>
+          <ul class="root-ul clearfix">
+            <li class="root-li" [ngClass]="{active: activeMenu === root.code}" *ngFor="let root of getRootCategories()">
+              <a class="root-a d-none d-md-block" [routerLink]="['/category/' + root.code]"
+                [ngClass]="{active: activeMenu === root.code}" (mouseenter)="onRootLi($event, root.code)">
+                {{root.title}}
+              </a>
+              <a class="root-a d-block d-md-none" [ngClass]="{active: activeMenu === root.code}"
+                (click)="onRootLi($event, root.code)">
+                {{root.title}}
+              </a>
+              <ul class="child-ul">
+                <li class="child-li" *ngFor="let middle of getChildCategories(root.id)">
+                  <a class="child-a" [routerLink]="['/category/' + middle.code]">
+                    <app-image [size]="[240]" [cssClass]="'img-fluid'" [documentInfoId]="middle.documentInfoId"
+                      [imageType]="middle.imageType" [alt]="middle.title"></app-image>
+                    <h3 class="child-h3">{{middle.title}}</h3>
+                  </a>
+                  <ul class="last-ul">
+                    <li class="last-li" *ngFor="let last of getChildCategories(middle.id)">
+                      <a class="last-a special-hover dark right"
+                        [routerLink]="['/category/' + last.code]">{{last.title}}</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="child-li d-block d-md-none">
+                  <a class="child-a" [routerLink]="['/category/' + root.code]">
+                    <h3 class="child-h3">همه موارد</h3>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div id="header-search" [ngClass]="{show: keyword.value !=''}">
+          <label for="search-box" class="sr-only">searchBox</label>
+          <div class="input-group">
+            <div class="input-group-append search-icon-container" (click)="searchProductName()">
+              <div class="input-group-text">
+                <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+              </div>
+            </div>
+            <input type="text" class="form-control search-input" id="search-box" placeholder="اینجا جستجو کنید..."
+              appConvertNumbersToEnglish [formControl]="keyword" (keyup)="searchProduct()" autocomplete="off">
+            <div class="input-group-prepend search-clear" (click)="clearSearch()" *ngIf="keyword.value!=''">
+              <div class="input-group-text">
+                <fa-icon [icon]="faTimesCircle"></fa-icon>
+              </div>
+            </div>
+          </div>
+          <div class="search-result fa-num"
+            [ngClass]="{show: keyword.value !='', 'd-flex align-items-center justify-content-center': loading}">
+            <app-loading-inline [isLoading]="loading && keyword.valid"></app-loading-inline>
+            <ng-container *ngIf="!loading">
+              <p class="empty-result" *ngIf="keyword.invalid">حداقل سه کاراکتر
+                وارد کنید.</p>
+              <p class="empty-result" *ngIf="keyword.valid && searchResult.length == 0">نتیجه ای برای
+                '{{keyword.value}}' یافت نشد.</p>
+              <div class="result-item" *ngFor="let product of searchResult">
+                <a [routerLink]="['/product', product.marketingProductModel, product.marketingProductName | concatProductName]"
+                  (click)="clearSearch()">
+                  {{product.marketingProductName}}
+                </a>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="menu-overlay" *ngIf="megaMenuState === 'down'" [@megaMenuOverlayAnimation]></div>

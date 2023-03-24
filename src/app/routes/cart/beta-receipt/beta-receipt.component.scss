@@ -1,0 +1,53 @@
+.beta-receipt {
+    padding: 24px;
+    width: auto;
+    overflow-y: scroll;
+
+    .bill-info {
+        border-radius: 3px;
+        width: 100%;
+
+        .bill-header {
+            height: 72px;
+            border-bottom: 1px dashed #dadadc;
+
+            h4 {
+                font-size: 14px;
+                font-weight: bold;
+                line-height: 2;
+                color: #3c3c3e;
+            }
+            .close {
+                
+            }
+
+        }
+
+        div.pay-value {
+            height: 42px;
+            border-radius: 2px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+
+            >div:first-child {
+                width: 59%;
+                padding-left: 6px;
+            }
+
+            >div:last-child {
+                width: 41%;
+                padding-right: 6px;
+                display: flex;
+                align-items: center;
+
+                span.value {
+                    height: 28px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    margin-left: auto;
+                }
+            }
+        }
+    }
+}

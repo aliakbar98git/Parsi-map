@@ -1,0 +1,89 @@
+<ng-container [formGroup]="realUserForm">
+  <h4 class="form-section-header">اطلاعات عمومی</h4>
+  <div class="form-row d-flex">
+    <div *ngIf="showIsForeign" class="form-group custom-checkbox col-12 col-md-6 mt-auto">
+      <label class="checkbox-label" for="isForeign">
+        تبعه خارجی هستم
+        <input id="isForeign" type="checkbox" formControlName="isForeign" />
+        <span class="check-mark"></span>
+      </label>
+    </div>
+    <div class="form-group col-12 col-md-6" *ngIf="!isForeign.value"
+      [ngClass]="{ error: global.hasError(nationalCode) }">
+      <em *ngIf="global.hasError(nationalCode)">
+        <span *ngIf="nationalCode.errors.required">
+          فیلد اجباری
+        </span>
+        <span *ngIf="nationalCode.errors.minlength || nationalCode.errors.maxlength">
+          طول رشته باید برابر با {{nationalCode.errors.minlength.requiredLength}} رقم باشد.
+        </span>
+        <span *ngIf="nationalCode.errors.nationalCode">
+          رشته نامعتبر
+        </span>
+      </em>
+      <label for="nationalCode">کد ملی</label>
+      <input id="nationalCode" type="text" formControlName="nationalCode" class="form-control ltr"
+        appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0000000000" [validation]="false" />
+    </div>
+    <div class="form-group col-12 col-md-6" *ngIf="isForeign.value"
+      [ngClass]="{ error: global.hasError(foreignerIdentityCode) }">
+      <em *ngIf="global.hasError(foreignerIdentityCode)">
+        <span *ngIf="foreignerIdentityCode.errors.required">
+          فیلد اجباری
+        </span>
+        <span *ngIf="foreignerIdentityCode.errors.maxlength">
+          طول رشته باید کمتر از {{foreignerIdentityCode.errors.maxlength.requiredLength}} رقم باشد.
+        </span>
+      </em>
+      <label for="foreignerIdentityCode">کد‌شناسایی اتباع‌خارجی</label>
+      <input id="foreignerIdentityCode" type="text" formControlName="foreignerIdentityCode" class="form-control ltr"
+        appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="9999999999999" [validation]="false"
+        [specialCharacters]="[]" />
+    </div>
+    <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(firstName) }">
+      <em *ngIf="global.hasError(firstName)">
+        <span *ngIf="firstName.errors.required">
+          فیلد اجباری
+        </span>
+      </em>
+      <label for="firstName">نام</label>
+      <input id="firstName" type="text" formControlName="firstName" class="form-control" required
+        appMaskError="لطفا زبان کیبورد خود را به پارسی تغییر دهید." [patterns]="global.customPatterns" mask="F*"
+        [specialCharacters]="[]" />
+    </div>
+    <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(lastName) }">
+      <em *ngIf="global.hasError(lastName)">
+        <span *ngIf="lastName.errors.required">
+          فیلد اجباری
+        </span>
+      </em>
+      <label for="lastName">نام‌خانوادگی</label>
+      <input id="lastName" type="text" formControlName="lastName" class="form-control" required
+        appMaskError="لطفا زبان کیبورد خود را به پارسی تغییر دهید." [patterns]="global.customPatterns" mask="F*"
+        [specialCharacters]="[]" />
+    </div>
+    <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(mobileNumber) }">
+      <em *ngIf="global.hasError(mobileNumber)">
+        <span *ngIf="mobileNumber.errors.required">
+          فیلد اجباری
+        </span>
+        <span *ngIf="mobileNumber.errors.minlength || mobileNumber.errors.maxlength">
+          طول رشته باید برابر با {{mobileNumber.errors.minlength.requiredLength}} رقم باشد.
+        </span>
+      </em>
+      <label for="mobileNumber">شماره تلفن همراه</label>
+      <input id="mobileNumber" type="text" formControlName="mobileNumber" class="form-control ltr" required
+        minlength="11" maxlength="11" appConvertNumbersToEnglish [patterns]="global.customPatterns"
+        mask="00000000000" />
+    </div>
+    <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(email) }">
+      <em *ngIf="global.hasError(email)">
+        <span *ngIf="email.errors.email">
+          ایمیل معتبر وارد کنید.
+        </span>
+      </em>
+      <label for="email">ایمیل</label>
+      <input id="email" type="email" formControlName="email" class="form-control ltr" />
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,32 @@
+.map {
+  border: 2px solid lightgray;
+  border-radius: 8px;
+}
+
+::ng-deep.mapboxgl-marker.mapboxgl-marker-anchor-center {
+  display: unset !important;
+  position: absolute !important;
+  pointer-events: auto !important;
+  // transform: translate(-50%, -50%) translate(445px, 130px) rotateX(0deg) rotateZ(0deg)!important;
+}
+::ng-deep.mapboxgl-ctrl-attrib-inner {
+  display: none;
+}
+::ng-deep.mapboxgl-ctrl-attrib-button {
+  display: none;
+}
+
+#geocoder {
+  z-index: 1;
+  margin: 20px;
+}
+.mapboxgl-ctrl-geocoder {
+  min-width: 100%;
+}
+::ng-deep .mapboxgl-canvas{
+  height: 200px!important;
+}
+
+
+
+

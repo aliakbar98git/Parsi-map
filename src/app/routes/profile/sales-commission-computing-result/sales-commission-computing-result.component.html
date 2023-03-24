@@ -1,0 +1,58 @@
+<div class="row">
+  <div class="col-12">
+    <div class="box-white">
+      <ng-container *ngIf="!showLoading">
+        <div id="filter" *ngIf="baseInfo.length > 0" [formGroup]="filterForm">
+          <div class="row">
+            <div class="form-group col-12 col-sm-6 col-lg" [ngClass]="{ error: global.hasError(year) }">
+              <em *ngIf="global.hasError(year)">
+                <span *ngIf="year.errors.required">
+                  فیلد اجباری
+                </span>
+              </em>
+              <label for="year">سال</label>
+              <ng-select [items]="baseInfo" [selectOnTab]="true"
+                        bindValue="year" bindLabel="year" placeholder="انتخاب کنید"
+                        formControlName="year"
+                        labelForId="year"
+                        (change)="setMonth($event)"></ng-select>
+            </div>
+            <div class="form-group col-12 col-sm-6 col-lg" [ngClass]="{ error: global.hasError(month) }">
+              <em *ngIf="global.hasError(month)">
+                <span *ngIf="month.errors.required">
+                  فیلد اجباری
+                </span>
+              </em>
+              <label for="month">ماه</label>
+              <ng-select [items]="monthsList" [selectOnTab]="true" labelForId="month" formControlName="month"
+              placeholder="انتخاب کنید">
+              </ng-select>
+            </div>
+            <div class="form-group col-12 col-sm-6 mt-auto">
+              <button class="btn btn-danger" ngbTooltip="حذف فیلتر ها" (click)="clearFilter()">
+                <fa-icon [icon]="faTimes"></fa-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row actions" *ngIf="baseInfo.length > 0">
+          <div class="col-12 col-md-5">
+            <button class="btn btn-info invoice-print" (click)="exportToExcel()" [disabled]="filterForm.invalid">
+              <fa-icon [icon]="faPrint" class="ml-2"></fa-icon>دریافت فایل صورتحساب
+            </button>
+            <button class="btn btn-info invoice-print" (click)="exportToExcelFullData()" [disabled]="filterForm.invalid">
+              <fa-icon [icon]="faDownload" class="ml-2"></fa-icon>دریافت فایل Excel گزارش کامل صورتحساب
+            </button>
+            <button class="btn btn-info invoice-print" (click)="exportToExcelDetailData()" [disabled]="filterForm.invalid">
+              <fa-icon [icon]="faDownload" class="ml-2"></fa-icon>دریافت فایل Excel گزارش جزئیات صورتحساب
+            </button>
+          </div>
+        </div>
+        <ng-container *ngIf="baseInfo.length === 0">
+          <span>موردی یافت نشد.</span>
+        </ng-container>
+      </ng-container>
+      <app-loading-inline [isLoading]="showLoading"></app-loading-inline>
+    </div>
+  </div>
+</div>

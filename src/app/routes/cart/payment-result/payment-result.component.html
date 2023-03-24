@@ -1,0 +1,50 @@
+<app-checkout-step [CheckoutStep]="checkoutSteps.PaymentResult"></app-checkout-step>
+
+<div class="alert alert-danger mt-5" *ngIf="invalidInput">
+  {{message}}
+</div>
+<app-loading-inline [isLoading]="paymentResult === undefined && invalidInput == false"></app-loading-inline>
+<div id="payment-result" class="bg-white" *ngIf="paymentResult !== undefined && invalidInput == false">
+  <div class="row" *ngIf="paymentResult.paymentStatus != paymentStatus.Unspecified">
+    <div class="col text-center">
+      <h6 class="mb-5">گلدیران پلاس - نتیجه تراکنش</h6>
+      <div class="text-info fa-num mb-3">شماره سفارش: {{paymentResult.invoiceNumber}}</div>
+      <div *ngIf="paymentResult.paymentStatus == paymentStatus.Canceled || paymentResult.paymentStatus == paymentStatus.Failed ||
+      paymentResult.paymentStatus == paymentStatus.FailedVerification; else elseBlock">
+        <h5 class="response-message-failed fa-num text-danger">
+          {{paymentResultMessage}}
+        </h5>
+      </div>
+      <ng-template #elseBlock>
+        <h5 class="response-message fa-num text-success">
+          {{paymentResultMessage}}
+        </h5>
+        <div class="mt-5">
+          <button id="recepit-print" class="btn btn-info" (click)="printInvoice()">
+            <fa-icon [icon]="faPrint"></fa-icon> چاپ صورت‌حساب سفارش
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-6">
+      <div class="text-right">
+        <a [routerLink]="['/profile/invoice-list']" class="btn btn-default btn-sm">
+          لیست سفارش‌های من
+        </a>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="text-left">
+        <a *ngIf="paymentResult.hasOrder" [routerLink]="['/cart/shipping']" class="btn btn-default btn-sm">
+          بازگشت به آدرس و زمان ارسال
+        </a>
+        <a *ngIf="!paymentResult.hasOrder" [routerLink]="['/']" class="btn btn-default btn-sm">
+          بازگشت به صفحه اصلی
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

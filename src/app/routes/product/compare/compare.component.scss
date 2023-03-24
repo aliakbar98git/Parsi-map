@@ -1,0 +1,223 @@
+@import "../../../global/styles.scss";
+
+.compare-header {
+  background: #fff;
+  border-bottom: 2px solid $primaryColor;
+  margin-bottom: 15px;
+  z-index: 5;
+
+  .compare-item {
+    padding-bottom: 10px;
+    padding-top: 5px;
+
+    .product-compare-remove {
+      color: #f00;
+      font-family: arial;
+      background: #f9f9f9;
+      width: 30px;
+      height: 30px;
+      border-radius: 15px;
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      cursor: pointer;
+      line-height: 28px;
+
+      &:hover {
+        background: #f0f0f0;
+      }
+    }
+    .product-image {
+      ::ng-deep img {
+        height: 120px;
+        width: auto !important;
+        @media (max-width: $max-bp-large) {
+          padding: 15px;
+        }
+      }
+    }
+    .product-name {
+      font-size: 13px;
+      height: 40px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      @media (max-width: $max-bp-medium) {
+        height: 55px;
+      }
+    }
+    .product-price {
+      color: $primaryColor;
+
+      .product-main-price {
+        text-decoration: line-through;
+        display: inline-block;
+        margin-left: 10px;
+        color: #333;
+        font-size: 12px;
+      }
+    }
+  }
+
+  .add-new-compare-item {
+    text-align: center;
+    line-height: 120px;
+
+    .add-icon {
+      cursor: pointer;
+      margin: 20px;
+      height: 85%;
+      padding-top: 10px;
+      border-radius: 30px;
+
+      &:hover {
+        background: #f9f9f9;
+      }
+
+      .icon {
+        font-size: 57px;
+        color: #4caf50;
+      }
+      h4 {
+        font-size: 13px;
+        color: #999;
+      }
+    }
+  }
+}
+
+.compare-attributes {
+  .container-contents {
+    h4 {
+      padding: 20px 0 10px 0;
+      color: #4d4d4d;
+      font-size: 16px;
+
+      .icon {
+        color: $primaryColor;
+        font-size: 22px;
+        margin-left: 10px;
+      }
+    }
+    .attribute-item-title {
+      padding: 9px 26px;
+      background-color: #eaeaea;
+    }
+    .attribute-item-values {
+      background-color: #fff;
+
+      .value {
+        padding: 5px 10px;
+        margin: 15px 0;
+        text-align: center;
+        word-break: break-all;
+
+        &:not(:nth-child(4)) {
+          border-left: 1px solid #e4e4e4;
+        }
+
+        .fa-check {
+          color: #4caf50;
+        }
+        .fa-times {
+          color: #f00;
+        }
+        .color-value {
+          border-radius: 50%;
+          border: 1px solid;
+          width: 20px;
+          height: 20px;
+          display: inline-block;
+          margin-left: 5px;
+          margin-top: 2px;
+        }
+      }
+    }
+  }
+}
+
+::ng-deep .compare-add {
+  .compare-keyword {
+    border: none;
+
+    .compare-keyword-clear {
+      float: left;
+    }
+  }
+
+  .modal-body {
+    height: 400px;
+    overflow-y: scroll;
+
+    .product-compare-item {
+      text-align: center;
+      float: right;
+      width: 33.33%;
+      @media (max-width: $max-bp-large) {
+        width: 50%;
+      }
+      @media (max-width: $max-bp-medium) {
+        text-align: right;
+        width: 100%;
+      }
+      .product-compare-item-inner {
+        margin: 10px 15px;
+        padding: 10px;
+        border: 1px solid #eaeaea;
+        cursor: pointer;
+
+        @media (max-width: $max-bp-medium) {
+          display: flex;
+          align-items: center;
+        }
+
+        &:hover {
+          border: 1px solid #a9a9a9;
+        }
+
+        .product-compare-item-image {
+          min-height: 160px;
+          @media (max-width: $max-bp-medium) {
+            max-width: 90px;
+            max-height: 90px;
+            min-height: auto;
+            margin-left: 5px;
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 90px;
+          }
+
+          ::ng-deep img {
+            height: 160px;
+            @media (max-width: $max-bp-medium) {
+              height: auto;
+              width: auto;
+            }
+          }
+        }
+
+        .product-compare-item-name {
+          font-size: 11px;
+          padding-top: 10px;
+          font-weight: bold;
+          height: 50px;
+          line-height: 21px;
+          overflow: hidden;
+          @media (max-width: $max-bp-medium) {
+            height: auto;
+            max-height: 63px;
+            padding-top: 0;
+            flex-grow: 1;
+          }
+        }
+      }
+    }
+  }
+}
+
+app-product-star {
+  ::ng-deep .product-rate .product-rate-inner {
+    @media (max-width: $max-bp-medium) {
+      height: 20px !important;
+    }
+  }
+}

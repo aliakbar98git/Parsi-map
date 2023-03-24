@@ -1,0 +1,38 @@
+<div class="modal-header">
+    <h6 class="modal-title">اشتراک‌گذاری محصول</h6>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <div class="d-flex py-3 flex-column flex-sm-row">
+        <div class="share-social ml-auto">
+            <a class="social-icon icon-linkedin" target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&amp;url={{productUrl}}&amp;source=LinkedIn">
+                <fa-icon [icon]="faLinkedinIn" size="lg"></fa-icon>
+            </a>
+            <a class="social-icon icon-google" target="_blank" href="https://plus.google.com/share?url={{productUrl}}">
+                <fa-icon [icon]="faGooglePlusG" size="lg"></fa-icon>
+            </a>
+            <a class="social-icon icon-facebook" target="_blank" href="https://www.facebook.com/sharer/sharer.php?m2w&amp;s=100&amp;p[url]={{productUrl}}">
+                <fa-icon [icon]="faFacebookF" size="lg"></fa-icon>
+            </a>
+            <a class="social-icon icon-twitter" target="_blank" href="https://twitter.com/intent/tweet/?url={{productUrl}}">
+                <fa-icon [icon]="faTwitter" size="lg"></fa-icon>
+            </a>
+            <a class="social-icon icon-telegram" target="_blank" href="https://telegram.me/share/url?url={{productUrl}}">
+                <fa-icon [icon]="faTelegram" size="lg"></fa-icon>
+            </a>
+            <a class="social-icon icon-whatsapp" target="_blank" href="https://wa.me/?text={{productUrl}}">
+                <fa-icon [icon]="faWhatsapp" size="lg"></fa-icon>
+            </a>
+        </div>
+        <div class="share-link pt-3 pt-sm-0">
+            <button type="button" class="btn btn-outline-secondary btn-sm btn-clipboard" (click)="copyToClipboard(shareLinkInput)">
+                <fa-icon [icon]="faCopy" size="lg"></fa-icon>
+                کپی لینک
+            </button>
+            <input type="text" #shareLinkInput value="{{productUrl}}">
+        </div>
+      </div>
+  </div>
+  

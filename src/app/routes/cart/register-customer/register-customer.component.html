@@ -1,0 +1,19 @@
+<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+  <span aria-hidden="true">&times;</span>
+</button>
+<div class="modal-body" id="register-customer">
+  <h4>ایجاد خریدار جدید</h4>
+  <h5 class="text-center">انتخاب نوع شخص</h5>
+  <div class="text-center register-switcher">
+    <button type="button" class="btn btn-primary btn-lg" [style.opacity]="registerReal ? 1 : 0.6"
+      (click)="registerReal=true;registerLegal=false;">حقیقی</button>
+    <button type="button" class="btn btn-primary btn-lg" [style.opacity]="registerLegal ? 1 : 0.6"
+      (click)="registerReal=false;registerLegal=true;">حقوقی</button>
+  </div>
+
+  <app-register-real-user *ngIf="registerReal" [selfRegister]="false" (onSuccessSubmit)="onCreateUser($event)">
+  </app-register-real-user>
+  <app-register-legal-user *ngIf="registerLegal" [selfRegister]="false" (onSuccessSubmit)="onCreateUser($event)">
+  </app-register-legal-user>
+
+</div>

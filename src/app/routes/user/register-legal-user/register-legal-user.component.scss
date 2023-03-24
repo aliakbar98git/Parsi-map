@@ -1,0 +1,9 @@
+@import "../../../global/styles.scss";
+
+label[for="acceptedPolicy"] a {
+  color: $primaryColor;
+}
+
+.checkbox-label {
+  display: inline-block;
+}

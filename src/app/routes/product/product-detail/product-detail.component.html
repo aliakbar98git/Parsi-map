@@ -1,0 +1,319 @@
+<app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
+<app-loading-inline [isLoading]="showLoading"></app-loading-inline>
+
+<div class="row product-detail">
+  <div class="col-md-4 col-lg-4 product-gallery">
+    <div class="product-promotion" *ngIf="hasPromotion">
+      <div class="product-promotion-counter fa-num float-left" *ngIf="showCountdown() && data?.product.hasInventory">
+        <div class="item float-left" *ngIf="remainDay > 0">
+          <div class="title">روز</div>
+          <div class="value days">{{remainDay}}</div>
+        </div>
+        <div class="item float-left">
+          <div class="title">ساعت</div>
+          <div class="value hours">{{remainHour}}</div>
+        </div>
+        <div class="item float-left">
+          <div class="title">دقیقه</div>
+          <div class="value minutes">{{remainMin}}</div>
+        </div>
+        <div class="item float-left">
+          <div class="title">ثانیه</div>
+          <div class="value seconds">{{remainSec}}</div>
+        </div>
+      </div>
+      <h4 class="promotion-active" *ngIf="data?.product.hasInventory">
+        فـروش ویـژه
+      </h4>
+      <h4 class="product-promotion-no-inventory" *ngIf="!data?.product.hasInventory">
+        اتـمام مـوجـودی فـروش ویـژه
+      </h4>
+    </div>
+    <div class="d-flex flex-column">
+      <div class="large-img-container d-flex">
+        <div class="product-vertical-actions">
+          <button type="button" placement="left" ngbTooltip="افزودن به لیست علاقه‌مندی" tooltipClass="tooltip-class"
+            (click)="favoriteToggle()" class="toggle-favorite">
+            <fa-icon [icon]="faHeart" [fixedWidth]="true" size="lg" [ngClass]="{'has-favorite':data?.favoriteStatus}">
+            </fa-icon>
+          </button>
+          <button type="button" placement="left" ngbTooltip="اشتراک‌گذاری محصول" tooltipClass="tooltip-class"
+            (click)="showShareModal()">
+            <fa-icon [icon]="faShareAlt" [fixedWidth]="true" size="lg"></fa-icon>
+          </button>
+          <button type="button" placement="left" ngbTooltip="نمودار قیمت" tooltipClass="tooltip-class"
+            (click)="showPriceHistory()">
+            <fa-icon [icon]="faChartArea" [fixedWidth]="true" size="lg"></fa-icon>
+          </button>
+          <a [routerLink]="['/compare']" [queryParams]="{productsModel: [data?.product.marketingProductModel]}"
+            placement="left" ngbTooltip="مقایسه محصول" tooltipClass="tooltip-class">
+            <fa-icon [icon]="faBalanceScale" [fixedWidth]="true" size="lg"></fa-icon>
+          </a>
+        </div>
+        <div class="large-img">
+          <app-image *ngIf="data!==undefined" [size]="[400]" [cssClass]="'img-fluid'"
+            [documentInfoId]="data?.product.documentInfoId" [imageType]="data?.product.imageType"
+            [alt]="data?.product.marketingProductName"></app-image>
+        </div>
+      </div>
+      <div class="thumb-img clearfix mt-auto">
+        <div *ngFor="let img of data?.marketingProductAttachments; index as i" (click)="showGallery()">
+          <app-image [size]="[90]" [documentInfoId]="img.documentInfoId" [imageType]="img.imageType"
+            [alt]="data?.product.marketingProductName"></app-image>
+          <span *ngIf="moreThumbImgIndex === i" class="more">
+            <fa-icon [icon]="faEllipsisH"></fa-icon>
+          </span>
+          <span *ngIf="img.isVideo" class="more play">
+            <fa-icon [icon]="faPlay"></fa-icon>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-7 col-lg-8 product-info">
+    <div class="row">
+      <div class="col">
+        <div class="product-name">
+          <h1>{{data?.product.marketingProductName}}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-lg-7 product-info">
+        <app-rate [score]="data?.product.score" [options]="{'textAlign': 'right'}"></app-rate>
+        <div class="product-related-colors"
+          *ngIf="data?.relatedMarketingProductList !== null && data?.relatedMarketingProductList.length > 0">
+          <span>انتخاب رنگ: </span>
+          <a class="related-color" *ngFor="let item of data?.relatedMarketingProductList"
+            [routerLink]="['/product', item.marketingProductModel, item.marketingProductName | concatProductName]">
+            <span class="color-value" [ngStyle]="{'background-color':ColorCode[item.color]}"></span>
+            <span>{{colorName[item.color] | translate}}</span>
+          </a>
+        </div>
+        <div class="product-header-attribute" *ngIf="data?.showHeaderContainer.length > 0">
+          <h4>ویژگی‌های محصول</h4>
+          <ul>
+            <li *ngFor="let headerItem of data?.showHeaderContainer;index as i" class="attribute-item"
+              [ngStyle]="{display: i < 3 || showMoreAttribute  ? 'block' : 'none'} ">
+              <span class="attribute-title">{{headerItem.label}}:</span>
+              <span *ngIf="(headerItem.goodsAttributeValue | lowercase) == 'true'">دارد</span>
+              <span *ngIf="(headerItem.goodsAttributeValue | lowercase) == 'false'">ندارد</span>
+              <ng-container *ngIf="headerItem.goodAttributeType==3">
+                <span class="color-value" [ngStyle]="{'background-color': headerItem.goodsAttributeValue}"></span>
+                {{headerItem.goodsAttributeItemTitle}}
+              </ng-container>
+              <span
+                *ngIf="headerItem.goodAttributeType !==2 && headerItem.goodAttributeType !==3">{{headerItem.goodsAttributeValue}}</span>
+            </li>
+          </ul>
+          <div class="show-more mb-3" *ngIf="data?.showHeaderContainer.length > 3" (click)="toggleAttribute()">
+            <span *ngIf="!showMoreAttribute">+ موارد بیشتر</span>
+            <span *ngIf="showMoreAttribute">- بستن</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-5 product-extra" [ngClass]="{disabled:data?.product.hasInventory}">
+        <div>
+          <div *ngIf="!data?.product.hasInventory" class="text-center">
+            <div class="item position-relative">
+              <div class="ribbon">نا‌موجود</div>
+              <hr />
+            </div>
+            <p>
+              متاسفانه این کالا در حال حاضر موجود نیست.
+            </p>
+            <app-notify-me *ngIf="!userService.isAuthenticated || userService.currentUser.userType == userType.Consumer" 
+              [marketingProductId]="data?.product.marketingProductId"></app-notify-me>
+          </div>
+          <div *ngIf="data?.product.hasInventory">
+            <div class="item" *ngIf="data?.guaranteeTitle">
+              <i class="fa fa-shield"></i>
+              <span>{{data?.guaranteeTitle}}</span>
+              <hr />
+            </div>
+            <div class="item product-prices fa-num" *ngIf="data?.product.price != null">
+              <div *ngIf="data?.product.price != null && data?.product.priceByDiscount == null" class="final-price">
+                <span>{{data?.product.price| number}}</span>
+                <span class="sign">تومان</span>
+              </div>
+              <div *ngIf="data?.product.price != null && data?.product.priceByDiscount != null">
+                <div class="main-price" *ngIf="data?.product.price != data?.product.priceByDiscount">
+                  <span class="discount-percent">{{data?.product.discountPercent}}</span>
+                  <span class="original-price">{{data?.product.price| number}}</span>
+                </div>
+                <div class="final-price">
+                  <span>{{data?.product.priceByDiscount | number}}</span>
+                  <span class="sign">تومان</span>
+                </div>
+              </div>
+            </div>
+            <div class="item"
+              *ngIf="(isGiSeller && userService.currentUser?.userType == userType.Seller) || !isGiSeller">
+              <button type="button" data-toggle="tooltip" class="btn add-to-cart" (click)="addToCart()"
+                [disabled]="data?.product.price == null">
+                <fa-icon [icon]="faCartPlus" class="add-to-cart-icon"></fa-icon>
+                <span>افزودن به سبد خرید</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="data?.product.additionalInfo != null && data?.product.additionalInfo != ''">
+      <div class="col product-additional-info">
+        <fa-icon [icon]="faInfoCircle" class="product-additional-info-icon"></fa-icon>
+        <div class="product-additional-info-content">
+          {{data?.product.additionalInfo}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="product-tabs" *ngIf="data !== undefined">
+  <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" (activeIdChange)="getComments()" class="nav-tabs"
+    [animation]="false">
+    <li [ngbNavItem]="1" *ngIf="data?.product.description != null && data?.product.description != ''">
+      <a ngbNavLink>
+        <fa-icon [icon]="faGlasses"></fa-icon>
+        نقد و بررسی
+      </a>
+      <ng-template ngbNavContent>
+        <div id="description" [innerHTML]="data?.product.description | safehtml"></div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+      <a ngbNavLink>
+        <fa-icon [icon]="faList" flip="both"></fa-icon>
+        مشخصات فنی
+      </a>
+      <ng-template ngbNavContent>
+        <div id="attributes">
+          <div class="pa-container" *ngFor="let attributeContainer of data?.productAttributes; let i = index">
+            <a class="pa-header" (click)="attributeCollapse.toggle()" role="button"
+              [attr.aria-expanded]="!attributeCollapse.collapsed" attr.aria-controls="attributeCollapseId-{{i}}">
+              <h4>
+                {{attributeContainer.containerTitle}}
+                <fa-icon [icon]="faCaretDown" class="float-left"></fa-icon>
+              </h4>
+            </a>
+            <div id="attributeCollapseId-{{i}}" class="pa-content container" #attributeCollapse="ngbCollapse"
+              ngbCollapse>
+              <div *ngFor="let attributeItem of attributeContainer.attributeList" class="attribute-item row">
+                <div class="col-md-5 attr-title">
+                  {{attributeItem.label}}
+                </div>
+                <div class="col-md-7 attr-value" [ngClass]="{'d-flex': attributeItem.goodAttributeType==3}">
+                  <fa-icon [icon]="faCheck" [styles]="{ 'color': '#4caf50'}"
+                    *ngIf="attributeItem.goodsAttributeValue=='True'||attributeItem.goodsAttributeValue=='true'">
+                  </fa-icon>
+                  <fa-icon [icon]="faTimes" [styles]="{'color':'#d7172f'}"
+                    *ngIf="attributeItem.goodsAttributeValue=='False'||attributeItem.goodsAttributeValue=='false'">
+                  </fa-icon>
+                  <ng-container *ngIf="attributeItem.goodAttributeType==3">
+                    <span class="color-value"
+                      [ngStyle]="{'background-color': attributeItem.goodsAttributeValue}"></span>
+                    <span>{{attributeItem.goodsAttributeItemTitle}}</span>
+                  </ng-container>
+                  <span
+                    *ngIf="attributeItem.goodsAttributeValue!='True'&&attributeItem.goodsAttributeValue!='true'&&attributeItem.goodsAttributeValue!='False'&&attributeItem.goodsAttributeValue!='false'&&attributeItem.goodAttributeType!=3">
+                    {{attributeItem.goodsAttributeValue}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="3">
+      <a ngbNavLink>
+        <fa-icon [icon]="faComments"></fa-icon>
+        نظرات کاربران
+      </a>
+      <ng-template ngbNavContent>
+        <div id="reviews">
+          <h4 *ngIf="comments === null || comments.length !== 0 ">نظرات کاربران</h4>
+          <app-loading-inline [isLoading]="comments === null"></app-loading-inline>
+          <div class="comments-list" *ngIf="comments !== null">
+            <div class="comment-item" *ngFor="let comment of getUsersComments()">
+              <div class="comment-rate product-rate float-left">
+                <app-rate [score]="comment.score"></app-rate>
+              </div>
+              <div class="comment-text">
+                {{comment.commentText}}
+              </div>
+              <div class="comment-owner">
+                ارسال شده توسط {{comment.commentOwner}} در <span
+                  class="comment-time fa-num">{{comment.createdOn|jalali:'jD jMMMM yy'}}</span>
+              </div>
+              <div class="comment-answer" *ngFor="let answer of getCommentAnswer(comment.id)">
+                {{answer.commentText}}
+                <div class="comment-answer-time">
+                  پاسخ داده شده در <span class="comment-time fa-num">{{answer.createdOn|jalali:'jD jMMMM yy'}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h4>نظر خود را بنویسید</h4>
+          <div class="alert alert-warning text-center" role="alert" *ngIf="!userService.isAuthenticated">
+            جهت ثبت نظر، لازم است وارد حساب کاربری خود شوید. <a [routerLink]="['/user/login']">ورود به حساب کاربری</a>
+          </div>
+          <div class="alert alert-success text-center" role="alert" *ngIf="commentSubmitted">
+            نظر شما با موفقیت ثبت شد و پس از بررسی در وبسایت نمایش داده خواهد شد.
+          </div>
+          <div class="alert alert-warning text-center" role="alert"
+            *ngIf="userService.isAuthenticated && userService.currentUser?.userType != userType.Consumer">
+            ثبت نظر فقط برای کاربران فروشگاه امکان پذیر است.
+          </div>
+
+          <div class="write-review row justify-content-md-center"
+            *ngIf="userService.isAuthenticated && !commentSubmitted && userService.currentUser.userType == userType.Consumer">
+            <div class="col-lg-6">
+              <form [formGroup]="commentForm" (ngSubmit)="submitComment(commentForm.value)" autocomplete="off"
+                novalidate>
+                <div class="form-group comment-text">
+                  <label>متن نظر</label>
+                  <textarea id="comment-description" class="form-control" rows="5"
+                    formControlName="commentText"></textarea>
+                </div>
+
+                <div class="form-group comment-rate text-center">
+                  <label>امتیاز</label>
+                  <input type="hidden" formControlName="commentRate" #commentRateInput>
+                  <div class="comment-stars">
+                    <fa-icon [icon]="faStar" class="comment-star" (click)="updateCommentRate(1)"
+                      (mouseenter)="commentRateOver = 1" (mouseleave)="commentRateOver = 0"
+                      [ngClass]="{'comment-star-active':getCommentRateStarStatus(1),'comment-star-over':getCommentRateStarOver(1)}">
+                    </fa-icon>
+                    <fa-icon [icon]="faStar" class="comment-star" (click)="updateCommentRate(2)"
+                      (mouseenter)="commentRateOver = 2" (mouseleave)="commentRateOver = 0"
+                      [ngClass]="{'comment-star-active':getCommentRateStarStatus(2),'comment-star-over':getCommentRateStarOver(2)}">
+                    </fa-icon>
+                    <fa-icon [icon]="faStar" class="comment-star" (click)="updateCommentRate(3)"
+                      (mouseenter)="commentRateOver = 3" (mouseleave)="commentRateOver = 0"
+                      [ngClass]="{'comment-star-active':getCommentRateStarStatus(3),'comment-star-over':getCommentRateStarOver(3)}">
+                    </fa-icon>
+                    <fa-icon [icon]="faStar" class="comment-star" (click)="updateCommentRate(4)"
+                      (mouseenter)="commentRateOver = 4" (mouseleave)="commentRateOver = 0"
+                      [ngClass]="{'comment-star-active':getCommentRateStarStatus(4),'comment-star-over':getCommentRateStarOver(4)}">
+                    </fa-icon>
+                    <fa-icon [icon]="faStar" class="comment-star" (click)="updateCommentRate(5)"
+                      (mouseenter)="commentRateOver = 5" (mouseleave)="commentRateOver = 0"
+                      [ngClass]="{'comment-star-active':getCommentRateStarStatus(5),'comment-star-over':getCommentRateStarOver(5)}">
+                    </fa-icon>
+                  </div>
+                </div>
+
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary btn-lg comment-submit"
+                    [disabled]="commentForm.invalid">ثبت نظر</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </li>
+  </ul>
+  <div [ngbNavOutlet]="nav"></div>
+</div>

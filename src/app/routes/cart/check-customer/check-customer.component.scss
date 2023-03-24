@@ -1,0 +1,277 @@
+@import "src/app/global/styles.scss";
+#check-customer {
+  .input-group-prepend {
+    cursor: pointer;
+    padding: 0;
+    border: none;
+
+    &[disabled] {
+      opacity: 0.5;
+    }
+
+    .input-group-text {
+      font-size: 13.4px;
+    }
+  }
+  ::ng-deep .modal-content {
+    height: 100%;
+  }
+}
+em {
+  font-size: 10px;
+  font-style: normal;
+  color: #f00;
+}
+h4 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #333;
+  @media (max-width: $max-bp-medium) {
+    font-size: 14px;
+  }
+}
+
+#customer-list {
+  .customer-lists {
+    margin-bottom: 15px;
+    .customer-item {
+      border: 1px solid #ececec;
+      font-size: 13px;
+      color: #999;
+      margin-bottom: 10px;
+      .customer-item-content {
+        padding: 15px;
+        label {
+          color: #333;
+          margin-left: 5px;
+        }
+
+        .update-national-code {
+          .form-group {
+            margin-bottom: 0px;
+            background: #f1fff1;
+            padding: 10px;
+            border: 1px solid #caeaca;
+            border-radius: 3px;
+            @media (max-width: $max-bp-small) {
+              flex-direction: column;
+            }
+            input {
+              height: 33px;
+              @media (max-width: $max-bp-small) {
+                margin: 5px 0
+              }
+            }
+            button {
+              height: 33px;
+              font-size: 12px !important;
+            }
+          }
+        }
+      }
+
+      .customer-item-select {
+        background: #e7f8ff;
+        color: #03a9f4;
+        width: 100%;
+        display: block;
+        padding: 8px;
+        text-align: center;
+        font-size: 11px;
+        cursor: pointer;
+
+        &:hover {
+          background: #dcf5ff;
+          color: #0085c1;
+        }
+      }
+    }
+  }
+}
+
+#customer-detail {
+  color: #777;
+
+  .label {
+    color: #333;
+    margin-left: 5px;
+  }
+}
+
+#product-info {
+  .item {
+    display: block;
+    width: 155px;
+    text-align: center;
+    padding: 5px 5px 5px 5px;
+    position: relative;
+    float: right;
+    margin: 5px 0 15px 10px;
+
+    a {
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    .item-image {
+      img {
+        display: block;
+        width: auto;
+        height: 90px;
+        margin: auto;
+      }
+    }
+    .item-name {
+      font-size: 11px;
+      line-height: 20px;
+      margin-top: 5px;
+    }
+    .item-qty {
+      position: absolute;
+      top: 75px;
+      left: 0;
+      border: solid 1px #d47a85;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      line-height: 25px;
+      font-size: 12px;
+    }
+  }
+}
+
+.pay-info {
+  &.sticky-top {
+    top: 15px;
+    z-index: 4;
+  }
+
+  .pay-info-header {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .pay-info-body {
+    .item {
+      .item-header {
+        margin-bottom: 0;
+        padding: 17.5px 20px;
+        color: #777;
+        border-top: 1px solid #e9e9e9;
+        border-bottom: 1px solid #e9e9e9;
+        position: relative;
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 1.2;
+        cursor: pointer;
+        @media (max-width: $max-bp-medium) {
+          font-size: 14px;
+        }
+        .ng-fa-icon {
+          margin-left: 10px;
+        }
+        span:not(.value) {
+          font-size: 13px;
+        }
+        .pay-value {
+          color: #4caf50;
+        }
+      }
+    }
+
+    .item-collapse > div {
+      padding: 20px;
+      margin: 0 20px;
+      border: 1px dashed #dee2e6;
+      border-top: 1px solid #f4f4f4;
+      -webkit-box-shadow: 0px 11px 8px -10px rgba(0, 0, 0, 0.06);
+      box-shadow: inset 0px 11px 8px -10px rgba(0, 0, 0, 0.06);
+      font-size: 11px;
+
+      > div {
+        padding: 0.3rem 0;
+        display: flex;
+        flex-direction: column;
+        @media (min-width: $min-bp-small) {
+          flex-direction: row;
+        }
+        @media (min-width: $min-bp-large) and (max-width: $max-bp-x-large) {
+          flex-direction: column;
+        }
+        > div:first-child {
+          width: 45%;
+          padding: 0 0 0 0.5rem;
+          @media (max-width: $max-bp-small) {
+            width: 100%;
+          }
+          @media (min-width: $min-bp-large) and (max-width: $max-bp-x-large) {
+            width: 100%;
+          }
+        }
+
+        > div:last-child {
+          width: 55%;
+          padding: 0 0.5rem 0 0;
+          @media (max-width: $max-bp-small) {
+            width: 100%;
+          }
+          @media (min-width: $min-bp-large) and (max-width: $max-bp-x-large) {
+            width: 100%;
+          }
+          span.value {
+            font-size: 13px;
+          }
+
+          span:not(.value) {
+            float: left;
+            @media (max-width: $max-bp-small) {
+              margin-right: 10px;
+              float: none;
+            }
+            @media (min-width: $min-bp-large) and (max-width: $max-bp-x-large) {
+              margin-right: 10px;
+              float: none;
+            }
+          }
+        }
+
+        &.total-amount .value {
+          color: #4caf50;
+        }
+      }
+    }
+  }
+
+  .pay-info-footer {
+    text-align: center;
+
+    .btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+    }
+  }
+}
+
+.shipping-nav {
+  margin: 20px 0;
+
+  .btn {
+    font-size: 12px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    color: #00bcd4;
+
+    &:hover {
+      text-decoration: none;
+      color: #009db1;
+    }
+    &.back-btn fa-icon {
+      margin-left: 10px;
+    }
+    &.next-btn fa-icon {
+      margin-right: 10px;
+    }
+  }
+}

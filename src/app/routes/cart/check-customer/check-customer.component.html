@@ -1,0 +1,206 @@
+<app-checkout-step [CheckoutStep]="checkoutSteps.CheckCustomer"></app-checkout-step>
+
+<app-loading-inline [isLoading]="cart === undefined"></app-loading-inline>
+
+<div *ngIf="cart !== undefined && (cart === null || cart.totalProductCount == 0)" class="alert alert-warning">
+  سبد خرید شما خالی است !
+</div>
+
+<div class="row" *ngIf="cart !== undefined && cart !== null && cart.totalProductCount > 0">
+  <div class="col-12 col-lg-8">
+    <div class="bg-white mb-4">
+      <em *ngIf="global.hasError(keyword)" class="float-left">
+        <span *ngIf="keyword.errors.required">
+          فیلد اجباری است.
+        </span>
+        <span *ngIf="keyword.errors.minlength">
+          حداقل طول رشته باید برابر با {{keyword.errors.minlength.requiredLength}} رقم باشد.
+        </span>
+      </em>
+      <h4>مشخصات خریدار</h4>
+      <div id="check-customer" *ngIf="customerSelected == undefined">
+        <div class="input-group mb-2">
+          <input type="text" id="search-keyword" class="form-control customer-keyword fa-num" appConvertNumbersToEnglish
+            [patterns]="global.customPatterns" mask="00*" placeholder="جستجو مشتری بر اساس شماره تلفن همراه یا کد ملی"
+            [formControl]="keyword" (keydown.enter)="checkCustomer()">
+          <button class="input-group-prepend" (click)="checkCustomer()" [disabled]="keyword.invalid">
+            <div class="input-group-text">
+              <fa-icon [icon]="faSearch"></fa-icon>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div id="customer-list" *ngIf="customers !== undefined && customerSelected == undefined">
+        <hr>
+        <h4 *ngIf="customers.length != 0">مشتریان مطابق با کلمه کلیدی شما</h4>
+        <div class="customer-lists">
+          <div class="customer-item" *ngFor="let customer of customers; index as i">
+            <div class="customer-item-content">
+              <div class="row">
+                <div class="col-12 col-md-6" *ngIf="customer.title == null || customer.title == ''">
+                  <label>نام و نام‌خانوادگی :</label><span>{{customer.firstName}} {{customer.lastName}}</span>
+                </div>
+                <div class="col-12 col-md-6" *ngIf="customer.title != null && customer.title != ''">
+                  <label>نام :</label><span>{{customer.title}}</span>
+                </div>
+                <div class="col-12 col-md-6 fa-num"><label>کد ملی :</label><span
+                    class="customer-national-code">{{customer.nationalCode}}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 col-md-6 fa-num"><label>شماره تلفن :</label><span>{{customer.phoneNumber}}</span>
+                </div>
+                <div class="col-12 col-md-6"><label>ایمیل :</label><span>{{customer.email}}</span></div>
+              </div>
+              <div class="update-national-code"
+                *ngIf="!customer.nationalCodeIsValidate && customer.personType == personType.RealPerson">
+                <div class="form-group form-inline">
+                  <label class="checkbox-label ml-4" for="isForeign">
+                    تبعه خارجی
+                    <input id="isForeign" type="checkbox" [formControl]="isForeign" />
+                    <span class="check-mark"></span>
+                  </label>
+                  <input type="text" id="new-national-id" class="col-12 col-sm-4 ml-3 form-control fa-num text-center"
+                    appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="00*"
+                    [formControl]="newNationalCode" [placeholder]="isForeign.value?'کد اتباع خارجی':'کد ملی'">
+                  <button class="btn btn-info ml-3" (click)="updateNationalCode(customer,i)"
+                    [disabled]="newNationalCode.invalid">بروزرسانی کد ملی</button>
+                  <em *ngIf="global.hasError(newNationalCode)">
+                    <span *ngIf="newNationalCode.errors.required">
+                      فیلد اجباری است.
+                    </span>
+                    <span *ngIf="newNationalCode.errors.minlength">
+                      حداقل طول رشته باید برابر با {{newNationalCode.errors.minlength.requiredLength}} رقم باشد.
+                    </span>
+                  </em>
+                </div>
+              </div>
+            </div>
+            <span class="customer-item-select" (click)="selectCustomer(customer)">انتخاب مشتری به عنوان خریدار</span>
+          </div>
+        </div>
+        <div class="alert alert-warning" *ngIf="customers.length != 0">
+          در صورتی که اطلاعات موجود در سیستم با اطلاعات مشتری تطبیق ندارد یک مشتری جدید ایجاد نمایید.
+        </div>
+        <div class="alert alert-warning" *ngIf="customers.length == 0">
+          مشتری با اطلاعات وارد شده یافت نشد.
+        </div>
+        <div class="text-left">
+          <button class="btn btn-success" (click)="createCustomer()">ثبت مشتری جدید</button>
+        </div>
+      </div>
+      <div id="customer-detail" *ngIf="customerSelected != undefined">
+        <div class="row">
+          <div class="col-12 col-sm-6">
+            <span class="label">نام خریدار :</span>
+            <span class="customer-name">{{customerSelected.title}}</span>
+            <span class="customer-name">{{customerSelected.firstName}} {{customerSelected.lastName}}</span>
+          </div>
+          <div class="col-12 col-sm-6">
+            <span class="label">کد ملی :</span>
+            <span class="customer-nationalcode fa-num">
+              {{customerSelected.nationalCode}}
+            </span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-sm-6 fa-num">
+            <span class="label">شماره تلفن :</span><span class="customer-MobileNumber">
+              {{customerSelected.phoneNumber}}</span>
+          </div>
+          <div class="col-12 col-sm-6">
+            <span class="label">آدرس ایمیل :</span><span class="customer-email"> {{customerSelected.email}}</span>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col">
+            <button class="btn btn-secondary float-left" (click)="changeCustomer()">تغییر خریدار</button>
+            <button class="btn btn-info float-left ml-2" (click)="editCustomer()"
+              *ngIf="customerSelected.editable || customerSelected.representativePersonEditable">
+              ویرایش اطلاعات خریدار
+            </button>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <h4>آیتم‌های سفارش</h4>
+      <div id="product-info">
+        <div class="item" *ngFor="let product of cart.orderItems">
+          <a [routerLink]="['/product', product.marketingProductModel, product.marketingProductName | concatProductName]"
+            target="_blank">
+            <div class="item-image">
+              <app-image [size]="[90]" [documentInfoId]="product.productDocumentInfoId" [imageType]="product.imageType">
+              </app-image>
+            </div>
+            <div class="item-name">{{product.marketingProductName}}</div>
+            <div class="item-qty fa-num" placement="top" ngbTooltip="تعداد">{{product.quantity}}</div>
+          </a>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-4">
+    <div class="pay-info bg-white sticky-top">
+      <h4 class="pay-info-header">صورتحساب</h4>
+      <div class="pay-info-body">
+        <div class="item fa-num">
+          <div class="item-header d-flex justify-content-between" (click)="payInfoVisible=!payInfoVisible">
+            <div>
+              <fa-icon [icon]="faAngleLeft" *ngIf="!payInfoVisible"></fa-icon>
+              <fa-icon [icon]="faAngleDown" *ngIf="payInfoVisible"></fa-icon>
+              <span>مبلغ کل</span>
+            </div>
+            <div class="pay-value total-amount">
+              <span class="value ml-1">{{cart.paymentAmount|number}}</span>
+              <span>ریال</span>
+            </div>
+          </div>
+          <div class="item-collapse" *ngIf="payInfoVisible">
+            <div>
+              <div class="pay-value products-amount">
+                <div>مبلغ کل محصولات</div>
+                <div><span class="value">{{cart.totalAmount|number}}</span> <span>ریال</span></div>
+              </div>
+              <div class="pay-value shipping-amount">
+                <div>هزینه ارسال</div>
+                <div><span class="value no-value">نامشخص</span></div>
+              </div>
+              <div class="pay-value total-tax-amount">
+                <div>مالیات برارزش‌افزوده</div>
+                <div><span class="value">{{cart.taxAmount|number}}</span> <span>ریال</span></div>
+              </div>
+              <div class="pay-value total-amount">
+                <div>مبلغ قابل پرداخت</div>
+                <div><span class="value">{{cart.paymentAmount|number}}</span> <span>ریال</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pay-info-footer">
+        <button class="btn btn-info pay-info-action" type="button" (click)="submitCustomer()"
+          [disabled]="customerSelected === undefined">
+          تایید وادامه ثبت سفارش
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-8">
+    <div class="row no-gutters shipping-nav">
+      <div class="col">
+        <a class="btn btn-link back-btn" routerLink="/cart">
+          <fa-icon [icon]="faLongArrowAltRight"></fa-icon>
+          بازگشت به سبد خرید
+        </a>
+      </div>
+      <div class="col text-left">
+        <button class="btn btn-link next-btn" type="button" (click)="submitCustomer()"
+          [disabled]="customerSelected === undefined">
+          تایید و ادامه ثبت سفارش
+          <fa-icon [icon]="faLongArrowAltLeft"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

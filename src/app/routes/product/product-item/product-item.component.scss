@@ -1,0 +1,189 @@
+@import "../../../global/styles.scss";
+
+.product-item {
+  margin-bottom: 15px;
+  border: 1px solid #d9e4ea;
+  background-color: #fff;
+  position: relative;
+  z-index: 0;
+  padding: 0;
+  display: block;
+
+  &:hover {
+    border-color: #a9becb;
+  }
+
+  .product-image {
+    padding: 19px 34.5px;
+    display: block;
+    @media (min-width: $min-bp-xx-large) {
+      min-height: 258px;
+    }
+    @media (max-width: $max-bp-xx-large) {
+      min-height: 233px;
+    }
+    @media (max-width: $max-bp-x-large) {
+      min-height: 267px;
+    }
+    @media (max-width: $max-bp-large) {
+      min-height: 304px;
+    }
+    @media (max-width: $max-bp-medium) {
+      min-height: 214px;
+    }
+    @media (max-width: $max-bp-small) {
+      min-height: 183px;
+    }
+
+    app-image ::ng-deep img {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: auto;
+    }
+  }
+
+  .product-name {
+    margin-bottom: 6.5px;
+    text-align: right !important;
+    line-height: 21px;
+    height: 65px;
+    padding: 0 15px;
+    direction: rtl;
+    overflow: hidden;
+
+    a {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: #42708b;
+    }
+  }
+
+  .product-rate-ribbon {
+    margin: 6.5px 0 6.5px 0;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    height: 19px;
+    align-items: center;
+  }
+  .product-price {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 12.5px 0 8px 0;
+    text-align: left !important;
+    padding: 0 15px;
+    line-height: 27.86px;
+    height: 28.36px;
+
+    @media (max-width: $max-bp-xx-large) {
+      line-height: 22.4px;
+      height: 45px;
+    }
+
+    > div {
+      height: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .discount-percent {
+      background: $primaryColor;
+      color: #fff;
+      border-radius: 3px;
+      padding: 0 6px;
+      height: 24px;
+      line-height: 26px;
+    }
+
+    .main-price {
+      color: #728d9d;
+      text-decoration: line-through;
+      margin: 0 5px;
+      line-height: 28.36px;
+
+      @media (max-width: $max-bp-xx-large) {
+        line-height: 22.4px;
+      }
+    }
+
+    .price-by-discount {
+      color: #3f4d56;
+      line-height: 28.36px;
+
+      @media (max-width: $max-bp-xx-large) {
+        width: 100%;
+        margin-top: auto;
+        line-height: 22.4px;
+      }
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .product-promotion-container {
+    padding: 0 15px;
+    font-weight: 500;
+    font-size: 13px;
+    color: #728d9d;
+    margin: 8px 0 15px 0;
+    height: 20.8px;
+    position: relative;
+
+    .product-promotion-text,
+    .product-promotion-no-inventory {
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 20.08px;
+    }
+
+    .add-compare {
+      background: #fff;
+      color: #ccc;
+      cursor: pointer;
+      border: none;
+      padding: 5px;
+      position: absolute;
+      right: 10px;
+      top: -6px;
+
+      &.active {
+        color: $primaryColor;
+      }
+
+      @media not all and (pointer: coarse) {
+        &:hover {
+          color: $primaryColor;
+        }
+      }
+
+      fa-icon {
+        font-size: 19px;
+      }
+    }
+  }
+  .product-add-button {
+    padding: 0 15px;
+    margin-bottom: 15px;
+
+    button.add-to-cart {
+      width: 100%;
+      color: white;
+      transition: all 150ms ease-in-out;
+
+      &:hover {
+        color: $primaryColor !important;
+        background-color: #f2979b !important;
+      }
+
+      &:disabled {
+        color: #f2979b !important;
+        background-color: #ffeaee !important;
+        cursor: default !important;
+      }
+    }
+  }
+}

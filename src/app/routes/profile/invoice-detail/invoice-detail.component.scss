@@ -1,0 +1,165 @@
+@import "../../../global/styles.scss";
+table {
+    border-bottom: 1px solid #dee2e6;
+    
+    th {
+        color: #999;
+    }
+    tbody {
+        td:first-child {
+            width: 55%;
+        }
+
+        td {
+            vertical-align: middle;
+
+            app-image {
+                min-width: 90px !important;
+            }
+
+            .product-name {
+                min-width: 250px;
+            }
+        }
+    }
+
+}
+
+.total-info {
+    .label, .value {
+        line-height: 30px;
+    }
+}
+
+.prices {
+    .label {
+        color: #999;
+        text-align: left;
+        @media (max-width: $max-bp-medium) {
+            text-align: right;
+        }
+    }
+}
+
+.actions {
+    a {
+        font-weight: bold;
+    }
+}
+
+ngx-slick-carousel {
+    ::ng-deep .slick-arrow {
+      height: 40px;
+      width: 20px;
+      opacity: 0.75;
+      background-color: rgba(255, 255, 255, 0.7);
+      top: calc(50% - 20px);
+      -webkit-transition: all 0.25s ease;
+      -moz-transition: all 0.25s ease;
+      -o-transition: all 0.25s ease;
+      transition: all 0.25s ease;
+      position: absolute;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: center;
+      align-items: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      color: #666;
+      text-align: center;
+      z-index: 9;
+      vertical-align: middle;
+      font-size: 28px;
+      left: 0;
+  
+      &.slick-prev {
+        right: 0;
+        padding-left: 8px;
+        border-radius: 40px 0 0 40px;
+      }
+  
+      &.slick-next {
+        padding-right: 8px;
+        border-radius: 0 40px 40px 0;
+      }
+      
+      &:not(.slick-disabled):hover {
+          opacity: 1;
+          cursor: pointer;
+      }
+    }
+
+}
+
+.invoice-flow {
+    .invoice-flow-item {
+        border-bottom: 4px double #e0e0e0;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        position: relative;
+        min-width: 155px;
+
+        .icon {
+            img {
+                display: block;
+                margin: auto;
+                width: 64px;
+                height: auto;
+            }
+        }
+
+        h5 {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        ::after {
+            position: absolute;
+            border-radius: 50%;
+            background: #ccc;
+            content: ' ';
+            height: 8px;
+            width: 8px;
+            left: 50%;
+            bottom: -6px;
+        }
+
+        &.passed {
+            .icon img {
+                opacity: 0.4;
+            }
+
+            h5 {
+                color: #999;
+            }
+        }
+
+        &.active {
+            .icon img {
+                opacity: 1;
+            }
+
+            h5 {
+                color: #333;
+            }
+
+            ::after {
+                background: $primaryColor;
+                border: 5px solid $primaryColor;
+                bottom: -7px;
+            }
+        }
+
+        &.deactive {
+            .icon img {
+                filter: grayscale(100%);
+                opacity: 0.08;
+            }
+            
+            h5 {
+                color: #ababab;
+            }
+        }
+    }
+}

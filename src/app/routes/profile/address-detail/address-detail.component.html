@@ -1,0 +1,134 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ modalTitle }}</h5>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [ngClass]="{ lock: isSubmitted }" id="addressDetailForm" [formGroup]="addressDetailForm" (ngSubmit)="onSubmit()"
+    class="container-fluid" novalidate>
+    <div class="form-row">
+      <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(cityId) }">
+        <em *ngIf="global.hasError(cityId)">
+          <span *ngIf="cityId.errors.required"> فیلد اجباری </span>
+        </em>
+        <label for="cityId">شهر</label>
+        <ng-select [appCitySelect]="parishSelect" [selectOnTab]="true" bindValue="cityOrParishId"
+          bindLabel="cityOrParish" labelForId="cityId" placeholder="انتخاب کنید." formControlName="cityId">
+        </ng-select>
+      </div>
+      <div class="form-group col-12 col-md-6">
+        <label for="parishId">محله</label>
+        <ng-select #parishSelect [selectOnTab]="true" bindValue="cityOrParishId" bindLabel="cityOrParish"
+          labelForId="parishId" placeholder="انتخاب کنید." formControlName="parishId" (ngModelChange)="changeValue()">
+          <ng-template ng-loadingspinner-tmp>
+            <app-loading-inline type="inline"></app-loading-inline>
+          </ng-template>
+        </ng-select>
+      </div>
+    </div>
+    <p class="alert alert-warning">لطفا روی محل دقیق ارسال در نقشه کلیک کنید.</p>
+    <app-openl></app-openl>
+
+    <div class="form-row pt-2">
+      <div class="form-group col-12" [ngClass]="{ error: global.hasError(addressContent) }">
+        <em *ngIf="global.hasError(addressContent)">
+          <span *ngIf="addressContent.errors.required"> آدرس ارسال را روی نقشه انتخاب کنید.</span>
+        </em>
+        <label for="address">آدرس</label>
+        <input readonly class="form-control" id="Address" formControlName="address" rows="2" type="text"
+          [patterns]="global.customPatterns" mask="S*" [specialCharacters]="[]" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-12" [ngClass]="{ error: global.hasError(addressContent) }">
+        <label for="address">اطلاعات تکمیلی آدرس</label>
+        <input class="form-control" id="Address" rows="2" type="text" formControlName="additionalAddressInfo" />
+      </div>
+    </div>
+
+    <div class="form-row pt-2">
+      <div class="form-group col-12 col-md-3" [ngClass]="{ error: global.hasError(houseNumber) }">
+        <em *ngIf="global.hasError(houseNumber)">
+          <span *ngIf="houseNumber.errors.required"> فیلد اجباری </span>
+          <span *ngIf="houseNumber.errors.pattern"> عدد وارد کنید. </span>
+        </em>
+        <label for="houseNumber">پلاک</label>
+        <input id="houseNumber" type="number" class="form-control ltr" required formControlName="houseNumber" />
+      </div>
+
+      <div class="form-group col-12 col-md-3" [ngClass]="{ error: global.hasError(floorNumber) }">
+        <em *ngIf="global.hasError(floorNumber)">
+          <span *ngIf="floorNumber.errors.required"> فیلد اجباری </span>
+          <span *ngIf="floorNumber.errors.pattern"> عدد وارد کنید. </span>
+        </em>
+        <label for="floorNumber">طبقه</label>
+        <input id="floorNumber" type="number" class="form-control ltr" formControlName="floorNumber" required />
+      </div>
+
+      <div class="form-group col-12 col-md-3" [ngClass]="{ error: global.hasError(unitNumber) }">
+        <em *ngIf="global.hasError(unitNumber)">
+          <span *ngIf="unitNumber.errors.required"> فیلد اجباری </span>
+          <span *ngIf="unitNumber.errors.pattern"> عدد وارد کنید. </span>
+        </em>
+        <label for="unitNumber">واحد</label>
+        <input id="unitNumber" type="number" class="form-control ltr" formControlName="unitNumber"
+          appConvertNumbersToEnglish required />
+      </div>
+
+      <div class="form-group col-12 col-md-3" [ngClass]="{ error: global.hasError(hasElevator) }">
+        <em *ngIf="global.hasError(hasElevator)">
+          <span *ngIf="hasElevator.errors.required"> فیلد اجباری </span>
+        </em>
+        <label for="hasElevator">امکان حمل باآسانسور</label>
+        <ng-select [items]="elevatordata" bindLabel="name" [virtualScroll]="true" appendTo="body" bindValue="value"
+          formControlName="hasElevator" placeholder="انتخاب کنید.">
+        </ng-select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(contactNumber) }">
+        <em *ngIf="global.hasError(contactNumber)">
+          <span *ngIf="contactNumber.errors.required"> فیلد اجباری </span>
+          <span *ngIf="contactNumber.errors.pattern"> عدد وارد کنید. </span>
+        </em>
+        <label for="contactNumber">تلفن ثابت</label>
+        <input id="contactNumber" type="text" formControlName="contactNumber" class="form-control ltr" required
+          appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0*" />
+      </div>
+
+      <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(postalCode) }">
+        <em *ngIf="global.hasError(postalCode)">
+          <span *ngIf="postalCode.errors.minlength || postalCode.errors.maxlength">
+            طول رشته باید برابر با{{ postalCode.errors.minlength.requiredLength }} عدد باشد.
+          </span>
+        </em>
+        <label for="postalCode">کد پستی</label>
+        <input type="text" class="form-control ltr" formControlName="postalCode" minlength="10" maxlength="10"
+          appConvertNumbersToEnglish [patterns]="global.customPatterns" mask="0000000000" />
+      </div>
+    </div>
+
+    <!-- <div class="form-row">
+      <div class="form-group custom-checkbox col-12 col-md-6">
+        <label class="checkbox-label" for="isDefault">
+          انتخاب به عنوان آدرس پیش فرض
+          <input id="isDefault" type="checkbox" formControlName="isDefault"/>
+          <span class="check-mark"></span>
+        </label>
+      </div>
+    </div> -->
+  </form>
+</div>
+<div class="modal-footer">
+  <button form="addressDetailForm" type="submit" class="btn btn-primary btn-lg"
+    [disabled]="addressDetailForm.invalid || isSubmitted">
+    ثبت
+    <app-loading-inline type="inline" [isLoading]="isSubmitted"></app-loading-inline>
+  </button>
+  <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('cancel click')">
+    انصراف
+  </button>
+</div>

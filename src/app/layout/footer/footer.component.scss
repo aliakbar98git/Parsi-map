@@ -1,0 +1,204 @@
+@import "src/app/global/styles.scss";
+
+#footer {
+  color: #fff;
+
+  .footer-links {
+    background-color: #222430;
+    padding: 50px 0 30px;
+    @media (min-width: $min-bp-medium) and (max-width: $max-bp-x-large) {
+      padding-bottom: 50px;
+    }
+    h4 {
+      font-size: 14px;
+      font-weight: normal;
+      padding: 5px 10px;
+      border-right: 3px solid $primaryColor;
+      margin-bottom: 0.8rem;
+    }
+
+    ul {
+      padding: 0px;
+
+      li {
+        position: relative;
+        display: block;
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: white;
+    }
+
+    a.logo {
+      margin-bottom: 2.5rem;
+      display: inline-block;
+
+      img {
+        width: 190px;
+        height: 64px;
+      }
+    }
+
+    .enamad a img {
+      width: 108px;
+      height: 121px;
+      background-color: #ffffff;
+      border-radius: 3px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .socials {
+      a {
+        @media (max-width: $max-bp-large) {
+          margin-bottom: .5rem;
+        }
+      }
+
+      a:not(:last-child) {
+        @media (max-width: $max-bp-large) {
+          margin-left: 12px;
+        }
+
+        img {
+          width: 40px;
+          height: 40px;
+          @media (max-width: $max-bp-x-large) {
+            width: 30px;
+            height: 30px;
+          }
+        }
+      }
+
+      a.android {
+        height: 40px;
+        font-size: 11px;
+        line-height: 1.5;
+        width: 108px;
+        background-color: #8bc34a;
+        border-radius: 3px;
+
+        @media (max-width: $max-bp-xx-large) {
+          width: 82px;
+        }
+
+        @media (max-width: $max-bp-x-large) {
+          height: 30px;
+          font-size: 10px;
+          line-height: 1.2;
+        }
+        
+        > div {
+          margin: 5px;
+          @media (max-width: $max-bp-x-large) {
+            margin: 4px;
+          }
+        }
+
+        img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+
+  .copyrights {
+    background-color: #434553;
+    font-size: 12px;
+    text-align: center;
+    border-top: 1px solid #707070;
+
+    p {
+      margin: 0.8rem 0;
+    }
+  }
+}
+
+#go-top {
+  position: fixed;
+  bottom: 7px;
+  right: 10px;
+  z-index: 98;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: #c8c8c8;
+  color: white;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  
+  &:hover {
+    background-color: $primaryColor;
+  }
+
+  &.is-seller {
+    bottom: 60px;
+    @media (min-width: $min-bp-medium) and (max-width: $max-bp-x-large) {
+      bottom: 95px;
+    }
+  }
+}
+
+#topbar-admin-menu {
+  position: fixed;
+  background: #333;
+  width: 100%;
+  text-align: center;
+  color: #c3c3c3;
+  bottom: 0px;
+  z-index: 1021;
+
+  .navbar {
+    .navbar-toggler {
+      z-index: 1;
+    }
+    .title {
+      text-align: center;
+      margin-right: -46px;
+      width: 100%;
+    }
+
+    ul.navbar-nav {
+      padding: 0px;
+
+      li.nav-item {
+        margin-left: 7px;
+
+        &:first-child {
+          @media (max-width: $max-bp-medium) {
+            display: none;
+          }
+        }
+
+        a.btn {
+          font-size: 12px;
+          line-height: 25px;
+          border-radius: 3px;
+        }
+
+        span.nav-link {
+          font-size: 13px;
+          color: #fff;
+        }
+      }
+    }
+
+    .form-inline {
+      .form-control {
+        font-size: 12px !important;
+        height: 35px !important;
+        border-radius: 0;
+        @media (max-width: $max-bp-small) {
+          margin-bottom: .5rem;
+        }
+      }
+      .btn {
+        border-radius: 0;
+      }
+    }
+  }
+}

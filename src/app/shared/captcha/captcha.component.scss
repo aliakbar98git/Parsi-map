@@ -1,0 +1,32 @@
+@import "../../global/styles.scss";
+
+.captcha-container {
+  .captcha {
+    flex-direction: row-reverse;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0;
+    align-items: center;
+
+    .captcha-reload {
+      padding: 0 10px;
+      cursor: pointer;
+      color: #555;
+
+      &:hover {
+        color: $primaryColor;
+      }
+    }
+    .captcha-img {
+    }
+    .captcha-input {
+      border: none;
+      color: #495057;
+      margin: 0 5px;
+      flex: 1;
+      text-align: center !important;
+      direction: ltr !important;
+    }
+  }
+}

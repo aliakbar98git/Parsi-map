@@ -1,0 +1,18 @@
+<app-loading-inline [isLoading]="pageData === undefined"></app-loading-inline>
+
+<div class="bg-white page-view p-5" *ngIf="pageData !== undefined">
+  <h5 class="page-title mb-4">{{pageData.title}}</h5>
+  <div class="policy-content" [innerHTML]="pageData.pageContent"></div>
+
+  <hr class="mt-5 mb-5" />
+
+  <label class="checkbox-label" for="acceptedPolicy">
+    من قوانین سایت را خوانده و با آن موافقم.
+    <input id="acceptedPolicy" type="checkbox" [formControl]="acceptedPolicy" />
+    <span class="check-mark"></span>
+  </label>
+  <div class="text-center">
+    <button type="button" class="btn btn-primary btn-lg" [disabled]="!acceptedPolicy.value"
+      (click)="submitPolicy()">تایید قوانین</button>
+  </div>
+</div>

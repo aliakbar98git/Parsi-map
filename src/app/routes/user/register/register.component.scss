@@ -1,0 +1,17 @@
+
+@import "/src/app/global/styles.scss";
+
+.register-switch {
+  a {
+    opacity: 0.6;
+    border-radius: 2px !important;
+    padding: 10px 15px;
+    @media (max-width: $max-bp-small) {
+      margin: 0 .25rem .5rem .25rem !important;
+    }
+
+    &.active {
+      opacity: 1;
+    }
+  }
+}

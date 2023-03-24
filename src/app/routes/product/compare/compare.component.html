@@ -1,0 +1,107 @@
+<app-loading-inline [isLoading]="products === undefined"></app-loading-inline>
+<div class="alert alert-warning" *ngIf="products !== undefined && products.length === 0">
+  موردی برای مقایسه یافت نشد.
+</div>
+<div class="row compare-header sticky-top" *ngIf="products !== undefined && products.length > 0">
+  <div class="col-6 col-md-3 compare-item text-center" *ngFor="let product of products; index as i">
+    <div class="product-compare-remove" (click)="removeFromCompare(product.marketingProductModel)">
+      <fa-icon [icon]="faTimes"></fa-icon>
+    </div>
+    <div class="product-image">
+      <a [routerLink]="['/product', product.marketingProductModel, product.marketingProductName | concatProductName]">
+        <app-image [size]="[240]" [cssClass]="'img-fluid'" [documentInfoId]="product.documentInfoId"
+          [imageType]="product.imageType">
+        </app-image>
+      </a>
+    </div>
+    <app-product-star [score]="product.score"></app-product-star>
+    <div class="product-name">
+      <a [routerLink]="['/product', product.marketingProductModel, product.marketingProductName | concatProductName]">
+        {{product.marketingProductName}}
+      </a>
+    </div>
+    <div class="product-price fa-num d-flex flex-column-reverse flex-lg-row justify-content-center"
+      *ngIf="product.hasInventory">
+      <span class="product-main-price"
+        *ngIf="product.price != product.priceByDiscount && product.priceByDiscount != 0">{{product.price|number}}</span>
+      <span *ngIf="product.priceByDiscount != 0">{{product.priceByDiscount|number}} تومان</span>
+    </div>
+    <div class="product-price fa-num" *ngIf="!product.hasInventory">نامـــوجود</div>
+  </div>
+  <div class="col-6 col-md-3 header-item add-new-compare-item" *ngIf="products&&showAddToCompare">
+    <div class="add-icon" (click)="openAddModal(addModal)">
+      <fa-icon class="icon" [icon]="faPlusSquare"></fa-icon>
+      <h4>افزودن کالا به لیست مقایسه</h4>
+    </div>
+  </div>
+</div>
+
+<div class="compare-attributes" *ngIf="products !== undefined">
+  <div class="row no-gutters">
+    <div class="col-12 container-contents" *ngFor="let containers of getContainers(); index as i">
+      <div class="row">
+        <div class="col-12 container-title">
+          <h4>
+            <fa-icon class="icon" [icon]="faAngleLeft"></fa-icon>{{containers.containerTitle}}
+          </h4>
+        </div>
+      </div>
+      <div *ngFor="let attributeTitle of getAttributeTitles(i); index as j">
+        <div class="row">
+          <div class="col-12 attribute-item-title">
+            {{attributeTitle.label}}
+          </div>
+        </div>
+        <div class="row attribute-item-values">
+          <div class="col-6 col-md-3 value" *ngFor="let attributeValue of getAttributeValues(i,j)"
+            [ngClass]="{'d-flex': attributeValue.goodAttributeType==3,'justify-content-center': attributeValue.goodAttributeType==3}">
+            <span class="fa-check"
+              *ngIf="attributeValue.goodsAttributeValue == 'True' || attributeValue.goodsAttributeValue == 'true'">
+              <fa-icon [icon]="faCheck"></fa-icon>
+            </span>
+            <span class="fa-times"
+              *ngIf="attributeValue.goodsAttributeValue == 'False' || attributeValue.goodsAttributeValue == 'false'">
+              <fa-icon [icon]="faTimes"></fa-icon>
+            </span>
+            <ng-container *ngIf="attributeValue.goodAttributeType==3">
+              <span class="color-value" [ngStyle]="{'background-color': attributeValue.goodsAttributeValue}"></span>
+              <span>{{attributeValue.goodsAttributeItemTitle}}</span>
+            </ng-container>
+            <span
+              *ngIf="attributeValue.goodsAttributeValue!='True'&&attributeValue.goodsAttributeValue!='true'&&attributeValue.goodsAttributeValue!='False'&&attributeValue.goodsAttributeValue!='false'&&attributeValue.goodAttributeType!=3">
+              {{attributeValue.goodsAttributeValue}}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #addModal let-modal>
+  <div class="modal-header">
+    <input class="compare-keyword" type="text" class="form-control" placeholder="جستجو کالا ..." #keyword
+      (keyup)="getComparableProducts(keyword.value)">
+    <fa-icon [icon]="faTimes" class="mr-2 compare-keyword-clear" (click)="keyword.value=''; getComparableProducts();"
+      *ngIf="keyword.value!=''">
+    </fa-icon>
+  </div>
+  <div class="modal-body">
+    <app-loading-inline [isLoading]="comparableProducts === undefined"></app-loading-inline>
+    <div class="alert alert-warning" *ngIf="comparableProducts !== undefined && comparableProducts.length == 0">
+      متاسفانه موردی یافت نشد.
+    </div>
+    <div class="product-compare-item" *ngFor="let product of comparableProducts"
+      (click)="addToCompare(product.marketingProductModel)">
+      <div class="product-compare-item-inner">
+        <div class="product-compare-item-image">
+          <app-image [size]="[240]" [cssClass]="'img-fluid'" [documentInfoId]="product.documentInfoId"
+            [imageType]="product.imageType">
+          </app-image>
+        </div>
+        <div class="product-compare-item-name">{{product.marketingProductName}}</div>
+      </div>
+    </div>
+  </div>
+</ng-template>

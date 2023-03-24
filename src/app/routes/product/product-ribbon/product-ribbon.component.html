@@ -1,0 +1,18 @@
+<div class="ribbons">
+  <ng-container *ngFor="let ribbon of list">
+    <ng-container [ngSwitch]="ribbon">
+      <div class="no-inventory mt-auto" *ngSwitchCase="'no-inventory'"></div>
+      <div class="gift mt-auto" *ngSwitchCase="'976b615b-6d17-4b2a-82d2-b1b70e8b3c62'"></div>
+      <div class="bundle mt-auto" *ngSwitchCase="'14f540ba-0fdf-458f-9ead-7c683f3ef4cb'"></div>
+      <div class="fast-delivery mt-auto" *ngSwitchCase="'5410107e-dc0c-4e22-bc73-c46454a45d7d'"></div>
+      <div class="free-delivery mt-auto" *ngSwitchCase="'95a316da-ef19-4882-b2ce-85f9eda139cb'"></div>
+      <div class="reserved-1 mt-auto" *ngSwitchCase="'FED64399-ECA0-4B48-8B80-DDD2F1B5BE41'"></div>
+      <div class="reserved-2 mt-auto" *ngSwitchCase="'92315140-A0AE-4915-85D3-0370E28B518C'"></div>
+      <div class="reserved-3 mt-auto" *ngSwitchCase="'2C468591-97C8-4022-A60B-47116ABA37E9'"></div>
+      <div class="reserved-4 mt-auto" *ngSwitchCase="'E8500164-EE00-4ECF-8863-11D6FBDCE6E6'"></div>
+      <div class="reserved-5 mt-auto" *ngSwitchCase="'67E35430-C4C0-4080-BEE1-CD15A640223D'"></div>
+      <div class="no-inventory text" *ngSwitchCase="'no-inventory'">ناموجود</div>
+      <div class="new text" *ngSwitchCase="'b0526063-e378-41c2-b083-be8016e23c85'">جدید</div>
+    </ng-container>
+  </ng-container>
+</div>

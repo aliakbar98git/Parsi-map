@@ -1,0 +1,379 @@
+<section class="world-cup fa-num d-flex flex-column">
+    <div class="menu d-flex">
+
+        <fa-icon class="bar" [icon]="faBars" size="lg" (click)="menuOpen = !menuOpen"></fa-icon>
+
+        <ul class="d-flex" [ngClass]="menuOpen ? 'active' : ''">
+            <fa-icon class="timess" [icon]="faTimes" size="lg" (click)="menuOpen = !menuOpen"></fa-icon>
+            <li>
+                <a href="https://www.goldiranplus.ir/" target="_blank">جی‌پلاس</a>
+            </li>
+            <li>
+                <a (click)="onSelectedMenu('Lottery')">قرعه‌کشی</a>
+            </li>
+
+            <li>
+                <a (click)="onSelectedMenu('winners')">برندگان</a>
+            </li>
+
+            <li>
+                <a (click)="onSelectedMenu('videos')">ویدئوها</a>
+            </li>
+
+            <li>
+                <a (click)=" onSelectedMenu('archive')">آرشیو تصاویر</a>
+            </li>
+            <li>
+                <a (click)="onSelectedMenu('contact-us')">تماس با ما</a>
+            </li>
+        </ul>
+
+        <a href="https://www.goldiran.ir/">
+            <img src="https://www.goldiran.ir/UserFiles/our-partners/Gplus1.jpg" alt="">
+        </a>
+
+
+    </div>
+
+
+    <div class="banner">
+
+        <!-- <div class="r1_iframe_embed"><iframe
+                src="https://player.arvancloud.com/index.html?config=https://goldiran.arvanvod.com/zwoN0nyq0n/oAWa9qaePb/origin_config.json&skin=shaka"
+                style="border:0 #ffffff none;" name="Goldiran_WC2022_24S_2k_v7.mp4" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen="true"
+                webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
+        </div> -->
+
+    </div>
+    <div class="search d-flex flex-column" id="Lottery">
+
+        <form [ngClass]="{'lock': isSubmitted}" [formGroup]="searchForm" autocomplete="off" (ngSubmit)="onSubmit()"
+            *ngIf="!isWinner">
+            برای آگاهی از برنده‌شدن، شماره موبایل خود را در باکس زیر وارد کنید.
+            <div class="form-row">
+                <div class="form-group col-12" [ngClass]="{ error: global.hasError(PhoneNumber)}">
+                    <div class="search-box d-flex">
+                        <div class="box">
+                            <em *ngIf="global.hasError(PhoneNumber)" class="phone-number-error">
+                                <span *ngIf="PhoneNumber.errors.required">
+                                    فیلد اجباری
+                                </span>
+                                <span *ngIf="PhoneNumber.errors.minlength || PhoneNumber.errors.maxlength">
+                                    طول رشته باید برابر با {{PhoneNumber.errors.minlength.requiredLength}} رقم باشد.
+                                </span>
+                            </em>
+                            <input id="PhoneNumber" type="text" formControlName="PhoneNumber" class="form-control ltr"
+                                required minlength="11" maxlength="11" appConvertNumbersToEnglish
+                                [patterns]="global.customPatterns" mask="00000000000" />
+
+                        </div>
+                        <div class="box">
+                            <button class="btn" type="submit">جستجو</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-12" [ngClass]="{ error: global.hasError(DNTCaptchaInputText)}">
+                    <em *ngIf="global.hasError(DNTCaptchaInputText)">
+                        <span *ngIf="DNTCaptchaInputText.errors.required" style="color:white ;">
+                            فیلد اجباری
+                        </span>
+                    </em>
+                    <input type="hidden" id="DNTCaptchaInputText" formControlName="DNTCaptchaInputText" required />
+                    <app-captcha creatorPath="User/GetCaptchaConfiguration?captchaConfigurationType=1"
+                        (captchaSetValue)="captchaSetValue($event)"
+                        (captchaChangeValidators)="captchaChangeValidators($event)"></app-captcha>
+                </div>
+            </div>
+        </form>
+
+        <ng-container *ngIf="isWinner">
+            <p *ngIf="winnerUser">{{winnerUser.fullName}}</p>
+            <div class="winner-result d-flex">
+                <span *ngIf="winnerUser">تبریک میگم شما برنده توپ طلا جی‌پلاس شدید.</span>
+                <span *ngIf="!winnerUser">متاسفانه شما برنده نشدید.</span>
+            </div>
+            <div class="win-star" *ngIf="winnerUser">
+                <fa-icon [icon]="faStar"></fa-icon>
+                <fa-icon [icon]="faStar"></fa-icon>
+                <fa-icon [icon]="faStar"></fa-icon>
+            </div>
+
+            <p (click)="isWinner = false;">جستجوی مجدد ؟
+                <span style=" color: #808285 !important;
+                cursor: pointer;margin-top: 10px;"> اینجا کلیک کنید </span>
+            </p>
+
+        </ng-container>
+
+
+
+
+        <app-loading-inline type="inline" [isLoading]="isSubmitted"></app-loading-inline>
+        <img class="balls gold-ball" src="/assets/images/worldcup/GoldBall.png" alt="">
+
+    </div>
+    <div class="weeks">
+        <div class="winners-list-button">
+            <button class="btn">اسامی برندگان</button>
+        </div>
+        <div class="week-steper d-flex">
+            <div class="divider"></div>
+            <!-- <div class="second-divider"></div> -->
+            <div class="week d-flex flex-column" *ngFor="let week of weeks;let i = index"
+                [ngClass]="{'active': i === activeWeek}" (click)="changeActiveWeek(i)">
+                <span>{{week}}</span>
+                <span class="dot"></span>
+                <svg class="polygon-week" *ngIf="i === activeWeek">
+                    <polygon points="0,0 30,20 60,0" style="fill:#414042;
+                    stroke: #414042;
+                    stroke-width:1" />
+                    Sorry, your browser does not support inline SVG.
+                </svg>
+            </div>
+
+        </div>
+    </div>
+    <div class="Winners-list" id="winners">
+        <span class="lable" *ngIf="winners?.length > 0">
+            برندگان
+            <span>{{weeks[activeWeek]}}</span>
+            قرعه‌کشی را می‌توانید در لیست زیر ببینید.
+            <i class="fa-solid fa-angles-down"></i>
+        </span>
+
+        <div class="listt d-flex" *ngIf="winners?.length > 0">
+            <div class="winner" *ngFor="let winner of winners;let i = index"
+                [style.display]="i < 6 || loadMore ? 'flex' : 'none'">
+                {{i+1}} <span class="divider"></span>
+                <span>{{winner.fullName}} </span>
+                <span class="phone">{{replacePhone(winner.phoneNumber)}}</span>
+            </div>
+        </div>
+        <div class="load-mode d-flex flex-column" *ngIf="winners?.length > 0">
+            <span *ngIf="!loadMore"> نمایش بیشتر</span>
+            <span *ngIf="loadMore"> نمایش کمتر</span>
+            <button class="btn" (click)="loadLessMore('winners')">
+                <i class="fa-solid fa-angles-down"></i>
+            </button>
+        </div>
+        <p *ngIf="winners?.length === 0"> اطلاعاتی برای نمایش یافت نشد.</p>
+
+    </div>
+    <div class="day-counter">
+        <img class="balls blue-ball" src="/assets/images/worldcup/BlueBall.png" alt="">
+
+        <div class="day-counter-banner">
+            <div class="lable">
+                روزشمار قرعه‌کشی هفتگی جی‌پلاس
+            </div>
+            هر هفته 100 سکه توپ طلا به خریداران محصولات جی‌پلاس 
+            <span class="highlight"> (براساس جدول امتیازات و مشخصات محصول) </span>
+            به قید قرعه اهدا می شود.
+            <div> از ١٠ آبان تا 4 آذر ماه 1401 </div>
+        </div>
+
+        <!-- <div class="count-circles">
+            <div class="count-down-timer">
+                <div class="first-week d-flex">
+                    <button class="btn"> هفته سوم </button>
+                </div>
+                <div class="wrapper d-flex">
+                    <div class="times d-flex flex-column">
+                        <div #days class="timee d-flex"></div>
+                        <p>Days</p>
+                    </div>
+                    <div class="times d-flex flex-column">
+                        <div #hours class="timee d-flex"></div>
+                        <p>Hours</p>
+                    </div>
+                    <div class="times d-flex flex-column">
+                        <div #minutes class="timee d-flex"></div>
+                        <p>Minutes</p>
+                    </div>
+                    <div class="times d-flex flex-column">
+                        <div #seconds class="timee d-flex"></div>
+                        <p>Seconds</p>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+    <div class="score-table d-flex flex-column">
+
+
+        <div class="lable">
+            راهنمای امتیازدهی
+        </div>
+
+        <table>
+            <img class="balls blue-ball" src="/assets/images/worldcup/GoldBall.png" alt="">
+            <img class="balls gold-ball" src="/assets/images/worldcup/BlueBall.png" alt="">
+
+            <tr>
+                <th style="width: 33%;border-right: none;border-top: none;" class="top-th">دسته‌بندی محصولات</th>
+                <th style="width: 33%;border-top: none;" class="border-left-right-gray top-th">مدل‌ها</th>
+                <th style="width: 33%;border-top: none;" class="top-th">امتیاز</th>
+            </tr>
+            <tr>
+                <th rowspan="4" class="back-orange">تلویزیون</th>
+                <td class="border-bottom-gray"> 32” 50” 43” 40” FHD</td>
+                <td class="border-bottom-gray">3</td>
+            </tr>
+            <tr>
+                <td class="border-bottom-gray">50” UHD 55” 58” همه مدل‌ها</td>
+                <td class="border-bottom-gray">4</td>
+            </tr>
+            <tr>
+                <td class="border-bottom-gray">65” UHD</td>
+                <td class="border-bottom-gray">5</td>
+            </tr>
+            <tr>
+                <td style="direction: rtl;">”75 وبالاتر </td>
+                <td>5</td>
+            </tr>
+
+
+            <tr>
+                <th rowspan="1" class="back-orange">ماشین لباسشویی</th>
+                <td style="direction: rtl;">
+                    7 کیلوگرم تا 10 کیلوگرم </td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <th class="back-orange">ماشین ظرفشویی</th>
+                <td>تمامی مدل‌ها </td>
+                <td>1</td>
+            </tr>
+
+
+            <tr>
+                <th rowspan="2" class="back-orange">یخچال</th>
+                <td class="border-bottom-gray"> یخچال بالا فریزر</td>
+                <td class="border-bottom-gray">1</td>
+            </tr>
+            <tr>
+                <td>یخچال فریزر دوقلو</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <th class="back-orange">یخچال ساید بای ساید </th>
+                <td>تمامی مدل‌ها </td>
+                <td>2</td>
+            </tr>
+
+            <tr>
+                <th class="back-orange">مایکروویو</th>
+                <td>تمامی مدل‌ها </td>
+                <td>2</td>
+            </tr>
+
+
+
+        </table>
+
+    </div>
+    <div class="Lottery-video d-flex flex-column">
+        <div class="winners-list-button">
+            <button class="btn">
+                معرفی کمپین جام جهانی
+            </button>
+        </div>
+
+        <div class="r1_iframe_embed"><iframe
+                src="https://player.arvancloud.ir/index.html?config=https://goldiran.arvanvod.ir/zwoN0nyq0n/oAWa9qaePb/origin_config.json&skin=shaka"
+                style="border:0 #ffffff none;" name="Goldiran_WC2022_24S_2k_v7.mp4" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen="true"
+                webkitallowfullscreen="true" mozallowfullscreen="true"></iframe></div>
+
+    </div>
+    <div class="second-week-steper" id="videos">
+        <div class="winners-list-button">
+            <button class="btn"> ویدئوهای قرعه‌کشی</button>
+        </div>
+        <div class="week-steper d-flex">
+            <div class="divider"></div>
+            <!-- <div class="second-divider"></div> -->
+            <div class="week d-flex flex-column" *ngFor="let week of weeks;let i = index"
+                [ngClass]="{'active': i === activeWeek}">
+                <span>{{week}}</span>
+                <span class="dot"></span>
+            </div>
+        </div>
+    </div>
+    <div class="Lottery-video d-flex flex-column">
+
+        <div class="r1_iframe_embed"><iframe
+                src="https://player.arvancloud.ir/index.html?config=https://goldiran.arvanvod.ir/zwoN0nyq0n/dD40X9rN63/origin_config.json&skin=shaka"
+                style="border:0 #ffffff none;" name="1st 480.m4v" frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen="true"
+                webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
+        </div>
+
+        <div class="video-title">
+            قرعه‌کشی هفته اول
+        </div>
+
+    </div>
+    <div class="footer d-flex flex-column" [ngClass]="{'open':loadAllImages}">
+        <div class="pictures-archive d-flex flex-column" id="archive">
+            <img class="balls blue-ball" src="/assets/images/worldcup/BlueBall.png" alt="">
+
+
+            <div class="winners-list-button">
+                <button class="btn">آرشیو تصاویر </button>
+            </div>
+            <div class="archive d-flex">
+                <img src="/assets/images/worldcup/Winners/0000.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08325.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08333.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08339.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08342.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08345.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08347.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08350.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08352.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08356.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08358.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08359.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08360.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08362.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08363.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08365.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08367.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08368.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08369.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08371.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08374.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08377.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08378.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08380.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08503.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08504.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08505.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08506.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08509.jpg" alt="">
+                <img src="/assets/images/worldcup/Winners/DSC08510.jpg" alt="">
+            </div>
+            <div class="winners-list-button">
+                <button class="btn load-more" (click)="loadLessMore('archive')">
+                    <span *ngIf="!loadAllImages"> نمایش بیشتر</span>
+                    <span *ngIf="loadAllImages">نمایش کمتر</span>
+                </button>
+            </div>
+        </div>
+        <div class="golden-ball">
+            <img class="balls gold-ball" src="/assets/images/worldcup/GoldBall.png" alt="">
+        </div>
+        <div class="contact-us" id="contact-us">
+            <img src="/assets/images/logo-white.svg" alt="">
+            <p>پشتیبانی مشتریان: تقاطع بزرگراه همت و باکری - خیابان رضوان - پلاک1</p>
+            <p>مشاوره فروش و پشتیبانی</p>
+            <p> 8 4 7 3 8 ( 1 2 0 )</p>
+            <p>support@goldiranplus.ir</p>
+            <p>goldiranplus.ir</p>
+        </div>
+    </div>
+</section>

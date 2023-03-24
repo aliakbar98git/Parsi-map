@@ -1,0 +1,720 @@
+@import "../../global/styles.scss";
+
+.world-cup {
+    overflow: hidden;
+
+    .r1_iframe_embed {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: auto;
+        padding-top: 56.25%;
+    }
+
+    .r1_iframe_embed iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+
+    .menu {
+        padding: 15px;
+        background-color: #fff;
+        color: #BCBEC0;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+
+        .bar {
+            display: none;
+
+            @media (max-width: $max-bp-medium) {
+                display: block;
+            }
+        }
+
+        ul {
+            margin: 0;
+
+            li {
+                list-style-type: none;
+                margin-left: 25px;
+                cursor: pointer;
+            }
+
+            .timess {
+                display: none;
+            }
+
+            @media (max-width: $max-bp-medium) {
+                position: absolute;
+                background: rgb(0 0 0 / 84%);
+                width: 100%;
+                top: 0;
+                right: 0;
+                flex-direction: column;
+                z-index: 1;
+                padding: 30px;
+                visibility: hidden;
+
+                &.active {
+                    visibility: initial !important;
+                }
+
+                .timess {
+                    display: block;
+                }
+
+                li {
+                    border-bottom: 1px solid;
+                    line-height: 40px;
+                    margin-left: 0;
+
+                    a {
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+
+    .banner {
+        background-image: url(/assets/images/worldcup/banner.jpg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 0;
+        padding-top: 56.64%;
+    }
+
+    .search {
+        min-height: 250px;
+        background: radial-gradient(circle, rgba(251, 151, 79, 1) 6%, rgba(212, 71, 45, 1) 100%);
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        position: relative;
+
+        .search-box {
+            justify-content: space-between;
+            width: 413px;
+            margin-top: 40px;
+
+            @media (max-width: $max-bp-medium) {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .box {
+                position: relative;
+
+                @media (max-width: $max-bp-medium) {
+                    display: flex;
+                    justify-content: center;
+                }
+
+                .phone-number-error {
+                    color: white;
+                    position: absolute;
+                    top: -23px;
+                }
+
+                input,
+                button {
+                    width: 200px;
+                    height: 100%;
+                    border-radius: 24px;
+                    height: 48px;
+
+                    @media (max-width: $max-bp-medium) {
+                        margin-bottom: 10px;
+                    }
+                }
+
+                input {
+                    border: none;
+                    text-align: center;
+                }
+
+                button {
+                    background-color: #BCBEC0;
+                    color: #414042;
+                }
+            }
+
+        }
+
+        .winner-result {
+            height: 48px;
+            background-color: white;
+            color: #414042;
+            align-items: center;
+            padding: 0 10px;
+            border-radius: 24px;
+            justify-content: center;
+            min-width: 200px;
+            margin-bottom: 10px;
+
+            .win-star {
+                color: #fff;
+            }
+        }
+    }
+
+    .balls {
+        width: 180px;
+        position: absolute;
+
+
+        @media (max-width:$max-bp-large) {
+            width: 150px;
+        }
+
+        @media (max-width: $max-bp-medium) {
+            width: 100px;
+        }
+    }
+
+    .gold-ball {
+        left: 2%;
+        bottom: -18%;
+    }
+
+    .blue-ball {
+        right: 2%;
+        top: -25%;
+
+        @media (max-width: $max-bp-medium) {
+            top: -18%;
+        }
+    }
+
+    .weeks {
+        background-color: #414042;
+        color: #BCBEC0;
+        height: 190px;
+        padding: 30px 15%;
+
+        @media (max-width: $max-bp-medium) {
+            height: 250px;
+        }
+
+        .winners-list-button {
+            button {
+                width: 200px;
+                height: 48px;
+                border-radius: 24px;
+                background-color: #EB694A;
+                color: #fff;
+            }
+        }
+    }
+
+    .week-steper {
+        height: 60px;
+        margin-top: 25px;
+        align-items: center;
+        justify-content: space-evenly;
+        position: relative;
+
+        @media (max-width: $max-bp-medium) {
+            flex-wrap: wrap;
+        }
+
+        .divider {
+            background-color: #BCBEC0;
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            top: 35px;
+        }
+
+        @media (max-width: $max-bp-medium) {
+            .second-divider {
+                background-color: #BCBEC0;
+                position: absolute;
+                width: 100%;
+                height: 1px;
+                top: 91px;
+            }
+        }
+
+
+        .week {         
+            height: 100%;       
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+
+            .dot {
+                width: 20px;
+                height: 20px;
+                background: #BCBEC0;
+                border-radius: 50%;
+                z-index: 1;
+                margin-top: 5px;
+            }
+
+            &.active {
+                color: #EB694A;
+                .dot {
+                    background-color: #EB694A;
+                }
+            }
+            .polygon-week {
+                position: absolute;
+                width: 60px;
+                bottom: -44px;
+                height: 20px;
+            }
+           
+            @media (max-width: $max-bp-medium) {
+                width: 25%;
+                &:nth-child(n+3):nth-child(-n+6) {
+                    .polygon-week {
+                        bottom: -103px;
+                    }
+                }
+            }
+        }
+    }
+
+    .Winners-list {
+        padding: 10% 15%;
+        background-color: #fff;
+
+        .lable {
+            color: #414042;
+        }
+
+        .listt {
+            flex-wrap: wrap;
+            justify-content: space-between;
+
+            .winner {
+                display: flex;
+                height: 48px;
+                padding: 0 20px;
+                width: 40%;
+                border: 1px solid #808285;
+                margin: 5px 0;
+                border-radius: 24px;
+                align-items: center;
+                color: #808285;
+
+                .divider {
+                    margin: 0 8px 0 15px;
+                    height: 54%;
+                    width: 1px;
+                    background-color: #808285;
+                }
+
+                .phone {
+                    margin-right: auto;
+                    direction: ltr;
+                    letter-spacing: 3px;
+                }
+
+                @media (max-width: $max-bp-medium) {
+                    width: 100%;
+                }
+            }
+
+        }
+
+        .load-mode {
+            color: #EB694A;
+            margin: 5px auto;
+            width: fit-content;
+            align-items: center;
+
+            button {
+                background-color: #EB694A;
+                color: #fff;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                transform: rotate(270deg);
+                margin-top: 5px;
+            }
+        }
+    }
+
+    .day-counter {
+        position: relative;
+
+        .blue-ball {
+            top: -13%;
+        }
+
+        .day-counter-banner {
+            color: #808285;
+            text-align: center;
+            background-color: #E6E7E8;
+            padding: 30px 15%;
+            font-weight: bold;
+
+            .lable {
+                color: #414042;
+                font-size: 20px;
+                margin-bottom: 22px;
+            }
+
+            .highlight {
+                color: #EB694A;
+            }
+        }
+
+        .count-circles {
+            direction: ltr;
+
+            .count-down-timer {
+                background-image: url(/assets/images/worldcup/ch.jpg);
+                padding: 5% 15% 10%;
+                background-size: cover;
+
+                @media (max-width: $max-bp-medium) {
+                    padding: 5% 0;
+                }
+
+                .first-week {
+                    justify-content: center;
+                    margin-bottom: 20px;
+
+                    button {
+                        padding: 5px;
+                        width: 100px;
+                        height: 48px;
+                        border-radius: 24px;
+                        border: 2px solid #fff;
+                        color: #fff;
+                        font-weight: bold;
+                    }
+
+
+                }
+
+                .wrapper {
+                    justify-content: space-evenly;
+                    .times {
+                        align-items: center;
+                        color: #fff;
+
+                        p {
+                            margin: 5px 0;
+                        }
+
+                        .timee {
+                            letter-spacing: -5px;
+                            position: relative;
+                            margin: 0;
+                            font: 50px courier;
+                            background: rgb(0 0 0 / 79%);
+                            padding: 10px;
+                            border-radius: 50%;
+                            width: 120px;
+                            height: 120px;
+                            font-weight: bold;
+                            align-items: center;
+                            justify-content: center;
+
+                            @media (max-width: $max-bp-medium) {
+                                width: 75px;
+                                height: 75px;
+                            }
+
+                            ::ng-deep img {
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                width: 30px;
+                                display: block;
+                                height: 30px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .score-table { 
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        color: #EB694A;
+        padding-bottom: 100px;
+
+        .lable {
+            width: 100%;
+            padding: 7% 30px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 70%;
+            direction: ltr;
+            text-align: center;
+            line-height: 2;
+            position: relative;
+
+            .gold-ball {
+                right: -4%;
+                bottom: -20%;
+                left: initial;
+
+                @media (max-width: 1500px) {
+                    right: -8%;
+                }
+
+                @media (max-width: 1260px) {
+                    right: -12%;
+                }
+
+                @media (max-width: $max-bp-medium) {
+                    right: -8%;
+                    bottom: -14px;
+                }
+
+                @media (max-width: $max-bp-small) {
+                    display: none;
+
+                }
+            }
+
+            .blue-ball {
+                left: -4%;
+                top: -20%;
+                right: initial;
+
+                @media (max-width: 1500px) {
+                    left: -8%;
+                }
+
+                @media (max-width: 1260px) {
+                    left: -12%;
+                }
+
+                @media (max-width: $max-bp-medium) {
+                    left: -8%;
+                    top: -14%;
+                }
+
+                @media (max-width: $max-bp-small) {
+                    left: -20%;
+                    top: -6%;
+                }
+            }
+        }
+
+
+        table,
+        th,
+        td {
+            color: #414042;
+            border: 2px solid #EB694A;
+            border-collapse: collapse;
+        }
+
+        .top-th {
+            line-height: 7;
+        }
+
+        .back-orange {
+            background-color: #EB694A;
+            color: #fff;
+            border: none;
+            border-bottom: 1px solid #e6e6e6 !important;
+        }
+
+        .border-bottom-gray {
+            border-bottom-color: #BCBEC0;
+        }
+
+        .border-left-right-gray {
+            border-left-color: #BCBEC0;
+            border-right-color: #BCBEC0 !important;
+        }
+    }
+
+    .second-week-steper {
+        padding: 30px 15%;
+        background-color: #fff;
+
+        @media (max-width: $max-bp-medium) {
+            height: 250px;
+        }
+
+        .winners-list-button {
+            text-align: center;
+
+            button {
+                width: 200px;
+                height: 48px;
+                border-radius: 24px;
+                background-color: #414042;
+                color: #fff;
+            }
+        }
+
+        .week {
+            color: #BCBEC0;
+        }
+    }
+
+    .Lottery-video {
+        background-color: #F1F2F2;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 30px 15%;
+
+        @media (max-width: $max-bp-medium) {
+            padding: 30px 0;
+        }
+
+        .r1_iframe_embed {
+            width: 85%;
+            height: 430px;
+
+            @media (max-width: $max-bp-medium) {
+                height: 300px;
+            }
+        }
+
+        .video-title {
+            background-color: #fff;
+            color: #808285;
+            text-align: center;
+            width: 85%;
+            padding: 5px;
+        }
+        .winners-list-button {
+            text-align: center;
+
+            button {
+                width: 200px;
+                height: 48px;
+                border-radius: 24px;
+                background-color: #414042;
+                color: #fff;
+                margin-bottom: 10px;
+            }
+        }
+    }
+
+    .footer {
+        background-image: url(/assets/images/worldcup/footer.jpg);
+        height: 2000px;
+        background-size: cover;
+        position: relative;
+
+        @media (max-width: $max-bp-medium) {
+            height: 2700px;
+            margin-top: 50px;
+        }
+        &.open {
+            height: auto;
+            .pictures-archive {
+                .archive {
+                    img {
+                        display: block;
+                    }
+                }
+            }
+        }
+
+        .pictures-archive {
+            position: relative;
+            min-height: 55%;
+            border-radius: 0 0 15% 15%;
+            background-color: #414042;
+            width: 100%;
+            padding: 7% 10%;
+
+            .blue-ball {
+                right: initial;
+                left: -3%;
+                top: -10%;
+
+                @media (max-width: $max-bp-medium) {
+                    right: 2%;
+                    top: -3%;
+                }
+            }
+
+            @media (max-width: $max-bp-medium) {
+                border-radius: 0;
+            }
+
+            .winners-list-button {
+                text-align: center;
+                margin-bottom: 45px;
+
+                button {
+                    width: 200px;
+                    height: 48px;
+                    border-radius: 24px;
+                    background-color: #EB694A;
+                    color: #fff;
+                }
+
+                .load-more {
+                    color: #EB694A;
+                    background-color: #fff;
+                    margin-top: 75px;
+                }
+            }
+
+            .archive {
+                flex-wrap: wrap;
+                justify-content: space-between;
+
+                img {
+                    width: 32%;
+                    // height: 250px;
+                    margin-top: 20px;
+                    display: none;
+                    &:nth-child(-n+6) {
+                        display: block;
+                    }
+                    @media (max-width: $max-bp-medium) {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        .golden-ball {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            top: -6%;
+
+            @media (max-width: $max-bp-medium) {
+                top: -3%;
+            }
+
+            .gold-ball {
+                position: relative;
+            }
+        }
+
+        .contact-us {
+            align-self: center;
+            max-width: 215px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+
+            img {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    }
+}

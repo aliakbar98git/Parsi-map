@@ -1,0 +1,42 @@
+<div class="box-white personal-info">
+    <div *ngIf="personalInfo" class="row">
+        <div class="col-12 col-md-6">
+            <p class="title">نام و نام خانوادگی</p>
+            <p class="content">{{personalInfo.fullName}}</p>
+        </div>
+        <div class="col-12 col-md-6">
+            <p class="title">ایمیل</p>
+            <p class="content">{{personalInfo.email}}</p>
+            <p *ngIf="personalInfo.email && !personalInfo.confirmedEmail">
+                <small>
+                    <fa-icon [icon]="faInfoCircle"></fa-icon>
+                    لطفا آدرس ایمیل را تایید فرمایید.
+                    <button type="button" (click)="resendEmailSecurityCode()" [disabled]="resendEmailSecurityCodeLoading" class="btn btn-link">
+                        <span> (ارسال مجدد لینک تایید) </span>
+                        <app-loading-inline type="inline" [isLoading]="resendEmailSecurityCodeLoading"></app-loading-inline>
+                    </button>
+                </small>
+            </p>
+        </div>
+        <div class="col-12 col-md-6">
+            <p class="title">تلفن همراه</p>
+            <p class="content">{{personalInfo.mobileNumber}}</p>
+            <p *ngIf="personalInfo.mobileNumber && !personalInfo.confirmedMobile">
+                <small>
+                    <fa-icon [icon]="faInfoCircle"></fa-icon>
+                    لطفا شماره موبایل را تایید فرمایید.
+                    <button type="button" (click)="resendSmsSecurityCode()" [disabled]="resendSmsSecurityCodeLoading" class="btn btn-link">
+                        <span> (ارسال مجدد کد تایید) </span>
+                        <app-loading-inline type="inline" [isLoading]="resendSmsSecurityCodeLoading"></app-loading-inline>
+                    </button>
+                </small>
+            </p>
+        </div>
+        <div class="col-12">
+            <div class="action">
+                <a [routerLink]="['/profile/personal-info']"><fa-icon [icon]="faPencilAlt"></fa-icon><span> ویرایش اطلاعات</span></a>
+            </div>
+        </div>
+    </div>
+    <app-loading-inline [isLoading]="showLoading"></app-loading-inline>
+</div>

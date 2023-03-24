@@ -1,0 +1,25 @@
+<div class="row comment-list">
+  <div class="col-12">
+    <div class="box-white">
+      <div *ngIf="commentList?.length != 0" class="list-group list-group-flush">
+        <a *ngFor="let item of commentList" class="list-group-item list-group-item-action d-flex"
+          [routerLink]="['/product', item.marketingProductModel, item.marketingProductName | concatProductName]">
+          <div class="d-flex align-items-center">
+            <app-image [size]="[90]" [cssClass]="'img-fluid'" [documentInfoId]="item.defaultDocumentInfoId"
+              [imageType]="item.imageType">
+            </app-image>
+          </div>
+          <div class="d-flex flex-column justify-content-center flex-fill">
+            <p class="mb-2"><strong>{{item.marketingProductName}}</strong></p>
+            <app-rate [score]="item.score" [options]="{'textAlign': 'right'}"></app-rate>
+            <p class="mb-1">{{item.commentText}}</p>
+          </div>
+        </a>
+      </div>
+      <ng-container *ngIf="commentList?.length == 0">
+        <span>موردی یافت نشد.</span>
+      </ng-container>
+      <app-loading-inline [isLoading]="showLoading"></app-loading-inline>
+    </div>
+  </div>
+</div>

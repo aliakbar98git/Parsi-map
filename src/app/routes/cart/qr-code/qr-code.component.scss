@@ -1,0 +1,17 @@
+.qrcode {
+    padding: 24px;
+    border-radius: 4px;
+    box-shadow: 0 0 6px 0 rgb(0 0 0 / 10%);
+    background-color: #fff;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+
+    .close {
+        text-align: left;
+    }
+
+    .inquiry {
+        margin-top: auto;
+    }
+}

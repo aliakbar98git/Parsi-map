@@ -1,0 +1,22 @@
+<div class="product-rate" [attr.data-rate]="score">
+  <div class="product-rate-inner">
+    <div class="product-rate-mask" [style.width.%]="100-score*20">
+      <div class="product-rate-stars">
+        <fa-icon class="product-rate-icon" [icon]="faStar"></fa-icon>
+        <fa-icon class="product-rate-icon" [icon]="faStar"></fa-icon>
+        <fa-icon class="product-rate-icon" [icon]="faStar"></fa-icon>
+        <fa-icon class="product-rate-icon" [icon]="faStar"></fa-icon>
+        <fa-icon class="product-rate-icon" [icon]="faStar"></fa-icon>
+      </div>
+    </div>
+    <div class="product-rate-icons" *ngIf="score!=0">
+      <div class="product-rate-stars">
+        <fa-icon class="product-rate-icon active" [icon]="faStar"></fa-icon>
+        <fa-icon class="product-rate-icon active" [icon]="faStar"></fa-icon>
+        <fa-icon class="product-rate-icon active" [icon]="faStar"></fa-icon>
+        <fa-icon class="product-rate-icon active" [icon]="faStar"></fa-icon>
+        <fa-icon class="product-rate-icon active" [icon]="faStar"></fa-icon>
+      </div>
+    </div>
+  </div>
+</div>

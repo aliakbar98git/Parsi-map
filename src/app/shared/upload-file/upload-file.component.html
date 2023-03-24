@@ -1,0 +1,22 @@
+<div class="HeadOfDocument">
+  <div class="ItemOfDocument">
+    <label for="{{fieldName}}File">{{label}}</label>
+    <span class="download-container"
+      *ngIf="fieldValue !== undefined && enableDownload && userService.currentUser?.userType == userType.Consumer">
+      <fa-icon class="download-container-icon" [icon]="faDownload" (click)="downloadFile()"></fa-icon>
+    </span>
+  </div>
+</div>
+<div class="custom-file">
+  <input type="file" name="File" class="custom-file-input" id="{{fieldName}}File"
+    (change)="uploadFile($event.target.files)" [disabled]="disabled">
+  <label class="custom-file-label" for="{{fieldName}}File">انتخاب فایل</label>
+</div>
+<div class="uploadUi" [ngClass]="{disabled: disabled}">
+  <div class="progress">
+    <div class="progress-bar progress-bar-animated"
+      [ngClass]="{'progress-bar-striped':inProgress,'bg-success':uploaded==undefined||uploaded==true,'bg-danger':uploaded==false}"
+      [style.width.%]="uploadProgress||(uploaded==undefined && fieldValue) ? 100 : 0" *ngIf="inProgress || fieldValue != null"></div>
+  </div>
+</div>
+<small id="{{fieldName}}Help" class="form-text text-muted" [ngClass]="{disabled: disabled}">{{description}}</small>

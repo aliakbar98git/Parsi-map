@@ -1,0 +1,5 @@
+<button type="button" (click)="resendSmsSecurityCode()" [disabled]="resendSmsSecurityCodeLoading" class="btn btn-link">
+    <fa-icon [icon]="faRedo"></fa-icon>
+    <span> دریافت مجدد کد فعالسازی </span>
+    <app-loading-inline type="inline" [isLoading]="resendSmsSecurityCodeLoading"></app-loading-inline>
+</button>

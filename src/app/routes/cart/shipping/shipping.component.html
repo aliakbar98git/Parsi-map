@@ -1,0 +1,398 @@
+<app-checkout-step [CheckoutStep]="checkoutSteps.Shipping"></app-checkout-step>
+
+<div id="shipping" class="row">
+  <div class="col-12 col-lg-8">
+    <div id="shipping-address" class="bg-white">
+      <div id="shipping-customer" *ngIf="sellerExtraInfo !== undefined">
+        <h4>اطلاعات خریدار</h4>
+        <div class="row fa-num">
+          <div class="col-12 col-md-6">
+            <span class="label">نام خریدار :</span>
+            <span class="customer-name">{{sellerExtraInfo.customerTitle}}</span>
+            <span class="customer-name">{{sellerExtraInfo.customerFirstName}}
+              {{sellerExtraInfo.customerLastName}}</span>
+          </div>
+          <div class="col-12 col-md-6">
+            <span class="label">کد ملی :</span><span>
+              {{sellerExtraInfo.customerNationalCode}}
+              {{sellerExtraInfo.customerNationalId}}
+              {{sellerExtraInfo.customerForeignerIdentityCode}}
+            </span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6 fa-num">
+            <span class="label">شماره تلفن :</span><span>{{sellerExtraInfo.customerPhone}}</span>
+          </div>
+          <div class="col-12 col-md-6">
+            <span class="label">آدرس ایمیل :</span><span>{{sellerExtraInfo.customerEmail}}</span>
+          </div>
+        </div>
+        <hr />
+      </div>
+      <div>
+        <h4>اطلاعات تحویل گیرنده</h4>
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="transferee">تحویل گیرنده</label>
+            <input id="transferee" name="transferee" type="text" class="form-control rtl" #transferee
+              (change)="setShippingTransferee(transferee.value)">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="description">توضیحات</label>
+            <textarea id="description" name="description" rows="4" class="form-control rtl" #description
+              (change)="setShippingDescription(description.value)"></textarea>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <button id="address-change" class="btn btn-secondary float-left" (click)="changeAddress()"
+        *ngIf="addressSelected !== null">تغییر آدرس</button>
+      <h4>انتخاب آدرس تحویل سفارش</h4>
+      <app-loading-inline [isLoading]="addressList === undefined"></app-loading-inline>
+      <div class="address-selected address-item" *ngIf="addressSelected !== null">
+        <div class="address-item-content">
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <label>استان/شهر :</label><span class="province">{{addressSelected.provinceTitle}} -
+                {{addressSelected.cityTitle}}</span>
+            </div>
+            <div class="col-12 col-md-6">
+              <label>منطقه/محله :</label><span class="city">{{addressSelected.zoneTitle}} -
+                {{addressSelected.parishTitle}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <label>تلفن :</label><span class="contact-number fa-num">{{addressSelected.contactNumber}}</span>
+            </div>
+            <div class="col-12 col-md-6">
+              <label>کدپستی :</label><span class="postal-code fa-num">{{addressSelected.postalCode}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <label>آدرس :</label><span class="address fa-num">{{addressSelected.address}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="address-lists" *ngIf="addressList !== undefined && addressSelected === null">
+        <div class="address-add">
+          <span class="btn btn-link address-add-action" (click)="addNewAddress()">
+            <fa-icon [icon]="faPlus" class="ml-2"></fa-icon>آدرس جدید
+          </span>
+        </div>
+        <div class="alert alert-warning"
+          *ngIf="addressList.getPersonAddressInfoDtoList === null || addressList.getPersonAddressInfoDtoList.length === 0">
+          آدرسی یافت نشد !
+        </div>
+        <div class="address-item" *ngFor="let item of addressList.getPersonAddressInfoDtoList">
+          <div class="address-item-content">
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <label>استان/شهر :</label><span class="province">{{item.provinceTitle}} - {{item.cityTitle}}</span>
+              </div>
+              <div class="col-12 col-md-6">
+                <label>منطقه/محله :</label><span class="city">{{item.zoneTitle}} - {{item.parishTitle}}</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <label>تلفن :</label><span class="contact-number fa-num">{{item.contactNumber}}</span>
+              </div>
+              <div class="col-12 col-md-6">
+                <label>کدپستی :</label><span class="postal-code fa-num">{{item.postalCode}}</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <label>آدرس :</label><span class="address fa-num">{{item.address}}</span>
+              </div>
+            </div>
+          </div>
+          <span class="address-item-select" (click)="selectAddress(item)">
+            انتخاب این آدرس به عنوان آدرس ارسال سفارش
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-info mt-4 mb-4">
+      ادامه ثبت سفارش نشان دهنده موافقت شما با <a routerLink="/page/sitepolicy" target="_blank">قوانین سایت</a> است.
+    </div>
+
+    <div id="shipping-inventory" class="bg-white"
+      *ngIf="sellerExtraInfo !== null && sellerExtraInfo !== undefined && sellerExtraInfo.inStoreInventory === true">
+      <h4 class="mb-3">محل ارسال مرسوله</h4>
+      <label class="checkbox-label" for="inStoreInventory">
+        سفارش جاری از انبار فروشگاه ارسال شود.
+        <input id="inStoreInventory" type="checkbox" [formControl]="inStoreInventory" />
+        <span class="check-mark"></span>
+      </label>
+    </div>
+
+    <div id="shipping-type" class="bg-white"
+      *ngIf="sellerExtraInfo !== null && sellerExtraInfo !== undefined && sellerExtraInfo.exclusiveShipment === true">
+      <h4 class="mb-3">انتخاب نوع ارسال</h4>
+      <div class="btn-group btn-group-toggle btn-block" data-toggle="buttons">
+        <label class="btn" [ngClass]="{active : !params.ExclusiveShipment}" (click)="changeExclusiveShipment(false)">
+          <fa-icon [icon]="faThLarge"></fa-icon>
+          <span class="title">پیشنهادی سیستم</span>
+        </label>
+        <label class="btn" [ngClass]="{active : params.ExclusiveShipment}" (click)="changeExclusiveShipment(true)">
+          <fa-icon [icon]="faArchive"></fa-icon>
+          <span class="title">دربستی</span>
+        </label>
+      </div>
+    </div>
+
+    <app-loading-inline [isLoading]="isLoading && invoiceShippingOffers == undefined && addressList != undefined">
+    </app-loading-inline>
+    <div id="shipping-delivery" class="mb-4" *ngIf="invoiceShippingOffers !== undefined">
+      <div class='alert alert-warning' role='alert' *ngIf="invoiceShippingOffers.length > 1">
+        <fa-icon [icon]="faInfoCircle" class="float-right ml-2 text-large"></fa-icon>
+        <p>خرید شما به دلیل وجود کالاهای متنوع در چند مرحله قابل پرداخت است.</p>
+      </div>
+      <div class="checkout-pack offered d-flex flex-column bg-white"
+        *ngFor="let offer of invoiceShippingOffers; index as i" id="checkout-pack-{{i}}">
+        <h4 class="checkout-pack-header fa-num d-flex justify-content-between">
+          <div class="title">مرسوله {{i+1}} از {{invoiceShippingOffers.length}}</div>
+          <div class="description">
+            {{offer.orderInfoList.length}} کالا . تکمیل فرآیند <fa-icon [icon]="faTruck" flip="horizontal">
+            </fa-icon>
+          </div>
+        </h4>
+        <div class="checkout-pack-products">
+          <div class="item" *ngFor="let product of offer.orderInfoList">
+            <a [routerLink]="['/product', product.marketingProductModel, product.marketingProductName | concatProductName]"
+              target="_blank">
+              <div class="item-image">
+                <app-image [size]="[90]" [documentInfoId]="product.productDocumentInfoId"
+                  [imageType]="product.imageType">
+                </app-image>
+              </div>
+              <div class="item-qty fa-num" placement="top" ngbTooltip="تعداد">{{product.quantity}}</div>
+            </a>
+          </div>
+        </div>
+        <div class="checkout-pack-toggle" (click)="toggleOfferPack(i)">
+          <fa-icon [icon]="faAngleLeft" class="float-left" *ngIf="activeOfferId != i"></fa-icon>
+          <fa-icon [icon]="faAngleDown" class="float-left" *ngIf="activeOfferId == i"></fa-icon>
+        </div>
+        <div class="checkout-pack-collapse" *ngIf="params.ExclusiveShipment">
+          <form [formGroup]="exclusiveForm" autocomplete="off">
+            <div class="checkout-pack-details">
+              <div class="form-row">
+                <div class="form-group col-12 col-md-6 fa-num" [ngClass]="{ error: global.hasError(shippingCost) }">
+                  <em *ngIf="global.hasError(shippingCost)">
+                    <span *ngIf="shippingCost.errors.required">
+                      فیلد اجباری
+                    </span>
+                  </em>
+                  <label for="checkout-pack-cost">
+                    هزینه ارسال
+                    <span *ngIf="shippingAmountWithDiscount == 0"> (<small>ریال</small>)</span>
+                    <span *ngIf="shippingAmountWithDiscount != 0"> ({{shippingTotalAmount | number}} <small>ریال</small>
+                      <ng-container *ngIf="addressList.calculateShippingCostTax">با احتساب مالیات</ng-container>)
+                    </span>
+                  </label>
+                  <input id="checkout-pack-cost" type="text" class="form-control fa-num ltr" required
+                    formControlName="shippingCost" appConvertNumbersToEnglish [patterns]="global.customPatterns"
+                    mask="999999999999" [specialCharacters]="[]" />
+                </div>
+                <div class="form-group col-12 col-md-6" [ngClass]="{ error: global.hasError(shippingDate) }">
+                  <em *ngIf="global.hasError(shippingDate)">
+                    <span *ngIf="shippingDate.errors.required">
+                      فیلد اجباری
+                    </span>
+                    <span *ngIf="shippingDate.errors.ngbDate?.minDate">
+                      تاریخ نمیتواند برای روزهای گذشته باشد.
+                    </span>
+                  </em>
+                  <label for="checkout-pack-delivery-date">تاریخ تحویل</label>
+                  <div class="form-group fa-num">
+                    <div class="input-group">
+                      <input class="form-control ltr ngb-dp-input" name="dp" formControlName="shippingDate"
+                        ngbDatepicker #d="ngbDatepicker" [minDate]="minDate" [firstDayOfWeek]="6" (click)="d.toggle()"
+                        readonly>
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                          <fa-icon [icon]="faCalendar"></fa-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label for="checkout-pack-description">توضیحات</label>
+                  <textarea id="checkout-pack-description" rows="5" class="form-control rtl" autocomplete="off"
+                    formControlName="shippingDescription"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="checkout-pack-footer d-flex justify-content-between">
+              <button class="btn btn-info" (click)="submitShippingPack(offer)" [ngClass]="{active:exclusiveForm.valid}">
+                <span *ngIf="exclusiveForm.invalid">اطلاعات حمل را وارد کنید</span>
+                <span *ngIf="exclusiveForm.valid">تکمیل فرآیند خرید</span>
+              </button>
+              <div class="description pay-value">
+                <p>مبلغ قابل پرداخت</p>
+                <div>
+                  <span class="value fa-num ml-1">{{offer.totalAmount + shippingTotalAmount|number}}</span>
+                  <small>ریال</small>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="checkout-pack-collapse" *ngIf="!params.ExclusiveShipment && activeOfferId == i">
+          <div class="checkout-pack-transfermethods">
+            <h4 class="title">
+              <fa-icon [icon]="faClock"></fa-icon> روش ارسال
+            </h4>
+            <div *ngFor="let shipping of offer.invoiceShippingItems" class="item fa-num"
+              [ngClass]="{active:params.ShippingMethodId == shipping.shippingMethodId, 'time-table': !shipping.timeSpan}">
+              <div class="title"><fa-icon [icon]="faChevronCircleLeft"></fa-icon> {{shipping.shippingMethodTitle}}
+                <ng-container *ngIf="addressList.calculateShippingCostTax; else calculateShippingCostTaxElse">
+                  <span *ngIf="shipping.shippingAmountWithTax == shipping.shippingTotalAmount">
+                    {{shipping.shippingAmountWithTax|number}} <small>ریال</small> هزینه حمل با احتساب مالیات</span>
+                  <span *ngIf="shipping.shippingAmountWithTax != shipping.shippingTotalAmount">
+                    <s>{{shipping.shippingAmountWithTax|number}}</s> {{shipping.shippingTotalAmount|number}}
+                    <small>ریال</small> هزینه حمل با احتساب مالیات</span>
+                </ng-container>
+                <ng-template #calculateShippingCostTaxElse>
+                  <span>{{shipping.shippingTotalAmount|number}} <small>ریال</small> هزینه حمل</span>
+                </ng-template>
+              </div>
+              <label *ngIf="shipping.timeSpan" class="radio-button-label" (click)="setTimeSpan(shipping)">
+                <span>{{(shipping.timeSpanPlaning.startDate|jalali:'dddd') + ' ' + (shipping.timeSpanPlaning.startDate|jalali:'jD jMMMM') + ' لغایت ' + (shipping.timeSpanPlaning.endDate|jalali:'dddd') + ' ' + (shipping.timeSpanPlaning.endDate|jalali:'jD jMMMM')}}</span>
+                <input type="radio" name="shipping-time" value="{{i + '-' + shipping.shippingMethodId + '-' + shipping.timeSpanPlaning.startDate + '-' + shipping.timeSpanPlaning.endDate}}"
+                  [checked]="shipping.shippingMethodId + '-' + shipping.timeSpanPlaning.startDate + '-' + shipping.timeSpanPlaning.endDate === params.ShippingMethodId + '-' + params.StartDate + '-' + params.EndDate"/>
+                <span class="check-mark"></span>
+              </label>
+              <app-shipping-time-table *ngIf="!shipping.timeSpan && shipping.shiftTypePlaning[0].shiftType === shippingShiftType.MorningEvening"
+                type="dateTime" [prefix]="shipping.shippingMethodId" 
+                [selectedItem]="{shippingMethodId: params.ShippingMethodId, deliveryDate: params.DeliveryDate, shippingPeriod: params.ShippingPeriod}" 
+                [shiftTypePlaning]="shipping.shiftTypePlaning" (setDate)="setSiftType(shipping,$event)">
+              </app-shipping-time-table>
+              <div *ngIf="!shipping.timeSpan && shipping.shiftTypePlaning[0].shiftType === shippingShiftType.Daily">
+                <label *ngFor="let plan of shipping.shiftTypePlaning" class="radio-button-label" (click)="setSiftType(shipping, {deliveryDate: plan.deliveryDate, shippingPeriod: shippingPeriod.Daily})">
+                  <span>{{(plan.deliveryDate|jalali:'dddd') + ' ' + (plan.deliveryDate|jalali:'jD jMMMM')}}</span>
+                  <input type="radio" name="shipping-time" value="{{shipping.shippingMethodId + '-' + plan.deliveryDate}}"
+                    [checked]="shipping.shippingMethodId + '-' + plan.deliveryDate === params.ShippingMethodId + '-' + params.DeliveryDate"/>
+                  <span class="check-mark"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="checkout-pack-footer d-flex justify-content-between">
+            <button class="btn btn-info" (click)="submitShippingPack(offer)"
+              [ngClass]="{active:params.ShippingTotalCost != null && activeOfferId == i}">
+              <span *ngIf="params.ShippingTotalCost == null">زمان ارسال مرسوله را تعیین کنید</span>
+              <span *ngIf="params.ShippingTotalCost != null">تکمیل فرآیند خرید</span>
+            </button>
+            <div class="description pay-value">
+              <p>مبلغ قابل پرداخت</p>
+              <div><span class="value fa-num ml-1">{{offer.totalAmount + shippingTotalAmount|number}}</span>
+                <small>ریال</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-4">
+    <div class="pay-info bg-white sticky-top">
+      <h4 class="pay-info-header"><span>صورتحساب</span></h4>
+      <div class="pay-info-body" id="pay-info-shipping-delivery">
+        <p class="text-center" *ngIf="addressList === undefined || addressList === null">درحال دریافت آدرس ها ...</p>
+        <p class="text-center" *ngIf="addressList !== undefined && addressList !== null && addressSelected === null">
+          لطفا آدرس مورد نظر خود را انتخاب/وارد نمایید.</p>
+        <p class="text-center"
+          *ngIf="invoiceShippingOffers === undefined && addressList !== undefined && isLoading === true">درحال
+          دریافت اطلاعات مرسوله ...</p>
+        <div class='text-center'
+          *ngIf="invoiceShippingOffers === undefined && isLoading === false && addressSelected !== null">
+          <p>خطا در دریافت اطلاعات مرسوله. لطفا چند دقیقه دیگر تلاش نمایید.</p>
+          <button class='btn btn-info' (click)='getInvoiceShippingOffers()'>تلاش مجدد</button>
+        </div>
+        <app-loading-inline [isLoading]="isLoading"></app-loading-inline>
+        <div class="item fa-num" *ngFor="let offer of invoiceShippingOffers; index as i"
+          [class]="{active:activeOfferId == i}">
+          <div class="item-header d-flex justify-content-between" (click)="toggleOfferPack(i)">
+            <div>
+              <fa-icon [icon]="faAngleLeft" class="float-right ml-2" *ngIf="activeOfferId != i">
+              </fa-icon>
+              <fa-icon [icon]="faAngleDown" class="float-right ml-2" *ngIf="activeOfferId == i">
+              </fa-icon>
+              <span>مرسوله</span> {{i+1}}
+            </div>
+            <div class="pay-value total-amount">
+              <span class="value ml-1">{{(activeOfferId == i ? (offer.totalAmount + shippingTotalAmount|number): offer.totalAmount|number)}}</span><span>ریال</span>
+            </div>
+          </div>
+          <div class="item-collapse" *ngIf="activeOfferId == i">
+            <div>
+              <div class="pay-value products-amount">
+                <div class="label">مبلغ کل محصولات</div>
+                <div class="content"><span class="value">{{offer.amount|number}}</span> <span class="sign">ریال</span>
+                </div>
+              </div>
+              <div class="pay-value shipping-amount">
+                <div class="label">هزینه ارسال</div>
+                <div class="content" *ngIf="!params.ExclusiveShipment">
+                  <span class="value"
+                    *ngIf="activeOfferId == i && params.ShippingTotalCost == null">نامشخص</span>
+                  <span class="value"
+                    *ngIf="activeOfferId == i && params.ShippingTotalCost != null">{{shippingAmountWithDiscount|number}}</span>
+                  <span class="sign"
+                    *ngIf="activeOfferId == i && params.ShippingTotalCost != null">ریال</span>
+                </div>
+                <div class="content" *ngIf="params.ExclusiveShipment">
+                  <span class="value" *ngIf="params.ShippingTotalCost === 0">نامشخص</span>
+                  <span class="value"
+                    *ngIf=" params.ShippingTotalCost !== 0">{{shippingAmountWithDiscount|number}}</span>
+                  <span class="sign" *ngIf=" params.ShippingTotalCost !== 0">ریال</span>
+                </div>
+              </div>
+              <div class="pay-value total-tax-amount">
+                <div class="label">مالیات برارزش‌افزوده</div>
+                <div class="content"><span class="value">{{offer.taxAmount + shippingTaxAmount|number}}</span>
+                  <span class="sign">ریال</span>
+                </div>
+              </div>
+              <div class="pay-value total-amount">
+                <div class="label">مبلغ قابل پرداخت</div>
+                <div class="content"><span class="value">{{offer.totalAmount + shippingTotalAmount|number}}</span>
+                  <span class="sign">ریال</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-8">
+    <div class="row no-gutters shipping-nav">
+      <div class="col">
+        <a class="btn btn-link back-btn" routerLink="/cart"
+          *ngIf="userService.currentUser?.userType == userType.Consumer">
+          <fa-icon [icon]="faLongArrowAltRight"></fa-icon>
+          بازگشت به سبد خرید
+        </a>
+        <a class="btn btn-link back-btn" routerLink="/cart/check-customer"
+          *ngIf="userService.currentUser?.userType == userType.Seller">
+          <fa-icon [icon]="faLongArrowAltRight"></fa-icon>
+          بازگشت به تخصیص خریدار
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

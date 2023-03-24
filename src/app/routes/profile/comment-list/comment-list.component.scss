@@ -1,0 +1,47 @@
+@import "../../../global/styles.scss";
+
+.comment-list {
+  .list-group {
+    a.list-group-item {
+      color: #666;
+      text-decoration: none;
+
+      app-image {
+        max-width: 90px;
+        @media (max-width: $max-bp-x-large) {
+          max-width: 75px;
+        }
+        ::ng-deep img {
+          max-width: 100%;
+          max-height: 100px;
+        }
+      }
+      
+      @media (max-width: $max-bp-small) {
+        flex-direction: column;
+      }
+
+      div:first-child {
+        width: 90px;
+        @media (max-width: $max-bp-x-large) {
+          width: 75px;
+        }
+        @media (max-width: $max-bp-small) {
+          width: 100%;
+          margin-bottom: .5rem;
+        }
+      }
+
+      div:last-child {
+        width: calc(100% - 90px);
+        padding-right: 0.5em;
+        @media (max-width: $max-bp-x-large) {
+          width: calc(100% - 75px);
+        }
+        @media (max-width: $max-bp-small) {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,73 @@
+<div class="product-item {{extraClass}}">
+  <a class="product-image"
+    [routerLink]="['/product', product.marketingProductModel, product.marketingProductName | concatProductName]">
+    <app-image [size]="[240]" [cssClass]="'img-fluid'" [documentInfoId]="product.documentInfoId"
+      [imageType]="product.imageType" [alt]="product.marketingProductName"></app-image>
+  </a>
+  <div class="product-name">
+    <a [routerLink]="['/product', product.marketingProductModel, product.marketingProductName | concatProductName]">
+      {{product.marketingProductName}}
+    </a>
+  </div>
+  <div class="product-rate-ribbon">
+    <app-rate class="align-self-end" [score]="product.score" [options]="{'textAlign': 'right'}"></app-rate>
+    <app-product-ribbon [list]="ribbonsList" *ngIf="ribbonsList.length>0"></app-product-ribbon>
+  </div>
+  <div class="product-price fa-num">
+    <div *ngIf="product.hasInventory">
+      <ng-container *ngIf="product.priceByDiscount !== product.price">
+        <div class="discount-percent">{{product.discountPercent + '%'}}</div>
+        <div class="main-price mr-auto">{{product.price| number}}</div>
+      </ng-container>
+      <div class="price-by-discount" [ngClass]="{'mr-auto': product.priceByDiscount === product.price}">
+        {{product.priceByDiscount| number}}
+        <span>تومان</span>
+      </div>
+    </div>
+  </div>
+  <div class="product-promotion-container d-flex justify-content-between">
+    <button class="add-compare" [ngClass]="{active: isCompareSelected}" type="button"
+      (click)="compare()" *ngIf="comparable" ngbTooltip="مقایسه محصول">
+      <fa-icon [icon]="faBalanceScale"></fa-icon>
+    </button>
+    <ng-container *ngIf="hasPromotion && product.hasInventory && showCountdown()">
+      <div class="product-promotion-text">
+        فروش ویژه
+      </div>
+      <div class="product-promotion-counter fa-num d-flex flex-row-reverse">
+        <div>&nbsp;<fa-icon [icon]="faClock" size="lg"></fa-icon>
+        </div>
+        <div class="item" *ngIf="remainDay > 0">
+          <span>&nbsp;-&nbsp;</span>
+          <span class="value days">{{remainDay}}</span>
+          <span>&nbsp;روز</span>
+        </div>
+        <div class="item">
+          <span>&nbsp;:&nbsp;</span>
+          <span class="value hours">{{remainHour}}</span>
+        </div>
+        <div class="item">
+          <span>&nbsp;:&nbsp;</span>
+          <span class="value minutes">{{remainMin}}</span>
+        </div>
+        <div class="item">
+          <span class="value seconds">{{remainSec}}</span>
+        </div>
+      </div>
+    </ng-container>
+    <div class="product-promotion-no-inventory" *ngIf="!product.hasInventory && hasPromotion">
+      اتمام موجودی فروش ویژه
+    </div>
+  </div>
+  <div class="product-add-button" *ngIf="userService.currentUser?.userType === userType.Seller">
+    <button type="button" class="btn btn-primary btn-lg add-to-cart"
+      *ngIf="product.hasInventory && product.priceByDiscount!=0; else elseBlock" (click)="addToCart()">
+      افزودن به سبد خرید
+    </button>
+    <ng-template #elseBlock>
+      <button type="button" class="btn btn-primary btn-lg add-to-cart" disabled="disabled">
+        افزودن به سبد خرید
+      </button>
+    </ng-template>
+  </div>
+</div>

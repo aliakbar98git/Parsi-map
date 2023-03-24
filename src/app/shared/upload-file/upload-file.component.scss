@@ -1,0 +1,25 @@
+.download-container {
+  color: #17a2b8;
+  .download-container-icon {
+    cursor: pointer;
+    padding: 0 20px;
+  }
+}
+
+.uploadUi {
+  margin-top: 8px;
+  clear: both;
+  .progress {
+    height: 5px;
+  }
+  .messages {
+    margin: 3px 0;
+  }
+}
+.form-text.text-muted {
+  margin: 0 !important;
+}
+  
+.disabled {
+  opacity: .4;
+}

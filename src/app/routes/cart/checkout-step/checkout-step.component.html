@@ -1,0 +1,25 @@
+<div id="checkout-steps">
+  <ul class="d-flex justify-content-center">
+    <li *ngIf="userService.currentUser.userType == userType.Seller"
+      [ngClass]="{passed: CheckoutStep > 0, active: CheckoutStep == 0}">
+      <a (click)="goCheckCustomer()">
+        <fa-icon [icon]="faUser" class="step-icon"></fa-icon>
+        <span>اطلاعات خریدار</span>
+      </a>
+    </li>
+    <li [ngClass]="{passed: CheckoutStep > 1, active: CheckoutStep == 1}">
+      <a (click)="goShipping()">
+        <fa-icon [icon]="faMapMarker" class="step-icon"></fa-icon>
+        <span>آدرس و زمان ارسال</span>
+      </a>
+    </li>
+    <li [ngClass]="{passed: CheckoutStep > 2, active: CheckoutStep == 2}">
+      <fa-icon [icon]="faCreditCard" class="step-icon"></fa-icon>
+      <span>پرداخت</span>
+    </li>
+    <li [ngClass]="{passed: CheckoutStep > 3, active: CheckoutStep == 3}">
+      <fa-icon [icon]="faShoppingBasket" class="step-icon"></fa-icon>
+      <span>اتمام خرید</span>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,15 @@
+.alert {
+  .method-icon {
+    padding-left: 5px;
+  }
+
+  .remove-payment {
+    cursor: pointer;
+    padding: 0 10px;
+    margin-left: -10px;
+
+    &:hover {
+      color: #f00;
+    }
+  }
+}

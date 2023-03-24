@@ -1,0 +1,13 @@
+.breadcrumb {
+  background: none;
+  padding: 0 !important;
+
+  .breadcrumb-item {
+    &.breadcrumb-home {
+      img {
+        width: 22px;
+        height: auto;
+      }
+    }
+  }
+}

@@ -1,0 +1,88 @@
+<app-loading-inline [isLoading]="showLoading"></app-loading-inline>
+
+<div [ngClass]="{'is_seller': userService.currentUser?.userType === userType.Seller}">
+
+  <div class="alert alert-warning" *ngIf="isSeller">
+    افزودن کالا به سبد خرید تنها در صفحه لیست محصولات امکان پذیر است. 
+ </div>
+
+  <ngx-slick-carousel [config]="topSliderConfig" class="top-slider" #slickModal="slick-carousel"
+    *ngIf="homeSlidersAds?.slider.length > 0">
+    <div ngxSlickItem *ngFor="let item of homeSlidersAds?.slider">
+      <a *ngIf="item.link" [href]="item.link" target="_blank" rel="noopener">
+        <app-image size="original" [documentInfoId]="item.documentInfoId" [imageType]="item.imageType"></app-image>
+      </a>
+      <app-image *ngIf="!item.link" size="original" [documentInfoId]="item.documentInfoId" [imageType]="item.imageType"
+        width="1210" height="400">
+      </app-image>
+    </div>
+  </ngx-slick-carousel>
+ 
+
+  <div class="most-box" *ngIf="homeProducts?.promotedProduct">
+    <div class="header">
+      <span class="header-border"></span>
+      <h3>
+        فروش‌های ویژه
+        <a [routerLink]="['/promoted-product']" *ngIf="homeProducts?.promotedProduct.length === 8">
+          (مشاهده همه)
+        </a>
+      </h3>
+    </div>
+    <ngx-slick-carousel [config]="productsSliderConfig">
+      <app-product-item ngxSlickItem *ngFor="let item of homeProducts?.promotedProduct" [product]="item"
+        [extraClass]="'product-item-home'">
+      </app-product-item>
+    </ngx-slick-carousel>
+  </div>
+
+  <div class="most-box" *ngIf="homeProducts?.mostSoldProduct">
+    <div class="header">
+      <span class="header-border"></span>
+      <h3>پرفروش‌ترین‌ها</h3>
+    </div>
+    <ngx-slick-carousel [config]="productsSliderConfig">
+      <app-product-item ngxSlickItem *ngFor="let item of homeProducts?.mostSoldProduct" [product]="item"
+        [extraClass]="'product-item-home'">
+      </app-product-item>
+    </ngx-slick-carousel>
+  </div>
+  <div class="most-box" *ngIf="homeProducts?.newestProduct" [ngClass]="{'with-ann': narrowAd}">
+    <div class="newest-box">
+      <div class="header">
+        <span class="header-border"></span>
+        <h3>جدیدترین‌ها</h3>
+      </div>
+      <ngx-slick-carousel [config]="narrowAd? shrinkProductsSliderConfig:productsSliderConfig">
+        <app-product-item ngxSlickItem *ngFor="let item of homeProducts?.newestProduct" [product]="item"
+          [extraClass]="'product-item-home'">
+        </app-product-item>
+      </ngx-slick-carousel>
+    </div>
+    <div class="ann-narrow" [ngClass]="{'is_seller': userService.currentUser?.userType === userType.Seller}"
+      *ngIf="narrowAd">
+      <a [href]="narrowAd.link" target="_blank" rel="noopener">
+        <app-image size="original" [documentInfoId]="narrowAd.documentInfoId" [imageType]="narrowAd.imageType"
+          width="289" height="473">
+        </app-image>
+      </a>
+    </div>
+  </div>
+  <div class="ann-wide" *ngIf="wideAd">
+    <a [href]="wideAd.link" target="_blank" rel="noopener">
+      <app-image size="original" [documentInfoId]="wideAd.documentInfoId" [imageType]="wideAd.imageType" width="1210"
+        height="400"></app-image>
+    </a>
+  </div>
+  <div class="most-box" *ngIf="homeProducts?.mostViewedProduct">
+    <div class="header">
+      <span class="header-border"></span>
+      <h3>پربازدیدترین‌ها</h3>
+    </div>
+    <ngx-slick-carousel [config]="productsSliderConfig">
+      <app-product-item ngxSlickItem *ngFor="let item of homeProducts?.mostViewedProduct" [product]="item"
+        [extraClass]="'product-item-home'">
+      </app-product-item>
+    </ngx-slick-carousel>
+  </div>
+</div>
